@@ -14,6 +14,7 @@ require 'cucumber/web/tableish'
 
 require 'webrat'
 require 'webrat/core/matchers'
+system("cp -f #{RAILS_ROOT}/db/development.sqlite3 #{RAILS_ROOT}/db/test.sqlite3")
 
 Webrat.configure do |config|
   config.mode = :rails
