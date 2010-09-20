@@ -1,0 +1,14 @@
+%li.organizations_list_item
+  %h2= h org.name
+
+  %h3 Description
+  %p= h org.description
+
+  %h3 Blurb
+  %p= h org.blurb
+
+  %h3 Age Range
+  %p
+    %span#min_age= org.min_age
+    %span through
+    %span#max_age= org.max_age

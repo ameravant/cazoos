@@ -1,0 +1,8 @@
+%h1 Organizations
+
+%ul#organizations_list
+
+  = render :partial => 'org', :collection => @orgs
+  
+%p
+  %a Add a New Organization

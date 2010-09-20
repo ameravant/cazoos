@@ -11,11 +11,11 @@ Feature: Manage Orgs
       | Camp DoYaWanna | Camp DoYaWanna is full of hard-to-resist fun activities that will leave your child happy...  | Camp for hyperactive children  | 5       | 9       |
     When I go to the admin orgs page
     Then I should see "Organizations" within "h1"
-    Then I should see "Camp TittiCaca" within "h2"
-    And I should see "Camp TittiCaca sites nestled" within "p"
-    And I should see "A camp for a new generation" within "p"
-    And I should see "9" within "span#min_age"
-    And I should see "12" within "span#max_age"
+    Then I should see "Camp TittiCaca" within "ul#organizations_list li.organizations_list_item h2"
+    And I should see "Camp TittiCaca sits nestled in the forests" within "ul li p"
+    And I should see "A camp for a new generation" within "ul li p"
+    And I should see "9" within "ul li span#min_age"
+    And I should see "12" within "ul li span#max_age"
     
   Scenario: Adding a New Org
     Given I am logged in as "admin" with password "admin"
