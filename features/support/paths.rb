@@ -10,6 +10,10 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    when /^the admin org(s|\sindex) page$/
+      admin_orgs_path
+    when /^the admin add org page$/
+      admin_new_org_path
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

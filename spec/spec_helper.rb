@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require File.dirname(__FILE__) + '/../vendor/generators/rspec/lib/rspec_on_rails'
+require File.dirname(__FILE__) + 'factories'
 
 module Spec
   module Runner
