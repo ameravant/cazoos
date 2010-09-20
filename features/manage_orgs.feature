@@ -1,3 +1,4 @@
+@orgs
 Feature: Manage Orgs
   In order to manage orgs (camps, schools, etc)
   As a SuperUser 

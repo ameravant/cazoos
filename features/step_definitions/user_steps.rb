@@ -11,4 +11,8 @@ end
 Given /^I am logged in as "(.*)" with password "(.*)"$/ do |username, password|
   # AuthenticatedSystem::login_from_basic_auth(username, password)
   # @current_user = Factory.create!(:user, :username => username, :password => password, :password_confirmation => password)
+  visit new_session_url
+  fill_in "login", :with => username
+  fill_in "password", :with => password
+  click_button "Sign in"
 end
