@@ -17,10 +17,12 @@ Feature: Manage Orgs
     And I should see "A camp for a new generation" within "ul li p"
     And I should see "9" within "ul li span#min_age"
     And I should see "12" within "ul li span#max_age"
-    
+    And I should see "Camp DoYaWanna" within "ul#organizations_list li.organizations_list_item h2"
+    And I should see "Add a New Organization" within "a"
+
   Scenario: Adding a New Org
     Given I am logged in as "admin" with password "admin"
     Given I am on the admin orgs page
-    And I follow "Add a New Organization"
+    When I follow "Add a New Organization"
     Then I should be on the admin new org page
     And I should see "Add a New Organization" within "h1"
