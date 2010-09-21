@@ -19,3 +19,9 @@ Factory.define :org do |f|
   f.min_age "1"
   f.max_age "100"
 end
+
+Factory.define :org_owner do |f|
+  f.first_name 'Orgo'
+  f.last_name 'Owner'
+  f.email 'owner@org.com'
+end

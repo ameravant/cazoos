@@ -20,9 +20,17 @@ Feature: Manage Orgs
     And I should see "Camp DoYaWanna" within "ul#organizations_list li.organizations_list_item h2"
     And I should see "Add a New Organization" within "a"
 
-  Scenario: Adding a New Org
+  Scenario: Starting to Add a New Org
     Given I am logged in as "admin" with password "admin"
-    Given I am on the admin orgs page
-    When I follow "Add a New Organization"
-    Then I should be on the admin new org page
+    # Given the following org_owner records
+    #   | first_name | last_name  | email              |
+    #   | Camp       | Owner      | campowner@camp.com |
+    #   | School     | Proprietor | jim@school.com     |
+    When I go to the admin orgs page
+    And I follow "Add a New Organization"
+    Then I should be on the admin add org page
     And I should see "Add a New Organization" within "h1"
+    And I am on the admin add org page
+    # Then I should see "Owner, Camp" within "select#org_owners_list option.org_owner"
+    Then I should see labels Name of Organization
+    # And I should see a field with id org_name

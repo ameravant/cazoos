@@ -1,0 +1,2 @@
+class OrgOwner < Person
+end

@@ -1,0 +1,5 @@
+%h1 Add a New Organization
+
+- form_for ([:admin, @org]) do |f|
+  = f.label :name, 'Name of Organization'
+  = f.text_field :name

@@ -158,6 +158,7 @@ Then /^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/ do |
   end
 end
 
+
 Then /^the "([^"]*)" field(?: within "([^"]*)")? should not contain "([^"]*)"$/ do |field, selector, value|
   with_scope(selector) do
     field = find_field(field)
