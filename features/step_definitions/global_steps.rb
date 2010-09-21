@@ -15,3 +15,10 @@ Then /^I should see labels (.+)$/ do |labels|
     end
   end
 end
+
+Then /^I should see inputs (.*)$/ do |inputs|
+  inputs.split(', ').each do |field|
+    field = find_field(field)
+    assert !field.nil?
+  end
+end

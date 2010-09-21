@@ -22,15 +22,10 @@ Feature: Manage Orgs
 
   Scenario: Starting to Add a New Org
     Given I am logged in as "admin" with password "admin"
-    # Given the following org_owner records
-    #   | first_name | last_name  | email              |
-    #   | Camp       | Owner      | campowner@camp.com |
-    #   | School     | Proprietor | jim@school.com     |
     When I go to the admin orgs page
     And I follow "Add a New Organization"
     Then I should be on the admin add org page
     And I should see "Add a New Organization" within "h1"
     And I am on the admin add org page
-    # Then I should see "Owner, Camp" within "select#org_owners_list option.org_owner"
-    Then I should see labels Name of Organization
-    # And I should see a field with id org_name
+    Then I should see labels Name of Organization, Gender, Description, Blurb
+    And I should see inputs org_name, org_gender, org_description, org_blurb

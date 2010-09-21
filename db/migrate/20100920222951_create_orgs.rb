@@ -4,6 +4,7 @@ class CreateOrgs < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.text :blurb
+      t.string :gender
       t.integer :min_age
       t.integer :max_age
 
