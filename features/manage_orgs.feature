@@ -39,9 +39,9 @@ Feature: Manage Orgs
     # And I fill in "org_name" with ""
     # Then I should see "Add"
 
-    Examples:
-      | org_name
-
+    # Examples:
+    #    | org_name
+ 
 
 
 
