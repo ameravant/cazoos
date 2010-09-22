@@ -4,9 +4,9 @@ Given /^the following (.+) records?$/ do |factory, table|
   end
 end
 
-Then /^I should see labels (.+)$/ do |labels|
+Then /^I should see labels "([^"]*)"(?: within "([^"]*)")?$/ do |labels, selector|
   labels.split(', ').each do |label|
-    with_scope('label') do
+    with_scope("#{selector} label") do
       if page.respond_to? :should
         page.should have_content(label)
       else
@@ -15,10 +15,19 @@ Then /^I should see labels (.+)$/ do |labels|
     end
   end
 end
+# should see "([^"]*)"(?: within "([^"]*)")?$/
+# Then /^I should see inputs "([^"]*)"$/ do |inputs|
+#   inputs.split(', ').each do |field|
+#     field = find_field(field)
+#     assert !field.nil?
+#   end
+# end
 
-Then /^I should see inputs (.*)$/ do |inputs|
+Then /^I should see inputs "([^"]*)"(?: within "([^"]*)")?$/ do |inputs, selector|
   inputs.split(', ').each do |field|
-    field = find_field(field)
-    assert !field.nil?
+    with_scope(selector) do 
+      field = find_field(field)
+      assert !field.nil?
+    end
   end
 end

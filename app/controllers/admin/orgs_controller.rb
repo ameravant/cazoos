@@ -5,5 +5,7 @@ class Admin::OrgsController < AdminController
   
   def new
     @org = Org.new
+    @org.org_owner = OrgOwner.new
+    @org.org_owner.user = User.new
   end
 end
