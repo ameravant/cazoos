@@ -14,6 +14,11 @@ module NavigationHelpers
       admin_orgs_path
     when /^the admin add org page$/
       new_admin_org_path
+    when /^admin index page for activities$/
+      admin_activities_path
+    when /^new admin activity page$/
+      new_admin_activity_path
+      
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
