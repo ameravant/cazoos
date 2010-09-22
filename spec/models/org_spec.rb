@@ -17,42 +17,55 @@ describe Org do
   end
   
   describe 'validations' do
-    describe 'required field' do
+    describe 'on required fields' do
       it "should fail to create a new record if 'name' is missing" do
         @org = Org.create(@valid_attributes.except(:name))
         @org.should_not be_valid
+        @org.should be_new_record
         @org.errors.on(:name).should == "can't be blank"
       end
       
       it "should fail to create a new record if 'description' is missing" do
         @org = Org.create(@valid_attributes.except(:description))
         @org.should_not be_valid
+        @org.should be_new_record
         @org.errors.on(:description).should == "can't be blank"
       end
 
       it "should fail to create a new record if 'gender' is missing" do
         @org = Org.create(@valid_attributes.except(:gender))
         @org.should_not be_valid
+        @org.should be_new_record
         @org.errors.on(:gender).should == "can't be blank"
       end
 
       it "should fail to create a new record if 'min_age' is missing" do
         @org = Org.create(@valid_attributes.except(:min_age))
         @org.should_not be_valid
-        @org.errors.on(:min_age).should == "can't be blank"
+        @org.should be_new_record
+        @org.errors.on(:min_age).should include("can't be blank")
       end
 
       it "should fail to create a new record if 'max_age' is missing" do
         @org = Org.create(@valid_attributes.except(:max_age))
         @org.should_not be_valid
-        @org.errors.on(:max_age).should == "can't be blank"
+        @org.should be_new_record
+        @org.errors.on(:max_age).should include("can't be blank")
       end
       
     end
   
+    it "should fail to save if min_age is non-integer" do
+      @org = Org.create(@valid_attributes.merge({ :min_age => '8.5' }))
+      @org.should be_new_record
+      @org.should_not be_valid
+      @org.errors.on(:min_age).should == "must be a whole number"
+    end
+    
     it "should fail to save if max_age is less than min_age" do
       @org = Org.create(@valid_attributes.merge({ :min_age => '13' }))
-      @org.should_not be_valid
+      @org.should be_new_record
+      # @org.should_not be_valid
       @org.errors.on(:min_age).should == "must be less than Max Age"
     end
   end
