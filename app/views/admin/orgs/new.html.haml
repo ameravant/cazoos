@@ -22,6 +22,27 @@
         %span through
         = org_form.text_field :max_age
 
+      %dt= org_form.label :address
+      %dd= org_form.text_field :address
+
+      %dt= org_form.label :city
+      %dd= org_form.text_field :city
+
+      %dt= org_form.label :state
+      %dd= org_form.select :state, $USA_STATES_ARRAY
+      
+      %dt= org_form.label :zip, "Zip Code"
+      %dd= org_form.text_field :zip  
+
+      %dt= org_form.label :contact, "Main Contact"
+      %dd= org_form.text_field :contact  
+
+      %dt= org_form.label :contact_phone, "Main Contact Phone"
+      %dd= org_form.text_field :contact_phone  
+
+      %dt= org_form.label :contact_email, "Main Contact Email"
+      %dd= org_form.text_field :contact_email  
+
   %fieldset#org_owner_fields
     %legend Organization Owner
     %dl

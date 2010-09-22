@@ -1,5 +1,11 @@
-Given /^the following (.+) records?$/ do |factory, table|
+Given /^the following ([\w]+) records?$/ do |factory, table|
   table.hashes.each do |hash|
+    Factory(factory, hash)
+  end
+end
+
+Given /^the following transposed ([\w]+) records?$/ do |factory, table|
+  table.transpose.hashes.each do |hash|
     Factory(factory, hash)
   end
 end
@@ -15,28 +21,16 @@ Then /^I should see labels "([^"]*)"(?: within "([^"]*)")?$/ do |labels, selecto
     end
   end
 end
-# should see "([^"]*)"(?: within "([^"]*)")?$/
-# Then /^I should see inputs "([^"]*)"$/ do |inputs|
-#   inputs.split(', ').each do |field|
-#     field = find_field(field)
-#     assert !field.nil?
-#   end
-# end
 
 Then /^I should see inputs "([^"]*)"(?: within "([^"]*)")?$/ do |inputs, selector|
   inputs.split(', ').each do |field|
     with_scope(selector) do 
       field = find_field(field)
-      assert !field.nil?
-    end
-  end
-end
-Then /^I should see fields labeled (.+)$/ do |labels|
-  labels.split(', ').each do |label|
-    if defined?(Spec::Rails::Matchers)
-      response.should contain(label)
-    else
-      assert_contain label
+      if field.respond_to? :should
+        field.should_not be_nil
+      else
+        assert !field.nil?
+      end
     end
   end
 end

@@ -18,6 +18,14 @@ Factory.define :org do |f|
   f.blurb "Providing something for your kids"
   f.min_age "1"
   f.max_age "100"
+  f.gender "coed"
+  f.contact "Mr. Contact"
+  f.contact_phone "800-555-CAMP"
+  f.contact_email "contact@campsomething.com"
+  f.address "1234 Any Street"
+  f.city "Santa Barbara"
+  f.state "CA"
+  f.zip "93101"
 end
 
 Factory.define :org_owner do |f|
