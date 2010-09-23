@@ -2,9 +2,11 @@ class Org < ActiveRecord::Base
   has_one :org_owner
   accepts_nested_attributes_for :org_owner
   
-  validates_presence_of :name, :description, :gender, :min_age, :max_age
-  validates_numericality_of :min_age, :only_integer => true, :message => 'must be a whole number'
+  validates_presence_of :name, :description, :gender, :min_age, :max_age, :address, :city, :state, :zip
+  validates_presence_of :contact, :contact_phone, :contact_email
   
+  validates_numericality_of :min_age, :only_integer => true, :message => 'must be a whole number'
+
   before_save :validates_ages
   
   

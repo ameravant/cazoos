@@ -1,5 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+def missing_required_field_test(field_name)
+  @org = Org.create(@valid_attributes.except(field_name.intern))
+  @org.should_not be_valid
+  @org.should be_new_record
+  @org.errors.on(field_name.intern).should include("can't be blank")
+end
+
 describe Org do
   before(:each) do
     @valid_attributes = {
@@ -8,7 +15,14 @@ describe Org do
       :gender => "coed",
       :blurb => "Just ask any kid who's been to Camp Valid",
       :min_age => "9",
-      :max_age => "12"
+      :max_age => "12",
+      :address => "1234 Any St.",
+      :city => "Santa Barbara",
+      :state => "CA", 
+      :zip => '93101', 
+      :contact => "Some Contact",
+      :contact_phone => "805-555-1212",
+      :contact_email => "contact@campvalid.com"
     }
   end
 
@@ -19,47 +33,59 @@ describe Org do
   describe 'validations' do
     describe 'on required fields' do
       it "should fail to create a new record if 'name' is missing" do
-        @org = Org.create(@valid_attributes.except(:name))
-        @org.should_not be_valid
-        @org.should be_new_record
-        @org.errors.on(:name).should == "can't be blank"
+        missing_required_field_test('name')
       end
       
       it "should fail to create a new record if 'description' is missing" do
-        @org = Org.create(@valid_attributes.except(:description))
-        @org.should_not be_valid
-        @org.should be_new_record
-        @org.errors.on(:description).should == "can't be blank"
+        missing_required_field_test('description')
       end
 
       it "should fail to create a new record if 'gender' is missing" do
-        @org = Org.create(@valid_attributes.except(:gender))
-        @org.should_not be_valid
-        @org.should be_new_record
-        @org.errors.on(:gender).should == "can't be blank"
+        missing_required_field_test('gender')
       end
 
       it "should fail to create a new record if 'min_age' is missing" do
-        @org = Org.create(@valid_attributes.except(:min_age))
-        @org.should_not be_valid
-        @org.should be_new_record
-        @org.errors.on(:min_age).should include("can't be blank")
+        missing_required_field_test('min_age')
       end
 
       it "should fail to create a new record if 'max_age' is missing" do
-        @org = Org.create(@valid_attributes.except(:max_age))
-        @org.should_not be_valid
-        @org.should be_new_record
-        @org.errors.on(:max_age).should include("can't be blank")
+        missing_required_field_test('max_age')
+      end
+
+      it "should fail to create a new record if 'address' is missing" do
+        missing_required_field_test('address')
       end
       
+      it "should fail to create a new record if 'city' is missing" do
+        missing_required_field_test('city')
+      end      
+      
+      it "should fail to create a new record if 'state' is missing" do
+        missing_required_field_test('state')
+      end      
+      
+      it "should fail to create a new record if 'zip' is missing" do
+        missing_required_field_test('zip')
+      end      
+      
+      it "should fail to create a new record if 'contact' is missing" do
+        missing_required_field_test('contact')
+      end      
+      
+      it "should fail to create a new record if 'contact_phone' is missing" do
+        missing_required_field_test('contact_phone')
+      end      
+      
+      it "should fail to create a new record if 'contact_email' is missing" do
+        missing_required_field_test('contact_email')
+      end      
     end
   
     it "should fail to save if min_age is non-integer" do
       @org = Org.create(@valid_attributes.merge({ :min_age => '8.5' }))
       @org.should be_new_record
       @org.should_not be_valid
-      @org.errors.on(:min_age).should == "must be a whole number"
+      @org.errors.on(:min_age).should include("must be a whole number")
     end
     
     it "should fail to save if max_age is less than min_age" do
