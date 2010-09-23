@@ -50,7 +50,7 @@ Feature: Manage Orgs
     When I go to the admin new org page
     And I press "Create Organization"
     Then I should be on the admin orgs page
-    And I should see "can't be blank" within "div#error"
+    And I should see "can't be blank" within "div#errorExplanation"
     
   Scenario: Adding a New Org with valid data
     Given no org records

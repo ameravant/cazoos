@@ -14,7 +14,6 @@ class Admin::OrgsController < AdminController
     if @org.save
       redirect_to admin_orgs_path
     else
-      @org = Org.new
       @org.org_owner = OrgOwner.new
       @org.org_owner.user = User.new
       render 'new'
