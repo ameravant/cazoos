@@ -22,10 +22,11 @@ Then /^I should see labels "([^"]*)"(?: within "([^"]*)")?$/ do |labels, selecto
   end
 end
 
-Then /^I should see inputs "([^"]*)"(?: within "([^"]*)")?$/ do |inputs, selector|
+Then /^I should see (input|select|textarea)s "([^"]*)"(?: within "([^"]*)")?$/ do |field_type, inputs, selector|
   inputs.split(', ').each do |field|
     with_scope(selector) do 
-      field = find_field(field)
+      # field = find_field(field)
+      field = find(:xpath, "//#{field_type}[@id='#{field}']")
       if field.respond_to? :should
         field.should_not be_nil
       else
