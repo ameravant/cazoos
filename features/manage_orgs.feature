@@ -33,9 +33,9 @@ Feature: Manage Orgs
     Given I am logged in as "admin" with password "admin"
     When I go to the admin orgs page
     And I follow "Add a New Organization"
-    Then I should be on the admin add org page
+    Then I should be on the admin new org page
     And I should see "Add a New Organization" within "h1"
-    And I am on the admin add org page
+    And I am on the admin new org page
     Then I should see labels "Name of Organization, Gender, Description, Blurb, Age Range, Address, City, State, Zip Code, Main Contact, Main Contact Phone, Main Contact Email" within "fieldset#org_fields dl dt"
     Then I should see labels "First name, Last name, Address, City, State, Zip, Email, Re-enter email, Password, Re-enter password" within "fieldset#org_owner_fields dl dt"
     And I should see inputs "org_name, org_min_age, org_max_age, org_address, org_city, org_zip, org_contact, org_contact_phone, org_contact_email" within "fieldset#org_fields dl dd"
@@ -47,13 +47,28 @@ Feature: Manage Orgs
   Scenario: Adding a New Org
     Given no org records
     Given I am logged in as "admin" with password "admin"
-    When I go to the admin add org page
-    # And I fill in "org_name" with ""
-    # Then I should see "Add"
+    When I go to the admin new org page
+    # And I fill in every org field with valid org data
+    And I press "Create Organization"
+    Then I should be on the admin new org page
+    And I should see "errors" within "div#error"
+    # And I fill in the form using <the fields from the outline>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_gender" with <org_gender>
+    # And I fill in "org_description" with <org_description>
+    # And I fill in "org_blurb" with <org_blurb>
+    # And I fill in "org_name" with <org_min_age>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # And I fill in "org_name" with <org_name>
+    # Then I should be redirected to <the page in the outline>
+    # Then I should see <the notice/error from the outline>
 
-    # Examples:
-    #    | org_name
- 
 
 
 

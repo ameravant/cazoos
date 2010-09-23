@@ -9,4 +9,8 @@ end
 Given /^no org records$/ do 
   Org.delete_all
 end
+
+When /^I fill in every org field with valid org data$/ do
+  
+end
    

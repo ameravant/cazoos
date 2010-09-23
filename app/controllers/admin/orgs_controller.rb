@@ -8,4 +8,9 @@ class Admin::OrgsController < AdminController
     @org.org_owner = OrgOwner.new
     @org.org_owner.user = User.new
   end
+  
+  def create
+    flash[:error] = "There were errors on the page"
+    redirect_to :action => 'new'
+  end
 end

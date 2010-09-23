@@ -12,7 +12,7 @@ module NavigationHelpers
       '/'
     when /^the admin org(s|\sindex) page$/
       admin_orgs_path
-    when /^the admin add org page$/
+    when /^the admin new org page$/
       new_admin_org_path
     when /^admin index page for activities$/
       admin_activities_path
