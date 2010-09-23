@@ -1,4 +1,5 @@
 %h1 Add a New Organization
+= error_messages_for :org
 
 - form_for ([:admin, @org]) do |org_form|
   %fieldset#org_fields
@@ -46,6 +47,7 @@
   %fieldset#org_owner_fields
     %legend Organization Owner
     %dl
+      = '<!--'
       - org_form.fields_for :org_owner do |org_owner_form|
         %dt= org_owner_form.label :first_name
         %dd= org_owner_form.text_field :first_name
@@ -76,9 +78,9 @@
   
         - org_owner_form.fields_for :user do |user_form|
           %dt= user_form.label :password
-          %dd= user_form.text_field :password
+          %dd= user_form.password_field :password
   
           %dt= user_form.label :password_confirmation, 'Re-enter password'
-          %dd= user_form.text_field :password_confirmation
-          
+          %dd= user_form.password_field :password_confirmation
+        = '-->'         
   = org_form.submit "Create Organization"        

@@ -10,7 +10,15 @@ class Admin::OrgsController < AdminController
   end
   
   def create
-    flash[:error] = "There were errors on the page"
-    redirect_to :action => 'new'
+    @org = Org.new(params[:org])
+    if @org.save
+      redirect_to admin_orgs_path
+    else
+      @org = Org.new
+      @org.org_owner = OrgOwner.new
+      @org.org_owner.user = User.new
+      render 'new'
+    end
   end
+  
 end
