@@ -13,6 +13,7 @@ Factory.define :super_user, :class => User do |f|
 end
 
 Factory.define :org do |f|
+  f.association :person
   f.name "Camp Something"
   f.description "Camp Something has many things, none of which are in this description."
   f.blurb "Providing something for your kids"
@@ -31,7 +32,7 @@ end
 Factory.define :person do |f|
   f.first_name 'Orgo'
   f.last_name 'Owner'
-  f.email 'owner@org.com'
+  f.sequence(:email) { |n| "owner#{n}@org.com" }
   f.phone '805-234-1234'
   f.address1 '555 Main St.'
   f.city 'Santa Maria'

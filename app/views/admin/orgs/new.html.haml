@@ -44,6 +44,9 @@
       %dt= org_form.label :contact_email, "Main Contact Email"
       %dd= org_form.text_field :contact_email  
 
+      %dt= org_form.label :owner_id, "Organization Owner"
+      %dd= org_form.select :owner_id, @people.collect {|p| [ "#{p.first_name} #{p.last_name}", p.id ] }, { :include_blank => true }
+      
   %fieldset#org_owner_fields
     %legend Organization Owner
     %dl
