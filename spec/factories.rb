@@ -28,8 +28,13 @@ Factory.define :org do |f|
   f.zip "93101"
 end
 
-Factory.define :org_owner do |f|
+Factory.define :person do |f|
   f.first_name 'Orgo'
   f.last_name 'Owner'
   f.email 'owner@org.com'
+  f.phone '805-234-1234'
+  f.address1 '555 Main St.'
+  f.city 'Santa Maria'
+  f.state 'CA'
+  f.zip '93203'
 end

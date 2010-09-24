@@ -9,7 +9,9 @@ end
 
 describe Org do
   before(:each) do
+    person = Factory.create(:person)
     @valid_attributes = {
+      :owner_id => person[:id],
       :name => "Camp Valid",
       :description => "Camp Valid sits nestled in the hills of Tennesee...",
       :gender => "coed",
@@ -88,11 +90,35 @@ describe Org do
       @org.errors.on(:min_age).should include("must be a whole number")
     end
     
+    it "should fail to save if max_age is non-integer" do
+      @org = Org.create(@valid_attributes.merge({ :max_age => '8.5' }))
+      @org.should be_new_record
+      @org.should_not be_valid
+      @org.errors.on(:max_age).should include("must be a whole number")
+    end
+    
     it "should fail to save if max_age is less than min_age" do
       @org = Org.create(@valid_attributes.merge({ :min_age => '13' }))
       @org.should be_new_record
       # @org.should_not be_valid
       @org.errors.on(:min_age).should == "must be less than Max Age"
+    end
+    
+    it "should fail to save if it does not belong to a Person (the Org Owner)" do
+      @org = Org.new(@valid_attributes.except(:owner_id))
+      @org.save
+      @org.should_not be_valid
+      @org.errors.on(:owner_id).should include("can't be blank")
+    end
+    
+    it "should fail to save if its OrgOwner is not valid" do
+      @org = Org.new(@valid_attributes)
+      @owner = Person.find(@org.owner_id)
+      @owner.first_name = ''
+      @owner.save(false)
+      @org.save
+      @org.should_not be_valid
+      @org.should be_new_record
     end
   end
 end
