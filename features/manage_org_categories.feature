@@ -1,15 +1,14 @@
 @categories
 Feature: Org Categories
 
-  Before do
+  Background:
     Given no user records
     Given the following user record
-      | login | email           | password | password_confirmation |
-      | admin | admin@admin.org | admin    | admin                 |
-  end
+      | login | password | password_confirmation |
+      | admin | admin    | admin                 |
+    Given I am logged in as "admin" with password "admin"  
 
   Scenario: Visiting the Categories Page
-    Given I am logged in as "admin" with password "admin"  
     Given the following org_category records
       | title            |
       | Horseback Riding |
@@ -20,7 +19,6 @@ Feature: Org Categories
     And I should see "Archery" within "dl#org_categories_list dt"    
         
   Scenario: Adding a New Category
-    Given I am logged in as "admin" with password "admin"  
     Given I am on the Organization Categories page
     When I follow "Add a New Category"
     Then I should be on the New Organization Category page
@@ -35,7 +33,7 @@ Feature: Org Categories
     
   # This is a controller test more than a model test, as the validation is tested in spec/models
   Scenario: Adding a New Category with a blank title
-    Given I am logged in as "admin" with password "admin"  
+    # Given I am logged in as "admin" with password "admin"  
     Given I am on the New Organization Category page
     And I press "Create"
     Then I should be on the Organization Categories page
@@ -45,7 +43,6 @@ Feature: Org Categories
   #     give warning/prompt for certainty before making potential duplicate
   
   Scenario: Editing a Category
-    Given I am logged in as "admin" with password "admin"  
     Given the following org_category records
       | title            |
       | Horseback Riding |
@@ -61,7 +58,6 @@ Feature: Org Categories
     And I should see "The category was successfully updated."
     
   Scenario: Updating a Category with a blank title  
-    Given I am logged in as "admin" with password "admin"  
     Given the following org_category records
       | title            |
       | Horseback Riding |
@@ -73,7 +69,6 @@ Feature: Org Categories
     
   # There is currently no check for links to this category or dependencies on it
   Scenario: Deleting a Category
-    Given I am logged in as "admin" with password "admin"  
     Given the following org_category records
       | title            |
       | Horseback Riding |

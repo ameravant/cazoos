@@ -1,3 +1,4 @@
+@anonymous
 Feature: Viewing the Site
   In order to be directed to the appropriate actions
   As a site visitor
@@ -7,3 +8,10 @@ Feature: Viewing the Site
     Given I am not logged in
     When I go to to the homepage
     Then I should see "Register Now!" within "a" 
+  
+  # Scenario: Beginning the Registration Process for Parents or Camp Owners
+  #   Given I am not logged in
+  #   Given I am on the homepage
+  #   When I follow "Register Now!"
+  #   Then I should be on the <something> page
+  #   And I should see <something>

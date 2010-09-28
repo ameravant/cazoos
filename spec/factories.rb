@@ -1,15 +1,14 @@
 Factory.define :user do |f|
-  f.sequence(:username) { |n| "foo#{n}"}
+  f.association :person
+  f.sequence(:login) { |n| "foo#{n}"}
   f.password "secret"
   f.password_confirmation { |u| u.password }
-  f.sequence(:email) { |n| "foo#{n}@example.com" }
 end
 
 Factory.define :super_user, :class => User do |f|
-  f.username "admin"
+  f.login "admin"
   f.password "admin"
   f.password_confirmation "admin"
-  f.email "admin@admin.com"
 end
 
 Factory.define :org do |f|

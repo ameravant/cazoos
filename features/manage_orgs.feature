@@ -4,15 +4,14 @@ Feature: Manage Orgs
   As a SuperUser 
   I want to be able to create, edit and destroy orgs
   
-  Before do
+  Background:
     Given no user records
     Given the following user record
-      | login | email           | password | password_confirmation |
-      | admin | admin@admin.org | admin    | admin                 |
-  end
+      | login | password | password_confirmation |
+      | admin | admin    | admin                 |
+    Given I am logged in as "admin" with password "admin"
   
   Scenario: Viewing Organizations
-    Given I am logged in as "admin" with password "admin"
     Given the following transposed org records
       | name          | Camp TittiCaca                                | Camp DoYaWanna                              |
       | description   | Camp TittiCaca sits nestled in the forests... | Camp DoYaWanna is full of hard-to-resist... |
@@ -22,8 +21,7 @@ Feature: Manage Orgs
       | gender        | boys                                          | coed                                        |
       | contact       | Jim Contact                                   | Joe Contact                                 |
       | contact_phone | 805-555-1212                                  | 800-396-CAMP                                |
-      | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |
-      
+      | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |  
     When I go to the admin orgs page
     Then I should see "Organizations" within "h1"
     Then I should see "Camp TittiCaca" within "ul#organizations_list li.organizations_list_item h2"
@@ -37,7 +35,6 @@ Feature: Manage Orgs
     And I should see "Add a New Organization" within "a"
 
   Scenario: Starting to Add a New Org
-    Given I am logged in as "admin" with password "admin"
     When I go to the admin orgs page
     And I follow "Add a New Organization"
     Then I should be on the admin new org page
@@ -55,7 +52,6 @@ Feature: Manage Orgs
     
   Scenario: Adding a New Org with missing data
     Given no org records
-    Given I am logged in as "admin" with password "admin"
     When I go to the admin new org page
     And I press "Create Organization"
     Then I should be on the admin orgs page
@@ -66,7 +62,6 @@ Feature: Manage Orgs
     Given the following person record
       | first_name | last_name | email        | phone      | address1     | city | state | zip   |
       | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
-    Given I am logged in as "admin" with password "admin"
     When I go to the admin new org page
     # And I fill in every org field with valid org data
     And I fill in "org_name" with "Camp Valid"
@@ -86,5 +81,3 @@ Feature: Manage Orgs
     And I press "Create Organization"
     Then I should be on the admin orgs page
     And I should see "Camp Valid" within "ul#organizations_list li.organizations_list_item h2"
-
-
