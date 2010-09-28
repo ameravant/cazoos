@@ -2,6 +2,7 @@ class Org < ActiveRecord::Base
   belongs_to :person, :foreign_key => :owner_id
   # accepts_nested_attributes_for :person
 
+
   validates_presence_of :owner_id
   validates_associated :person
   

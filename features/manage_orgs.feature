@@ -4,6 +4,13 @@ Feature: Manage Orgs
   As a SuperUser 
   I want to be able to create, edit and destroy orgs
   
+  Before do
+    Given no user records
+    Given the following user record
+      | login | email           | password | password_confirmation |
+      | admin | admin@admin.org | admin    | admin                 |
+  end
+  
   Scenario: Viewing Organizations
     Given I am logged in as "admin" with password "admin"
     Given the following transposed org records
@@ -46,34 +53,38 @@ Feature: Manage Orgs
     # And I should see inputs "org_org_owner_attributes_first_name, org_org_owner_attributes_last_name, org_org_owner_attributes_phone, org_org_owner_attributes_address1, org_org_owner_attributes_city, org_org_owner_attributes_zip, org_org_owner_attributes_email, org_org_owner_attributes_email_confirmation, org_org_owner_attributes_user_attributes_password, org_org_owner_attributes_user_attributes_password_confirmation" within "fieldset#org_owner_fields dl dd"
     # And I should see selects "org_org_owner_attributes_state" within "fieldset#org_owner_fields dl dd"
     
-  # Scenario: Adding a New Org with missing data
-  #   Given no org records
-  #   Given I am logged in as "admin" with password "admin"
-  #   When I go to the admin new org page
-  #   And I press "Create Organization"
-  #   Then I should be on the admin orgs page
-  #   And I should see "can't be blank" within "div#errorExplanation"
-  #   
-  # Scenario: Adding a New Org with valid data
-  #   Given no org records
-  #   Given I am logged in as "admin" with password "admin"
-  #   When I go to the admin new org page
-  #   # And I fill in every org field with valid org data
-  #   And I fill in "org_name" with "Camp Valid"
-  #   And I select "boys" from "org_gender"
-  #   And I fill in "org_description" with "This camp is great."
-  #   And I fill in "org_blurb" with ""
-  #   And I fill in "org_min_age" with "9"
-  #   And I fill in "org_max_age" with "12"
-  #   And I fill in "org_contact" with "Camp Contact"
-  #   And I fill in "org_contact_phone" with "805-555-1212"
-  #   And I fill in "org_contact_email" with "info@campvalid.org"
-  #   And I fill in "org_address" with "1234 Any St."
-  #   And I fill in "org_city" with "Santa Barbara"
-  #   And I select "California" from "org_state"
-  #   And I fill in "org_zip" with "93101"
-  #   And I press "Create Organization"
-  #   Then I should be on the admin orgs page
-  #   And I should see "Camp Valid" within "ul#organizations_list li.organizations_list_item h2"
+  Scenario: Adding a New Org with missing data
+    Given no org records
+    Given I am logged in as "admin" with password "admin"
+    When I go to the admin new org page
+    And I press "Create Organization"
+    Then I should be on the admin orgs page
+    And I should see "can't be blank" within "div#errorExplanation"
+    
+  Scenario: Adding a New Org with valid data
+    Given no org records
+    Given the following person record
+      | first_name | last_name | email        | phone      | address1     | city | state | zip   |
+      | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
+    Given I am logged in as "admin" with password "admin"
+    When I go to the admin new org page
+    # And I fill in every org field with valid org data
+    And I fill in "org_name" with "Camp Valid"
+    And I select "boys" from "org_gender"
+    And I fill in "org_description" with "This camp is great."
+    And I fill in "org_blurb" with ""
+    And I fill in "org_min_age" with "9"
+    And I fill in "org_max_age" with "12"
+    And I fill in "org_contact" with "Camp Contact"
+    And I fill in "org_contact_phone" with "805-555-1212"
+    And I fill in "org_contact_email" with "info@campvalid.org"
+    And I fill in "org_address" with "1234 Any St."
+    And I fill in "org_city" with "Santa Barbara"
+    And I select "California" from "org_state"
+    And I fill in "org_zip" with "93101"
+    And I select "Orgo Owner" from "org_owner_id"
+    And I press "Create Organization"
+    Then I should be on the admin orgs page
+    And I should see "Camp Valid" within "ul#organizations_list li.organizations_list_item h2"
 
 

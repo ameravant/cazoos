@@ -1,5 +1,6 @@
 %h1 Add a New Organization
 = error_messages_for :org
+= @org.errors.on :owner_id
 
 - form_for ([:admin, @org]) do |org_form|
   %fieldset#org_fields
@@ -45,12 +46,12 @@
       %dd= org_form.text_field :contact_email  
 
       %dt= org_form.label :owner_id, "Organization Owner"
-      %dd= org_form.select :owner_id, @people.collect {|p| [ "#{p.first_name} #{p.last_name}", p.id ] }, { :include_blank => true }
-      
+      %dd= org_form.select :owner_id, !@people.nil? ? @people.map {|p| [ "#{p.first_name} #{p.last_name}", p.id ] } : [], { :include_blank => '&ndash; SELECT ONE &ndash;' }
+  <!--
   %fieldset#org_owner_fields
     %legend Organization Owner
     %dl
-      = '<!--'
+
       - org_form.fields_for :org_owner do |org_owner_form|
         %dt= org_owner_form.label :first_name
         %dd= org_owner_form.text_field :first_name

@@ -1,12 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-def missing_required_field_test(field_name)
-  @org = Org.create(@valid_attributes.except(field_name.intern))
-  @org.should_not be_valid
-  @org.should be_new_record
-  @org.errors.on(field_name.intern).should include("can't be blank")
-end
-
 describe Org do
   before(:each) do
     person = Factory.create(:person)
@@ -35,51 +28,51 @@ describe Org do
   describe 'validations' do
     describe 'on required fields' do
       it "should fail to create a new record if 'name' is missing" do
-        missing_required_field_test('name')
+        missing_required_field_test(:org, 'name')
       end
       
       it "should fail to create a new record if 'description' is missing" do
-        missing_required_field_test('description')
+        missing_required_field_test(:org, 'description')
       end
 
       it "should fail to create a new record if 'gender' is missing" do
-        missing_required_field_test('gender')
+        missing_required_field_test(:org, 'gender')
       end
 
       it "should fail to create a new record if 'min_age' is missing" do
-        missing_required_field_test('min_age')
+        missing_required_field_test(:org, 'min_age')
       end
 
       it "should fail to create a new record if 'max_age' is missing" do
-        missing_required_field_test('max_age')
+        missing_required_field_test(:org, 'max_age')
       end
 
       it "should fail to create a new record if 'address' is missing" do
-        missing_required_field_test('address')
+        missing_required_field_test(:org, 'address')
       end
       
       it "should fail to create a new record if 'city' is missing" do
-        missing_required_field_test('city')
+        missing_required_field_test(:org, 'city')
       end      
       
       it "should fail to create a new record if 'state' is missing" do
-        missing_required_field_test('state')
+        missing_required_field_test(:org, 'state')
       end      
       
       it "should fail to create a new record if 'zip' is missing" do
-        missing_required_field_test('zip')
+        missing_required_field_test(:org, 'zip')
       end      
       
       it "should fail to create a new record if 'contact' is missing" do
-        missing_required_field_test('contact')
+        missing_required_field_test(:org, 'contact')
       end      
       
       it "should fail to create a new record if 'contact_phone' is missing" do
-        missing_required_field_test('contact_phone')
+        missing_required_field_test(:org, 'contact_phone')
       end      
       
       it "should fail to create a new record if 'contact_email' is missing" do
-        missing_required_field_test('contact_email')
+        missing_required_field_test(:org, 'contact_email')
       end      
     end
   
