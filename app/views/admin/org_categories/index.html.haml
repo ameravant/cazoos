@@ -1,0 +1,12 @@
+%h1 Organization Categories
+
+%dl#org_categories_list
+
+  - @org_categories.each do |cat|
+  
+    %dt= h cat.title
+    %dd
+      = link_to "Edit", edit_admin_org_category_path(cat)
+      = link_to "Delete", admin_org_category_path(cat), :confirm => "Are you sure?", :method => 'delete'
+    
+= link_to "Add a New Category", new_admin_org_category_path
