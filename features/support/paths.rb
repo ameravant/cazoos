@@ -18,7 +18,14 @@ module NavigationHelpers
       admin_activities_path
     when /^new admin activity page$/
       new_admin_activity_path
-      
+    when /^the Organization Categories page$/
+      admin_org_categories_path
+    when /^the New Organization Category page$/
+      new_admin_org_category_path
+    when /^the Edit Organization Category page for "(.*)"$/
+      edit_admin_org_category_path(OrgCategory.find_by_title($1))
+    when /^the Organization Category page for "(.*)"$/  
+      admin_org_category_path(OrgCategory.find_by_title($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
