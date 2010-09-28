@@ -19,4 +19,24 @@ class Admin::OrgsController < AdminController
     end
   end
   
+  def edit
+    @org = Org.find(params[:id])
+    @people = Person.all
+  end
+  
+  def update
+    @org = Org.find(params[:id])
+    if @org.update_attributes(params[:org])
+      flash[:notice] = "You have successfully updated the organization."
+      redirect_to admin_orgs_path
+    else
+      render 'edit'
+    end
+  end
+  
+  def destroy
+    @org = Org.find(params[:id])
+    @org.destroy
+    respond_to :js
+  end
 end

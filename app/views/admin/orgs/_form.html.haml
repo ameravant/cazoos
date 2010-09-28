@@ -1,0 +1,48 @@
+= error_messages_for :org
+
+- form_for ([:admin, @org]) do |org_form|
+  %fieldset#org_fields
+    %dl
+      %dt= org_form.label :name, 'Name of Organization'
+      %dd= org_form.text_field :name
+  
+      %dt= org_form.label :description
+      %dd= org_form.text_area :description
+  
+      %dt= org_form.label :blurb
+      %dd= org_form.text_area :blurb  
+  
+      %dt= org_form.label :gender
+      %dd= org_form.select(:gender, %w{boys girls coed})
+      
+      %dt= org_form.label :min_age, "Age Range"
+      %dd
+        = org_form.text_field :min_age
+        %span through
+        = org_form.text_field :max_age
+
+      %dt= org_form.label :address
+      %dd= org_form.text_field :address
+
+      %dt= org_form.label :city
+      %dd= org_form.text_field :city
+
+      %dt= org_form.label :state
+      %dd= org_form.select :state, $USA_STATES_ARRAY
+      
+      %dt= org_form.label :zip, "Zip Code"
+      %dd= org_form.text_field :zip  
+
+      %dt= org_form.label :contact, "Main Contact"
+      %dd= org_form.text_field :contact  
+
+      %dt= org_form.label :contact_phone, "Main Contact Phone"
+      %dd= org_form.text_field :contact_phone  
+
+      %dt= org_form.label :contact_email, "Main Contact Email"
+      %dd= org_form.text_field :contact_email  
+
+      %dt= org_form.label :owner_id, "Organization Owner"
+      %dd= org_form.select :owner_id, !@people.nil? ? @people.map {|p| [ "#{p.first_name} #{p.last_name}", p.id ] } : [], { :include_blank => '&ndash; SELECT ONE &ndash;' }
+
+  = org_form.submit(@org.new_record? ? 'Create' : 'Save Changes')

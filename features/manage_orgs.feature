@@ -10,8 +10,6 @@ Feature: Manage Orgs
       | login | password | password_confirmation |
       | admin | admin    | admin                 |
     Given I am logged in as "admin" with password "admin"
-  
-  Scenario: Viewing Organizations
     Given the following transposed org records
       | name          | Camp TittiCaca                                | Camp DoYaWanna                              |
       | description   | Camp TittiCaca sits nestled in the forests... | Camp DoYaWanna is full of hard-to-resist... |
@@ -22,21 +20,61 @@ Feature: Manage Orgs
       | contact       | Jim Contact                                   | Joe Contact                                 |
       | contact_phone | 805-555-1212                                  | 800-396-CAMP                                |
       | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |  
+  
+  Scenario: Viewing Organizations
     When I go to the admin orgs page
     Then I should see "Organizations" within "h1"
-    Then I should see "Camp TittiCaca" within "ul#organizations_list li.organizations_list_item h2"
-    And I should see "Camp TittiCaca sits nestled in the forests" within "ul li p"
-    And I should see "A camp for a new generation" within "ul li p"
-    And I should see "9" within "ul li span#min_age"
-    And I should see "12" within "ul li span#max_age"
-    And I should see "Jim Contact" within "dl dt"
-    And I should see "805-555-1212" within "dl dd"
-    And I should see "Camp DoYaWanna" within "ul#organizations_list li.organizations_list_item h2"
-    And I should see "Add a New Organization" within "a"
+    Then I should see "Camp TittiCaca" within "table#organizations.full_width tr.org td.org_name"
+    And I should see "Camp TittiCaca sits nestled in the forests" within "table.full_width tr.org td.org_description"
+    And I should see "A camp for a new generation" within "table.full_width tr.org td.org_blurb"
+    And I should see "9" within "table.full_width tr.org td.org_age_range span.min_age"
+    And I should see "12" within "table.full_width tr.org td.org_age_range span.max_age"
+    And I should see "Jim Contact" within "table.full_width tr.org td.org_contact_info span.org_contact"
+    And I should see "805-555-1212" within "table.full_width tr.org td.org_contact_info span.org_contact_phone"
+    And I should see "Camp DoYaWanna" within "table.full_width tr.org td.org_name"
+    And I should see "Add a new organization" within "a"
+    
+  @orgs_edit @admin_orgs_edit
+  Scenario: Editing an Organization
+    When I go to the admin orgs page
+    And I follow "Camp TittiCaca"
+    Then I should be on the Edit Organization page for "Camp TittiCaca" 
+    And I should see "Edit Organization: Camp TittiCaca"
+    And the "org_name" field should contain "Camp TittiCaca"
+    And the "org_description" field should contain "Camp TittiCaca sits"
+    And the "org_blurb" field should contain "A camp for a new generation" 
+    And the "org_min_age" field should contain "5"
+    And the "org_max_age" field should contain "9"
+    And the "org_contact" field should contain "Jim Contact"
+    And the "org_contact_phone" field should contain "805-555-1212"
+    And the "org_contact_email" field should contain "jim@camptitticaca.com"
+                
+  @orgs_update @admin_org_update @valid
+  Scenario: Updating an Organization with Valid Data
+    Given I am on the Edit Organization page for "Camp TittiCaca" 
+    When I fill in "org_blurb" with "Something that wouldn't be in the database already by coincidence"
+    And I press "Save Changes"
+    Then I should be on the admin orgs page
+    And I should see "You have successfully updated the organization."
+    And I should see "Something that wouldn't be in the database already by coincidence" within "td.org_blurb"
+  
+  @org_update @admin_org_update @invalid
+  Scenario: Updating an Organization with Invalid Data
+    Given I am on the Edit Organization page for "Camp TittiCaca" 
+    When I fill in "org_description" with ""
+    And I press "Save Changes"
+    Then I should be on the Organization page for "Camp TittiCaca"
+    And I should see "can't be blank"
 
+  @org_destroy
+  Scenario: Destroying an Organization record
+    Given I am on the admin orgs page
+    When I follow "Delete"
+    # The non-scenario, at least until we have gracefully degrading destroy and/or Selenium
+    
   Scenario: Starting to Add a New Org
     When I go to the admin orgs page
-    And I follow "Add a New Organization"
+    And I follow "Add a new organization"
     Then I should be on the admin new org page
     And I should see "Add a New Organization" within "h1"
     And I am on the admin new org page
@@ -44,16 +82,11 @@ Feature: Manage Orgs
     And I should see inputs "org_name, org_min_age, org_max_age, org_address, org_city, org_zip, org_contact, org_contact_phone, org_contact_email" within "fieldset#org_fields dl dd"
     And I should see selects "org_gender, org_state, org_owner_id" within "fieldset#org_fields dl dd"
     And I should see textareas "org_description, org_blurb" within "fieldset#org_fields dl dd" 
-    #####   This commented-out stuff will almost assuredly be removed, as it relied on the 
-    #####   OrgOwner < Person class that no longer exists
-    # Then I should see labels "First name, Last name, Address, City, State, Zip, Email, Re-enter email, Password, Re-enter password" within "fieldset#org_owner_fields dl dt"
-    # And I should see inputs "org_org_owner_attributes_first_name, org_org_owner_attributes_last_name, org_org_owner_attributes_phone, org_org_owner_attributes_address1, org_org_owner_attributes_city, org_org_owner_attributes_zip, org_org_owner_attributes_email, org_org_owner_attributes_email_confirmation, org_org_owner_attributes_user_attributes_password, org_org_owner_attributes_user_attributes_password_confirmation" within "fieldset#org_owner_fields dl dd"
-    # And I should see selects "org_org_owner_attributes_state" within "fieldset#org_owner_fields dl dd"
     
   Scenario: Adding a New Org with missing data
     Given no org records
     When I go to the admin new org page
-    And I press "Create Organization"
+    And I press "Create"
     Then I should be on the admin orgs page
     And I should see "can't be blank" within "div#errorExplanation"
     
@@ -63,7 +96,6 @@ Feature: Manage Orgs
       | first_name | last_name | email        | phone      | address1     | city | state | zip   |
       | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
     When I go to the admin new org page
-    # And I fill in every org field with valid org data
     And I fill in "org_name" with "Camp Valid"
     And I select "boys" from "org_gender"
     And I fill in "org_description" with "This camp is great."
@@ -78,6 +110,6 @@ Feature: Manage Orgs
     And I select "California" from "org_state"
     And I fill in "org_zip" with "93101"
     And I select "Orgo Owner" from "org_owner_id"
-    And I press "Create Organization"
+    And I press "Create"
     Then I should be on the admin orgs page
-    And I should see "Camp Valid" within "ul#organizations_list li.organizations_list_item h2"
+    And I should see "Camp Valid"
