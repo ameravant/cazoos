@@ -30,7 +30,7 @@ Factory.define :org do |f|
 end
 
 Factory.define :person do |f|
-  f.first_name 'Orgo'
+  f.sequence(:first_name) { |n| "Orgo#{n}"}
   f.last_name 'Owner'
   f.sequence(:email) { |n| "owner#{n}@org.com" }
   f.phone '805-234-1234'
@@ -38,4 +38,8 @@ Factory.define :person do |f|
   f.city 'Santa Maria'
   f.state 'CA'
   f.zip '93203'
+end
+
+Factory.define :org_category do |f|
+  f.sequence(:title) { |n| "Category #{n}" }
 end
