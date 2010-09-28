@@ -1,12 +1,17 @@
 %h1 Organization Categories
 
-%dl#org_categories_list
+%div.box
+  %span.hmenu
+    = icon 'Plus', new_admin_org_category_path
+    = link_to 'Add a new category', new_admin_org_category_path
 
-  - @org_categories.each do |cat|
-  
-    %dt= h cat.title
-    %dd
-      = link_to "Edit", edit_admin_org_category_path(cat)
-      = link_to "Delete", admin_org_category_path(cat), :confirm => "Are you sure?", :method => 'delete'
-    
-= link_to "Add a New Category", new_admin_org_category_path
+  %div
+    %table#org_categories.full_width
+      %tr
+        %th Title
+        %th Delete
+      - for cat in @org_categories
+        %tr[cat]{ :class => cycle('odd','even') }
+          %td.org_category_title= link_to(h(cat.title), edit_admin_org_category_path(cat))
+          %td.small= trash_icon(cat, admin_org_category_path(cat), h(cat.title))
+        

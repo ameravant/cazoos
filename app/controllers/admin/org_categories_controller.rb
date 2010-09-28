@@ -33,9 +33,7 @@ class Admin::OrgCategoriesController < AdminController
   
   def destroy
     @org_category = OrgCategory.find(params[:id])
-    if @org_category.delete
-      flash[:notice] = "The '#{@org_category.title}' category was successfully deleted."
-      redirect_to admin_org_categories_path
-    end
+    @org_category.destroy
+    respond_to :js
   end
 end

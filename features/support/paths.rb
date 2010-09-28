@@ -26,6 +26,10 @@ module NavigationHelpers
       edit_admin_org_category_path(OrgCategory.find_by_title($1))
     when /^the Organization Category page for "(.*)"$/  
       admin_org_category_path(OrgCategory.find_by_title($1))
+    when /^the Edit Organization page for "(.*)"$/
+      edit_admin_org_path(Org.find_by_name($1))
+    when /^the Organization page for "(.*)"$/
+      admin_org_path(Org.find_by_name($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
