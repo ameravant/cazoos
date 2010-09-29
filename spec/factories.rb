@@ -42,3 +42,9 @@ end
 Factory.define :org_category do |f|
   f.sequence(:title) { |n| "Category #{n}" }
 end
+
+Factory.define :activity_category do |f|
+  f.sequence(:name) { |n| "Category #{n}" }
+  f.description "Description of this category"
+  f.blurb "Blurb about this category"
+end
