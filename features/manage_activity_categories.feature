@@ -21,15 +21,16 @@ Feature: Manage Activity Categories
 
   @activity_category_create @valid
   Scenario: Adding a New Category
-    Given I am on the Activity Categories page
+    Given I am on the Activity Categories Admin page
     When I follow "Add a new category"
     Then I should be on the New Activity Category page
     And I should see "Add a New Activity Category" within "h1"
-    And I should see "Title" within "form dl dt"
+    And I should see "Name" within "form dl dt"
     And I should see inputs "activity_category_name" within "form dl dd"
     When I fill in "Hiking" for "activity_category_name"
+    When I fill in "Some stuff about hiking" for "activity_category_description"
     And I press "Create"
-    Then I should be on the Organization Categories page
+    Then I should be on the Activity Categories Admin page
     And I should see "The new activity category was successfully created."
     And I should see "Hiking" within "table#activity_categories.full_width tr td.activity_category_name"
     
@@ -37,7 +38,7 @@ Feature: Manage Activity Categories
   Scenario: Adding a New Category with a blank title
     Given I am on the New Activity Category page
     And I press "Create"
-    Then I should be on the Activity Categories page
+    Then I should be on the Activity Categories Admin page
     And I should see "can't be blank"  
     
   # Consider the following Scenario: Adding a category with a duplicate name
