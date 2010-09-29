@@ -21,6 +21,7 @@ Feature: Manage Orgs
       | contact_phone | 805-555-1212                                  | 800-396-CAMP                                |
       | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |  
   
+  @orgs_index
   Scenario: Viewing Organizations
     When I go to the admin orgs page
     Then I should see "Organizations" within "h1"
@@ -33,7 +34,9 @@ Feature: Manage Orgs
     And I should see "805-555-1212" within "table.full_width tr.org td.org_contact_info span.org_contact_phone"
     And I should see "Camp DoYaWanna" within "table.full_width tr.org td.org_name"
     And I should see "Add a new organization" within "a"
-    
+    When I follow "View Organization Types"
+    Then I should be on the Organization Types Admin page
+
   @orgs_edit @admin_orgs_edit
   Scenario: Editing an Organization
     When I go to the admin orgs page
@@ -72,24 +75,27 @@ Feature: Manage Orgs
     When I follow "Delete"
     # The non-scenario, at least until we have gracefully degrading destroy and/or Selenium
     
+  @org_new
   Scenario: Starting to Add a New Org
     When I go to the admin orgs page
     And I follow "Add a new organization"
     Then I should be on the admin new org page
     And I should see "Add a New Organization" within "h1"
     And I am on the admin new org page
-    Then I should see labels "Name of Organization, Gender, Description, Blurb, Age Range, Address, City, State, Zip Code, Main Contact, Main Contact Phone, Main Contact Email" within "fieldset#org_fields dl dt"
-    And I should see inputs "org_name, org_min_age, org_max_age, org_address, org_city, org_zip, org_contact, org_contact_phone, org_contact_email" within "fieldset#org_fields dl dd"
-    And I should see selects "org_gender, org_state, org_owner_id" within "fieldset#org_fields dl dd"
-    And I should see textareas "org_description, org_blurb" within "fieldset#org_fields dl dd" 
+    Then I should see labels "Name of Organization, Gender, Description, Blurb, Age Range, Address, City, State, Zip Code, Main Contact, Main Contact Phone, Main Contact Email" within "fieldset#org_fields dl dt.form-label"
+    And I should see inputs "org_name, org_min_age, org_max_age, org_address, org_city, org_zip, org_contact, org_contact_phone, org_contact_email" within "fieldset#org_fields dl dd.form-option"
+    And I should see selects "org_gender, org_state, org_owner_id" within "fieldset#org_fields dl dd.form-option"
+    And I should see textareas "org_description, org_blurb" within "fieldset#org_fields dl dd.form-option" 
     
+  @org_create @invalid
   Scenario: Adding a New Org with missing data
     Given no org records
     When I go to the admin new org page
     And I press "Create"
     Then I should be on the admin orgs page
     And I should see "can't be blank" within "div#errorExplanation"
-    
+   
+  @org_create @valid
   Scenario: Adding a New Org with valid data
     Given no org records
     Given the following person record

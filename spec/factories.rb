@@ -39,8 +39,9 @@ Factory.define :person do |f|
   f.zip '93203'
 end
 
-Factory.define :org_category do |f|
-  f.sequence(:title) { |n| "Category #{n}" }
+Factory.define :org_type do |f|
+  f.sequence(:title) { |n| "Organization Type #{n}" }
+  f.sequence(:description) { |n| "Description of Type #{n}" }
 end
 
 Factory.define :activity_category do |f|

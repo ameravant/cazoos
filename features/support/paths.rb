@@ -19,14 +19,15 @@ module NavigationHelpers
     when /^new admin activity page$/
       new_admin_activity_path
       
-    when /^the Organization Categories page$/
-      admin_org_categories_path
-    when /^the New Organization Category page$/
-      new_admin_org_category_path
-    when /^the Edit Organization Category page for "(.*)"$/
-      edit_admin_org_category_path(OrgCategory.find_by_title($1))
-    when /^the Organization Category page for "(.*)"$/  
-      admin_org_category_path(OrgCategory.find_by_title($1))
+    when /^the Organization Types Admin page$/
+      admin_org_types_path
+    when /^the New Organization Type page$/
+      new_admin_org_type_path
+    when /^the Organization Type Edit page for "(.*)"$/
+      edit_admin_org_type_path(OrgType.find_by_title($1))
+    when /^the Organization Type page for "(.*)"$/  
+      admin_org_type_path(OrgType.find_by_title($1))
+      
     when /^the Edit Organization page for "(.*)"$/
       edit_admin_org_path(Org.find_by_name($1))
     when /^the Organization page for "(.*)"$/

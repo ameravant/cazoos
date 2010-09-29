@@ -49,7 +49,7 @@ Feature: Manage Activity Categories
     Given the following activity_category records
       | name             | description                                             | blurb                 |
       | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
-    Given I am on the Activity Categories page
+    Given I am on the Activity Categories Admin page
     When I follow "Horseback Riding" 
     Then I should be on the Edit Activity Category page for "Horseback Riding"
     And I should see "Edit Activity Category: Horseback Riding" within "h1"

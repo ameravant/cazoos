@@ -1,7 +1,0 @@
-= error_messages_for :org_category
-- form_for [:admin, @org_category] do |f|
-  %dl
-    %dt= f.label :title
-    %dd= f.text_field :title
-    
-    = f.submit(@org_category.new_record? ? 'Create' : 'Save Changes')

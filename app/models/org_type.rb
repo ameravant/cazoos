@@ -1,8 +1,8 @@
-class OrgCategory < ActiveRecord::Base
+class OrgType < ActiveRecord::Base
   has_permalink :title
 
   before_validation :no_new_permalink_allowed  
-  validates_presence_of :title
+  validates_presence_of :title, :description
   
   private
   
