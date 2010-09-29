@@ -44,32 +44,32 @@ Feature: Manage Activity Categories
   # Consider the following Scenario: Adding a category with a duplicate name
   #     give warning/prompt for certainty before making potential duplicate
   
-  @activity_category_edit @valid
-  Scenario: Editing a Category
-    Given the following activity_category records
-      | name             | description                                             | blurb                 |
-      | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
-    Given I am on the Activity Categories Admin page
-    When I follow "Horseback Riding" 
-    Then I should be on the Edit Activity Category page for "Horseback Riding"
-    And I should see "Edit Activity Category: Horseback Riding" within "h1"
-    And the "activity_category_name" field should contain "Horseback Riding" 
-    When I fill in "activity_category_name" with "Beginning Horseback Riding"
-    And I press "Save Changes"
-    Then I should be on the Activity Categories page
-    And I should see "Beginning Horseback Riding"
-    And I should see "The category was successfully updated."
-    
-  @activity_category_edit @invalid
-  Scenario: Updating a Category with a blank title  
-    Given the following activity_category records
-      | name             | description                                             | blurb                 |
-      | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
-    Given I am on the Edit Organization Category page for "Horseback Riding"
-    When I fill in "activity_category_name" with ""
-    And I press "Save Changes"
-    Then I should be on the Organization Category page for "Horseback Riding"
-    And I should see "can't be blank" within "div#errorExplanation"
+#  @activity_category_edit @valid
+#  Scenario: Editing a Category
+#    Given the following activity_category records
+#      | name             | description                                             | blurb                 |
+#      | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
+#    Given I am on the Activity Categories Admin page
+#    When I follow "Horseback Riding" 
+#    Then I should be on the Edit Activity Category page for "Horseback Riding"
+#    And I should see "Edit Activity Category: Horseback Riding" within "h1"
+#    And the "activity_category_name" field should contain "Horseback Riding" 
+#    When I fill in "activity_category_name" with "Beginning Horseback Riding"
+#    And I press "Save Changes"
+#    Then I should be on the Activity Categories page
+#    And I should see "Beginning Horseback Riding"
+#    And I should see "The category was successfully updated."
+#    
+#  @activity_category_edit @invalid
+#  Scenario: Updating a Category with a blank title  
+#    Given the following activity_category records
+#      | name             | description                                             | blurb                 |
+#      | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
+#    Given I am on the Edit Organization Category page for "Horseback Riding"
+#    When I fill in "activity_category_name" with ""
+#    And I press "Save Changes"
+#    Then I should be on the Organization Category page for "Horseback Riding"
+#    And I should see "can't be blank" within "div#errorExplanation"
     
   # There is currently no check for links to this category or dependencies on it, something to consider later
   # Also, without Selenium we will not be able to run this scenario, 
