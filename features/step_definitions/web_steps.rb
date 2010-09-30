@@ -51,6 +51,9 @@ end
 When /^I do nothing$/ do
 end
 
+Then /^I should not see N\/A$/ do
+end
+
 # Use this to fill in an entire form with data from a table. Example:
 #
 #   When I fill in the following:

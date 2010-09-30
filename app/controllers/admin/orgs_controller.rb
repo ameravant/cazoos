@@ -1,5 +1,5 @@
 class Admin::OrgsController < AdminController
-  before_filter :load_supporting_resources, :only => [:new, :create]
+  before_filter :load_supporting_resources, :only => [:new, :create, :edit, :update]
   
   def index
     @orgs = Org.all
@@ -24,7 +24,6 @@ class Admin::OrgsController < AdminController
   
   def edit
     @org = Org.find(params[:id])
-    @people = Person.all
   end
   
   def update

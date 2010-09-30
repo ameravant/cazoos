@@ -10,10 +10,6 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
-    when /^the admin org(s|\sindex) page$/
-      admin_orgs_path
-    when /^the admin new org page$/
-      new_admin_org_path
     when /^admin index page for activities$/
       admin_activities_path
     when /^new admin activity page$/
@@ -28,7 +24,11 @@ module NavigationHelpers
     when /^the Organization Type page for "(.*)"$/  
       admin_org_type_path(OrgType.find_by_title($1))
       
-    when /^the Edit Organization page for "(.*)"$/
+    when /^the Organizations Admin page$/
+      admin_orgs_path
+    when /^the New Organization page$/
+      new_admin_org_path
+    when /^the Organization Edit page for "(.*)"$/
       edit_admin_org_path(Org.find_by_name($1))
     when /^the Organization page for "(.*)"$/
       admin_org_path(Org.find_by_name($1))
