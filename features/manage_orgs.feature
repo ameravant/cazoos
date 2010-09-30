@@ -25,6 +25,7 @@ Feature: Manage Orgs
   Scenario: Viewing Organizations
     When I go to the admin orgs page
     Then I should see "Organizations" within "h1"
+    Then I should see "Organization Type 1" within "table#organizations.full_width tr.org td.org_org_type"
     Then I should see "Camp TittiCaca" within "table#organizations.full_width tr.org td.org_name"
     And I should see "Camp TittiCaca sits nestled in the forests" within "table.full_width tr.org td.org_description"
     And I should see "A camp for a new generation" within "table.full_width tr.org td.org_blurb"
@@ -37,7 +38,7 @@ Feature: Manage Orgs
     When I follow "View Organization Types"
     Then I should be on the Organization Types Admin page
 
-  @orgs_edit @admin_orgs_edit
+  @org_edit @admin_org_edit
   Scenario: Editing an Organization
     When I go to the admin orgs page
     And I follow "Camp TittiCaca"
@@ -55,7 +56,11 @@ Feature: Manage Orgs
   @orgs_update @admin_org_update @valid
   Scenario: Updating an Organization with Valid Data
     Given I am on the Edit Organization page for "Camp TittiCaca" 
+    Given the following org_type record
+      | title | description                  |
+      | Camps | Summer camps, day camps, etc |
     When I fill in "org_blurb" with "Something that wouldn't be in the database already by coincidence"
+    And I select "Camps" from 
     And I press "Save Changes"
     Then I should be on the admin orgs page
     And I should see "You have successfully updated the organization."
@@ -87,22 +92,19 @@ Feature: Manage Orgs
     And I should see selects "org_gender, org_state, org_owner_id" within "fieldset#org_fields dl dd.form-option"
     And I should see textareas "org_description, org_blurb" within "fieldset#org_fields dl dd.form-option" 
     
-  @org_create @invalid
-  Scenario: Adding a New Org with missing data
-    Given no org records
-    When I go to the admin new org page
-    And I press "Create"
-    Then I should be on the admin orgs page
-    And I should see "can't be blank" within "div#errorExplanation"
-   
-  @org_create @valid
-  Scenario: Adding a New Org with valid data
+  @org_create
+  Scenario Outline: Creating a New Record (First a Valid One, then an Invalid One followed by correcting mistakes)
     Given no org records
     Given the following person record
       | first_name | last_name | email        | phone      | address1     | city | state | zip   |
       | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
-    When I go to the admin new org page
-    And I fill in "org_name" with "Camp Valid"
+    Given the following org_type record
+      | title | description                  |
+      | Camps | Summer camps, day camps, etc |
+    When I go to the admin new org page  
+    And I fill in "org_name" with "<name>"
+    And I select "<org_type>" from "org_org_type_id"
+    And I select "<owner>" from "org_owner_id"
     And I select "boys" from "org_gender"
     And I fill in "org_description" with "This camp is great."
     And I fill in "org_blurb" with ""
@@ -115,7 +117,15 @@ Feature: Manage Orgs
     And I fill in "org_city" with "Santa Barbara"
     And I select "California" from "org_state"
     And I fill in "org_zip" with "93101"
-    And I select "Orgo Owner" from "org_owner_id"
     And I press "Create"
-    Then I should be on the admin orgs page
-    And I should see "Camp Valid"
+    Then I should be on <should_be_on1>
+    And I should see <should_see1>
+    When I <next_action1>
+    And I <next_action2>
+    Then I should be on <should_end_on>
+    And I should see <should_see_at_end>
+    Examples:
+      | name          | org_type | owner      | should_be_on1       | should_see1      | next_action1                            | next_action2   | should_end_on                               | should_see_at_end                                  |
+      | Camp Valid    | Camps    | Orgo Owner | the admin orgs page | "Camp Valid"     | follow "Camp Valid"                     | do nothing     | the Edit Organization page for "Camp Valid" | "Edit Organization: Camp Valid" within "h1"        |
+      | Missing Type  |          | Orgo Owner | the admin orgs page | "can't be blank" | select "Camps" from "org_org_type_id"   | press "Create" | the admin orgs page                         | "Missing Type" within "table#organizations tr td"  |
+      | Missing Owner | Camps    |            | the admin orgs page | "can't be blank" | select "Orgo Owner" from "org_owner_id" | press "Create" | the admin orgs page                         | "Missing Owner" within "table#organizations tr td" |

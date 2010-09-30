@@ -12,6 +12,7 @@
   %div
     %table#organizations.full_width
       %tr
+        %th Type
         %th Name
         %th Description
         %th Blurb
@@ -20,6 +21,7 @@
         %th Delete
       - for org in @orgs
         %tr[org]{ :class => cycle('odd','even') }
+          %td.org_org_type= h org.org_type.title
           %td.org_name= link_to(h(org.name), edit_admin_org_path(org))
           %td.org_description= h org.description
           %td.org_blurb= h org.blurb

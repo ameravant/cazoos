@@ -1,13 +1,12 @@
 = error_messages_for :org_type
 
-.options
-  #options
-    - form_for [:admin, @org_type] do |f|
-      %dl
-        %dt.form-label= f.label :title
-        %dd.form-option= f.text_field :title
+#options
+  - form_for [:admin, @org_type] do |f|
+    %dl
+      %dt.form-label= f.label :title
+      %dd.form-option= f.text_field :title
 
-        %dt.form-label= f.label :description
-        %dd.form-option= f.text_area :description
-  
-      = f.submit(@org_type.new_record? ? 'Create' : 'Save Changes')
+      %dt.form-label= f.label :description
+      %dd.form-option= f.text_area :description
+
+    = f.submit(@org_type.new_record? ? 'Create' : 'Save Changes')

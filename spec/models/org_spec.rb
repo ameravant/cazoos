@@ -2,8 +2,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Org do
   before(:each) do
+    org_type = Factory.create(:org_type)
     person = Factory.create(:person)
     @valid_attributes = {
+      :org_type_id => org_type[:id],
       :owner_id => person[:id],
       :name => "Camp Valid",
       :description => "Camp Valid sits nestled in the hills of Tennesee...",
@@ -113,5 +115,23 @@ describe Org do
       @org.should_not be_valid
       @org.should be_new_record
     end
+    
+    it "should fail to save if it does not belong to a Org Type" do
+      @org = Org.new(@valid_attributes.except(:org_type_id))
+      @org.save
+      @org.should_not be_valid
+      @org.errors.on(:org_type_id).should include("can't be blank")
+    end
+    
+    it "should fail to save if its OrgType is not valid" do
+      org = Org.new(@valid_attributes)
+      t = OrgType.find(org.org_type_id)
+      t.title = ''
+      t.save(false)
+      org.save
+      org.should_not be_valid
+      org.should be_new_record
+    end
+    
   end
 end

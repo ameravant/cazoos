@@ -13,6 +13,7 @@ end
 
 Factory.define :org do |f|
   f.association :person
+  f.association :org_type
   f.name "Camp Something"
   f.description "Camp Something has many things, none of which are in this description."
   f.blurb "Providing something for your kids"

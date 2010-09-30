@@ -48,6 +48,9 @@ When /^(?:|I )fill in "([^"]*)" for "([^"]*)"(?: within "([^"]*)")?$/ do |value,
   end
 end
 
+When /^I do nothing$/ do
+end
+
 # Use this to fill in an entire form with data from a table. Example:
 #
 #   When I fill in the following:

@@ -1,4 +1,6 @@
 class Admin::OrgsController < AdminController
+  before_filter :load_supporting_resources, :only => [:new, :create]
+  
   def index
     @orgs = Org.all
   end
@@ -13,6 +15,7 @@ class Admin::OrgsController < AdminController
   def create
     @org = Org.new(params[:org])
     if @org.save
+      flash[:notice] = "You have successfully created a new organization."
       redirect_to admin_orgs_path
     else
       render 'new'
@@ -38,5 +41,12 @@ class Admin::OrgsController < AdminController
     @org = Org.find(params[:id])
     @org.destroy
     respond_to :js
+  end
+  
+  private
+  
+  def load_supporting_resources
+    @org_types = OrgType.all
+    @people = Person.all
   end
 end
