@@ -18,6 +18,23 @@ class Admin::ActivityCategoriesController < AdminController
       render 'new'
     end
   end
+
+  def edit  
+  end
+  
+  def update
+    if @activity_category.update_attributes(params[:activity_category])
+      flash[:notice] = "The activity category was successfully updated."
+      redirect_to admin_activity_categories_path
+    else
+      render 'edit'
+    end  
+  end
+  
+  def destroy
+    @activity_category.destroy
+    respond_to :js
+  end
   
   private
   

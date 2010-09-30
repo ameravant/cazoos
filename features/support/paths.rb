@@ -37,6 +37,8 @@ module NavigationHelpers
       admin_activity_categories_path
     when /^the New Activity Category page$/
       new_admin_activity_category_path
+    when /^the Activity Category page for "(.*)"$/
+      admin_activity_category_path(ActivityCategory.find_by_name($1) || ActivityCategory.find_by_permalink($1))
     when /^the Activity Category Edit page for "(.*)"$/
       edit_admin_activity_category_path(ActivityCategory.find_by_name($1) || ActivityCategory.find_by_permalink($1))
 

@@ -1,17 +1,16 @@
 = error_messages_for :activity_category
 
-.options
-  #options
-    - form_for ([:admin, @activity_category]) do |f|
-      %fieldset#org_fields
-        %dl
-          %dt= f.label :name, 'Name of New Category'
-          %dd= f.text_field :name
-           
-          %dt= f.label :description
-          %dd= f.text_area :description
-           
-          %dt= f.label :blurb
-          %dd= f.text_area :blurb  
+#options
+  - form_for ([:admin, @activity_category]) do |f|
+    %fieldset#org_fields
+      %dl
+        %dt= f.label :name, 'Name of New Category'
+        %dd= f.text_field :name
+         
+        %dt= f.label :description
+        %dd= f.text_area :description
+         
+        %dt= f.label :blurb
+        %dd= f.text_area :blurb  
 
-      = f.submit(@activity_category.new_record? ? 'Create' : 'Save Changes')
+    = f.submit(@activity_category.new_record? ? 'Create' : 'Save Changes')

@@ -7,6 +7,9 @@ Feature: Manage Activity Categories
       | login | password | password_confirmation |
       | admin | admin    | admin                 |
     Given I am logged in as "admin" with password "admin"  
+    Given the following activity_category records
+      | name              | description                                         | blurb           |
+      | Outdoor Education | Learning all there is to know about the outdoors... | Yey, outdoor ed |
 
   @activity_categories_list
   Scenario: Visiting the Activity Categories Page
@@ -40,47 +43,50 @@ Feature: Manage Activity Categories
     And I press "Create"
     Then I should be on the Activity Categories Admin page
     And I should see "can't be blank"  
+    When I fill in "Hiking" for "activity_category_name"
+    When I fill in "Some stuff about hiking" for "activity_category_description"
+    And I press "Create"
+    Then I should be on the Activity Categories Admin page
+    And I should see "The new activity category was successfully created."
+    And I should see "Hiking" within "table#activity_categories.full_width tr td.activity_category_name"
     
   # Consider the following Scenario: Adding a category with a duplicate name
   #     give warning/prompt for certainty before making potential duplicate
   
-#  @activity_category_edit @valid
-#  Scenario: Editing a Category
-#    Given the following activity_category records
-#      | name             | description                                             | blurb                 |
-#      | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
-#    Given I am on the Activity Categories Admin page
-#    When I follow "Horseback Riding" 
-#    Then I should be on the Edit Activity Category page for "Horseback Riding"
-#    And I should see "Edit Activity Category: Horseback Riding" within "h1"
-#    And the "activity_category_name" field should contain "Horseback Riding" 
-#    When I fill in "activity_category_name" with "Beginning Horseback Riding"
-#    And I press "Save Changes"
-#    Then I should be on the Activity Categories page
-#    And I should see "Beginning Horseback Riding"
-#    And I should see "The category was successfully updated."
-#    
-#  @activity_category_edit @invalid
-#  Scenario: Updating a Category with a blank title  
-#    Given the following activity_category records
-#      | name             | description                                             | blurb                 |
-#      | Horseback Riding | Providing a physical, mental and emotional challenge... | Yey, horseback riding |
-#    Given I am on the Edit Organization Category page for "Horseback Riding"
-#    When I fill in "activity_category_name" with ""
-#    And I press "Save Changes"
-#    Then I should be on the Organization Category page for "Horseback Riding"
-#    And I should see "can't be blank" within "div#errorExplanation"
+  @activity_category_edit
+  Scenario: Editing an Activity Category
+    Given I am on the Activity Categories Admin page
+    When I follow "Outdoor Education" 
+    Then I should be on the Activity Category Edit page for "Outdoor Education"
+    And I should see "Edit Activity Category: Outdoor Education" within "h1"
+    And the "activity_category_name" field should contain "Outdoor Education" 
+
+  @activity_category_update
+  Scenario: Updating an Activity Category with Valid Data
+    Given I am on the Activity Category Edit page for "Outdoor Education"
+    When I fill in "activity_category_name" with "Advanced Outdoor Education"
+    And I press "Save Changes"
+    Then I should be on the Activity Categories Admin page
+    And I should see "Advanced Outdoor Education"
+    And I should see "The activity category was successfully updated."
     
-  # There is currently no check for links to this category or dependencies on it, something to consider later
-  # Also, without Selenium we will not be able to run this scenario, 
-  # b/c we do not have a gracefully degrading version of it.  Perhaps something to consider later.
-  # Scenario: Deleting an Activity Category
-  #   Given the following activity_category records
-  #     | title            |
-  #     | Horseback Riding |
-  #   Given I am on the Activity Categories page
-  #   Then I should see "Horseback Riding"
-  #   When I follow "Delete"
+  @activity_category_update @invalid
+  Scenario: Updating an Activity Category with Invalid Data followed by Corrections and Resubmit
+    Given I am on the Activity Category Edit page for "Outdoor Education"
+    When I fill in "activity_category_name" with ""
+    And I press "Save Changes"
+    Then I should be on the Activity Category page for "Outdoor Education"
+    And I should see "can't be blank" within "div#errorExplanation"
+    When I fill in "activity_category_name" with "Advanced Outdoor Education"
+    And I press "Save Changes"
+    Then I should be on the Activity Categories Admin page
+    And I should see "Advanced Outdoor Education"
+    And I should see "The activity category was successfully updated."
+
+  @activity_category_destroy
+  Scenario: Deleting an Activity Category
+    Given I am on the Activity Categories Admin page
+    When I follow "Delete"
   #   Then I should be on the Activity Categories page
   #   And I should see "The 'Horseback Riding' category was successfully deleted."
   #   And I should not see "Horseback Riding"
