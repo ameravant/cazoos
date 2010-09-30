@@ -1,10 +1,12 @@
 @parents
 Feature: Create and manage parent and child profiles
 
-  Scenario: Creating a Parent Profile
-    Given no person records
+  Scenario: Creating a Parent Profile 
     Given I am not logged in
-    Given I am on the homepage
+    And I am on the homepage
+    When I follow "Parent Sign Up"
+    Then I should be on the Parent Sign Up page
+      
     # 
     # When I fill in "person[first_name]" with "John"
     # And I fill in "person[last_name]" with "Adams"
