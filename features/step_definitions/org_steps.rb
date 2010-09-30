@@ -1,7 +1,23 @@
-Then /^I should see "([^"]*)" within span\#min_age$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
+When /^I fill in the Org form with valid data(?: and call it "([^"]*)")$/ do |name|
+  org_type = OrgType.last
+  owner = Person.last
+  
+  inputs = %w{name description blurb min_age max_age contact contact_phone contact_email address city zip}
+  selects = %w{gender}
+  
+  org = Factory.build(:org)
+  
+  inputs.each do |input|
+    fill_in("org_#{input}", :with => org[input.to_sym])
+  end
+  
+  selects.each do |select|
+    select(org[select.to_sym], :from => "org_#{select}")
+  end
 
-Then /^I should see "([^"]*)" within span\#max_age$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+  select("California", :from => "org_state")  
+  select(org_type.title, :from => "org_org_type_id")
+  select("#{owner.first_name} #{owner.last_name}", :from => "org_owner_id")
+  
+  fill_in("org_name", :with => name) if !name.nil?
 end

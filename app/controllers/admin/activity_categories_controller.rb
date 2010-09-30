@@ -1,4 +1,6 @@
 class Admin::ActivityCategoriesController < AdminController
+  before_filter :load_record
+
   def index
     @activity_categories = ActivityCategory.all
   end
@@ -15,6 +17,12 @@ class Admin::ActivityCategoriesController < AdminController
     else
       render 'new'
     end
+  end
+  
+  private
+  
+  def load_record
+    @activity_category = ActivityCategory.find(params[:id]) if !params[:id].nil?
   end
   
 end

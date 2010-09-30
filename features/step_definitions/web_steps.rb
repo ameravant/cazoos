@@ -36,6 +36,19 @@ When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
   end
 end
 
+When /^I erase "(.*)"$/ do |field|
+  fill_in(field, :with => '')
+end
+# Filliing in an entire form - unfinished - challenge: determining whether field is select or input
+# For now will do individually in steps files for each given asset
+# When /^(?:|I )fill in the "([^"]*)" form with valid attributes$/ do |klass|
+#   instance = Factory.build(:klass)
+#   instance.attributes.each do |key, value|
+#     if key != 'created_at' && key != 'updated_at' && key != 'id'
+#     end
+#   end
+# end
+
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
     fill_in(field, :with => value)

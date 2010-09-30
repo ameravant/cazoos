@@ -20,7 +20,13 @@ Feature: Manage Orgs
       | contact       | Jim Contact                                   | Joe Contact                                 |
       | contact_phone | 805-555-1212                                  | 800-396-CAMP                                |
       | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |  
-  
+    Given the following person record
+      | first_name | last_name | email        | phone      | address1     | city | state | zip   |
+      | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
+    Given the following org_type record
+      | title | description                  |
+      | Camps | Summer camps, day camps, etc |
+      
   @orgs_index
   Scenario: Viewing Organizations
     When I go to the Organizations Admin page
@@ -38,60 +44,41 @@ Feature: Manage Orgs
     When I follow "View Organization Types"
     Then I should be on the Organization Types Admin page
 
-    @org_new
-    Scenario: Starting to Add a New Org
-      When I go to the Organizations Admin page
-      And I follow "Add a new organization"
-      Then I should be on the New Organization page
-      And I should see "Add a New Organization" within "h1"
-      And I am on the New Organization page
-      Then I should see labels "Name of Organization, Gender, Description, Blurb, Age Range, Address, City, State, Zip Code, Main Contact, Main Contact Phone, Main Contact Email" within "fieldset#org_fields dl dt.form-label"
-      And I should see inputs "org_name, org_min_age, org_max_age, org_address, org_city, org_zip, org_contact, org_contact_phone, org_contact_email" within "fieldset#org_fields dl dd.form-option"
-      And I should see selects "org_gender, org_state, org_owner_id" within "fieldset#org_fields dl dd.form-option"
-      And I should see textareas "org_description, org_blurb" within "fieldset#org_fields dl dd.form-option" 
+  @org_new
+  Scenario: Starting to Add a New Org
+    When I go to the Organizations Admin page
+    And I follow "Add a new organization"
+    Then I should be on the New Organization page
+    And I should see "Add a New Organization" within "h1"
+    And I am on the New Organization page
+    Then I should see labels "Name of Organization, Gender, Description, Blurb, Age Range, Address, City, State, Zip Code, Main Contact, Main Contact Phone, Main Contact Email" within "fieldset#org_fields dl dt.form-label"
+    And I should see inputs "org_name, org_min_age, org_max_age, org_address, org_city, org_zip, org_contact, org_contact_phone, org_contact_email" within "fieldset#org_fields dl dd.form-option"
+    And I should see selects "org_gender, org_state, org_owner_id" within "fieldset#org_fields dl dd.form-option"
+    And I should see textareas "org_description, org_blurb" within "fieldset#org_fields dl dd.form-option" 
 
-    # This scenario tests the behavior of the create action, specifically by assuring that a New Record
-    #     can be created both from the /organizations/new page and from the /organizations page following
-    #     a validation error.  In particular, two supporting data sets need to be assigned to the view in order
-    #     to create a valid record (org_types and people, the latter of which are possible Organization Owners)
-    @org_create
-    Scenario Outline: Creating a New Record (Valid and Invalid Followed by Corrections)
-      Given no org records
-      Given the following person record
-        | first_name | last_name | email        | phone      | address1     | city | state | zip   |
-        | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
-      Given the following org_type record
-        | title | description                  |
-        | Camps | Summer camps, day camps, etc |
-      When I go to the New Organization page  
-      And I fill in "org_name" with "<name>"
-      And I select "<org_type>" from "org_org_type_id"
-      And I select "<owner>" from "org_owner_id"
-      And I select "boys" from "org_gender"
-      And I fill in "org_description" with "This camp is great."
-      And I fill in "org_blurb" with ""
-      And I fill in "org_min_age" with "9"
-      And I fill in "org_max_age" with "12"
-      And I fill in "org_contact" with "Camp Contact"
-      And I fill in "org_contact_phone" with "805-555-1212"
-      And I fill in "org_contact_email" with "info@campvalid.org"
-      And I fill in "org_address" with "1234 Any St."
-      And I fill in "org_city" with "Santa Barbara"
-      And I select "California" from "org_state"
-      And I fill in "org_zip" with "93101"
-      And I press "Create"
-      Then I should be on <should_be_on1>
-      And I should see <should_see1>
-      When I <next_action1>
-      And I <next_action2>
-      Then I should be on <should_end_on>
-      And I should see <should_see_at_end>
-      Examples:
-        | name          | org_type | owner      | should_be_on1                | should_see1      | next_action1                            | next_action2   | should_end_on                               | should_see_at_end                                  |
-        | Camp Valid    | Camps    | Orgo Owner | the Organizations Admin page | "Camp Valid"     | follow "Camp Valid"                     | do nothing     | the Organization Edit page for "Camp Valid" | "Edit Organization: Camp Valid" within "h1"        |
-        | Missing Type  |          | Orgo Owner | the Organizations Admin page | "can't be blank" | select "Camps" from "org_org_type_id"   | press "Create" | the Organizations Admin page                | "Missing Type" within "table#organizations tr td"  |
-        | Missing Owner | Camps    |            | the Organizations Admin page | "can't be blank" | select "Orgo Owner" from "org_owner_id" | press "Create" | the Organizations Admin page                | "Missing Owner" within "table#organizations tr td" |
+  @org_create
+  Scenario: Creating a New Valid Record
+    Given no org records
+    When I go to the New Organization page  
+    And I fill in the Org form with valid data and call it "Camp Valid"
+    And I press "Create"
+    Then I should be on the Organizations Admin page
+    And I should see "Camp Valid" within "table#organizations tr td.org_name"
 
+  @org_create @invalid
+  Scenario: Creating a New Invalid Record followed with Corrections and Resubmit
+    Given no org records
+    When I go to the New Organization page  
+    And I fill in the Org form with valid data and call it "Camp Valid"
+    And I erase "org_name"
+    And I press "Create"
+    Then I should be on the Organizations Admin page
+    And I should see "can't be blank"
+    When I fill in "org_name" with "Camp Valid"
+    And I press "Create"
+    Then I should be on the Organizations Admin page
+    And I should see "Camp Valid" within "table#organizations tr td.org_name"
+  
   @org_edit @admin_org_edit
   Scenario: Editing an Organization
     When I go to the Organizations Admin page
@@ -107,31 +94,29 @@ Feature: Manage Orgs
     And the "org_contact_phone" field should contain "805-555-1212"
     And the "org_contact_email" field should contain "jim@camptitticaca.com"
 
-  # As with @org_create, but for the 'edit' and 'update' actions
   @org_update
-  Scenario Outline: Updating an Organization (Valid and Invalid Followed by Corrections)
-    Given the following person record
-      | first_name | last_name | email        | phone      | address1     | city | state | zip   |
-      | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
-    Given the following org_type record
-      | title | description                  |
-      | Camps | Summer camps, day camps, etc |
+  Scenario: Updating an Organization with Valid Data
     Given I am on the Organization Edit page for "Camp TittiCaca" 
-    And I select "<org_type>" from "org_org_type_id"
-    And I select "<owner>" from "org_owner_id"
     And I fill in "org_blurb" with "Unusual phrase"
     And I press "Save Changes"
-    Then I should be on <should_be_on1>
-    And I should see "Unusual phrase" within "<scope_of_blurb>"
-    When I <next_action1>
-    And I <next_action2>
-    Then I should be on <should_end_on>
-    And I should see <should_see_at_end>
-    Examples:
-      | org_type | owner      | should_be_on1                              | scope_of_blurb     | next_action1                            | next_action2         | should_end_on                | should_see_at_end |
-      | Camps    | Orgo Owner | the Organizations Admin page               | td.org_blurb       | do nothing                              | do nothing           | the Organizations Admin page | "Unusual phrase"  |
-      |          | Orgo Owner | the Organization page for "Camp TittiCaca" | textarea#org_blurb | select "Camps" from "org_org_type_id"   | press "Save Changes" | the Organizations Admin page | "Unusual phrase"  |
-      | Camps    |            | the Organization page for "Camp TittiCaca" | textarea#org_blurb | select "Orgo Owner" from "org_owner_id" | press "Save Changes" | the Organizations Admin page | "Unusual phrase"  |
+    Then I should be on the Organizations Admin page
+    And I should see "successfully updated"
+    And I should see "Unusual phrase" within "table#organizations tr td.org_blurb"
+
+  @org_update @invalid
+  Scenario: Updating an Organization with Invalid Data followed by Corrections and Resubmit
+    Given I am on the Organization Edit page for "Camp TittiCaca" 
+    And I fill in "org_blurb" with "Unusual phrase"
+    And I erase "org_name"
+    And I press "Save Changes"
+    Then I should be on the Organization page for "Camp TittiCaca"
+    And I should see "can't be blank"
+    When I fill in "org_name" with "Camp Some Other Valid Name"
+    And I press "Save Changes"
+    Then I should be on the Organizations Admin page
+    And I should see "Camp Some Other Valid Name" within "table#organizations tr td.org_name"
+    And I should see "successfully updated"
+    And I should see "Unusual phrase" within "table#organizations tr td.org_blurb"
 
 
   @org_destroy
