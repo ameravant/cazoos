@@ -9,10 +9,15 @@ Given /^I am not logged in$/ do
 end
 
 Given /^I am logged in as "(.*)" with password "(.*)"$/ do |username, password|
-  # AuthenticatedSystem::login_from_basic_auth(username, password)
-  # @current_user = Factory.create!(:user, :username => username, :password => password, :password_confirmation => password)
   visit new_session_url
   fill_in "login", :with => username
+  fill_in "password", :with => password
+  click_button "Sign in"
+end
+
+Given /^I am logged in as the owner of "(.*)" with password "(.*)"$/ do |org_name, password|
+  visit new_session_url
+  fill_in "login", :with => Org.find_by_name(org_name).owner.user.login
   fill_in "password", :with => password
   click_button "Sign in"
 end

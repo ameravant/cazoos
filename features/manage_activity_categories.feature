@@ -2,10 +2,6 @@
 Feature: Manage Activity Categories
 
   Background:
-    Given no user records
-    Given the following user record
-      | login | password | password_confirmation |
-      | admin | admin    | admin                 |
     Given I am logged in as "admin" with password "admin"  
     Given the following activity_category records
       | name              | description                                         | blurb           |

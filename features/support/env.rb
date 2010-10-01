@@ -24,10 +24,6 @@ require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links wi
 # steps to use the XPath syntax.
 Capybara.default_selector = :css
 
-# The only way I could guarantee test database would have seed data in it
-# John 2010-09-17
-system("cp -f #{RAILS_ROOT}/db/development.sqlite3 #{RAILS_ROOT}/db/test.sqlite3")
-
 # If you set this to false, any error raised from within your app will bubble 
 # up to your step definition and out to cucumber unless you catch it somewhere
 # on the way. You can make Rails rescue errors and render error pages on a

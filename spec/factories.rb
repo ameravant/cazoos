@@ -1,5 +1,4 @@
 Factory.define :user do |f|
-  f.association :person
   f.sequence(:login) { |n| "foo#{n}"}
   f.password "secret"
   f.password_confirmation { |u| u.password }
@@ -12,7 +11,7 @@ Factory.define :super_user, :class => User do |f|
 end
 
 Factory.define :org do |f|
-  f.association :person
+  f.association :owner
   f.association :org_type
   f.name "Camp Something"
   f.description "Camp Something has many things, none of which are in this description."
@@ -29,7 +28,9 @@ Factory.define :org do |f|
   f.zip "93101"
 end
 
-Factory.define :person do |f|
+Factory.define :owner, :class => Person do |f|
+  f.association :user
+  f.person_group_ids [PersonGroup.find_by_title('Organization Owner')]
   f.sequence(:first_name) { |n| "Orgo#{n}"}
   f.last_name 'Owner'
   f.sequence(:email) { |n| "owner#{n}@org.com" }
@@ -40,6 +41,17 @@ Factory.define :person do |f|
   f.zip '93203'
 end
 
+# Factory.define :person do |f|
+#   f.sequence(:first_name) { |n| "Person#{n}"}
+#   f.last_name 'Smith'
+#   f.sequence(:email) { |n| "person#{n}@org.com" }
+#   f.phone '805-234-1234'
+#   f.address1 '555 Main St.'
+#   f.city 'Santa Maria'
+#   f.state 'CA'
+#   f.zip '93203'
+# end
+
 Factory.define :org_type do |f|
   f.sequence(:title) { |n| "Organization Type #{n}" }
   f.sequence(:description) { |n| "Description of Type #{n}" }
@@ -49,4 +61,10 @@ Factory.define :activity_category do |f|
   f.sequence(:name) { |n| "Category #{n}" }
   f.description "Description of this category"
   f.blurb "Blurb about this category"
+end
+
+Factory.define :activity do |f|
+  # f.association :org
+  f.sequence(:name) { |n| "Activity#{n}" }
+  f.description "Description of this Activity"
 end

@@ -42,6 +42,9 @@ module NavigationHelpers
     when /^the Activity Category Edit page for "(.*)"$/
       edit_admin_activity_category_path(ActivityCategory.find_by_name($1) || ActivityCategory.find_by_permalink($1))
 
+    when /^the Activities Admin page$/
+      admin_activities_path
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
