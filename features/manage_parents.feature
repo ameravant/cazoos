@@ -4,8 +4,10 @@ Feature: Create and manage parent and child profiles
   Scenario: Creating a Parent Profile 
     Given I am not logged in
     And I am on the homepage
-    When I follow "Parent Sign Up"
-    Then I should be on the Parent Sign Up page
+    Then I should see "Register Now!" within "a" 
+    # When I follow "Register Now!"
+    # Then I should see "form#parent_register"
+    # And I should see "Name" within "form dl dt"
       
     # 
     # When I fill in "person[first_name]" with "John"
