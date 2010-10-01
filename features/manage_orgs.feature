@@ -5,10 +5,6 @@ Feature: Manage Orgs
   I want to be able to create, edit and destroy orgs
   
   Background:
-    Given no user records
-    Given the following user record
-      | login | password | password_confirmation |
-      | admin | admin    | admin                 |
     Given I am logged in as "admin" with password "admin"
     Given the following transposed org records
       | name          | Camp TittiCaca                                | Camp DoYaWanna                              |
@@ -20,7 +16,7 @@ Feature: Manage Orgs
       | contact       | Jim Contact                                   | Joe Contact                                 |
       | contact_phone | 805-555-1212                                  | 800-396-CAMP                                |
       | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |  
-    Given the following person record
+    Given the following owner record
       | first_name | last_name | email        | phone      | address1     | city | state | zip   |
       | Orgo       | Owner     | orgo@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
     Given the following org_type record

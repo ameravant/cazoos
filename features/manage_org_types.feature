@@ -2,10 +2,6 @@
 Feature: Org Types
 
   Background:
-    Given no user records
-    Given the following user record
-      | login | password | password_confirmation |
-      | admin | admin    | admin                 |
     Given I am logged in as "admin" with password "admin"  
 
   @org_types_index
@@ -17,7 +13,9 @@ Feature: Org Types
     When I go to the Organization Types Admin page
     Then I should see "Organization Types" within "h1"
     And I should see "Summer Camp" within "table#org_types.full_width tr td.org_type_title"
-    And I should see "School" within "table#org_types.full_width tr td.org_type_title"    
+    And I should see "School" within "table#org_types.full_width tr td.org_type_title"
+    When I follow "View Organizations"
+    Then I should be on the Organizations Admin page
         
   @org_type_create @valid
   Scenario: Adding a New Organization Type

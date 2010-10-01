@@ -1,10 +1,10 @@
 class Org < ActiveRecord::Base
-  belongs_to :person, :foreign_key => :owner_id
+  belongs_to :owner, :class_name => 'Person'
   belongs_to :org_type
   # accepts_nested_attributes_for :person
 
   validates_presence_of :owner_id
-  validates_associated :person
+  validates_associated :owner
 
   validates_presence_of :org_type_id
   validates_associated :org_type
