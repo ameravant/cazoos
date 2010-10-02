@@ -10,10 +10,17 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    #~~~~LOGIN HERE~~~~
+    when /^the login page$/
+      new_session_path
+    
     when /^admin index page for activities$/
       admin_activities_path
     when /^new admin activity page$/
-      new_admin_activity_path
+      new_admin_activity_path    
+    
+    when /^the New Person page$/
+      new_person_path
       
     when /^the Organization Types Admin page$/
       admin_org_types_path
