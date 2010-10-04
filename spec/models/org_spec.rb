@@ -3,10 +3,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Org do
   before(:each) do
     org_type = Factory.create(:org_type)
-    person = Factory.create(:person)
+    owner = Factory.create(:owner)
     @valid_attributes = {
       :org_type_id => org_type[:id],
-      :owner_id => person[:id],
+      :owner_id => owner[:id],
       :name => "Camp Valid",
       :description => "Camp Valid sits nestled in the hills of Tennesee...",
       :gender => "coed",
