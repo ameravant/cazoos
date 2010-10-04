@@ -63,8 +63,8 @@ Spec::Runner.configure do |config|
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
 def missing_required_field_test(klass, field_name)
-  @inst = klass.to_s.camelize.constantize.create(@valid_attributes.except(field_name.intern))
+  @inst = klass.to_s.camelize.constantize.create(@valid_attributes.except(field_name.to_sym))
   @inst.should_not be_valid
   @inst.should be_new_record
-  @inst.errors.on(field_name.intern).should include("can't be blank")
+  @inst.errors.on(field_name.to_sym).should include("can't be blank")
 end
