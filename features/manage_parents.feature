@@ -1,6 +1,12 @@
 @parents
 Feature: Create and manage parent and child profiles
 
+Background:
+  Given the following person record
+    | first_name | last_name | email          | address1     | city        | state      | zip   | phone      |
+    | John       | adams     | john@adams.com | 1234 Main St | Santa Maria | California | 93222 | 8055551212 |
+    
+  @parent_new
   Scenario: Creating a Parent Profile 
     Given I am not logged in
     And I am on the homepage
@@ -19,11 +25,12 @@ Feature: Create and manage parent and child profiles
     And I fill in "person[user_attributes][password_confirmation]" with "password"
     And I press "Sign Up!"
     Then I should be on the login page
-  # @parent_login  
-  # Scenario: Logging in as a Parent
-  #   Given I am not logged in
-  #   And I am on the login page
-  #   When I fill in "login" with "john@adams.com"
-  #   And I fill in "password" with "password"
-  #   And I press "Sign in"
-  #   Then I should be on the Parent Edit page for "john@adams.com"
+
+  @parent_login  
+  Scenario: Logging in as a Parent
+    Given I am not logged in
+    And I am on the login page
+    When I fill in "login" with ""
+    And I fill in "password" with "password"
+    And I press "Sign in"
+    Then I should be on the Parent Edit page for "john@adams.com"

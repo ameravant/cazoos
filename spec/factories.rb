@@ -28,6 +28,19 @@ Factory.define :org do |f|
   f.zip "93101"
 end
 
+Factory.define :parnet, :class => Person do |f|
+  f.association :user
+  f.person_group_ids [PersonGroup.find_by_title('Parent')]
+  f.sequence(:first_name) { |n| "John#{n}"}
+  f.last_name 'Adams'
+  f.sequence(:email) { |n| "parent#{n}@blah.com" }
+  f.phone '805-234-1234'
+  f.address1 '555 Main St.'
+  f.city 'Santa Barbara'
+  f.state 'CALIFORNIA'
+  f.zip '93203'
+end
+
 Factory.define :owner, :class => Person do |f|
   f.association :user
   f.person_group_ids [PersonGroup.find_by_title('Organization Owner')]
