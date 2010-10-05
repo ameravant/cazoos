@@ -14,11 +14,6 @@ module NavigationHelpers
     when /^the login page$/
       new_session_path
     
-    when /^admin index page for activities$/
-      admin_activities_path
-    when /^new admin activity page$/
-      new_admin_activity_path    
-    
     when /^the New Person page$/
       new_person_path
       
@@ -51,6 +46,12 @@ module NavigationHelpers
 
     when /^the Activities Admin page$/
       admin_activities_path
+    when /^the New Activity page$/
+      new_admin_activity_path
+    when /^the Activity Edit page for "(.*)"$/
+      edit_admin_activity_path(Activity.find_by_name($1))
+    when /^the Activity page for "(.*)"$/
+      admin_activity_path(Activity.find_by_name($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -1,0 +1,25 @@
+= error_messages_for :activity
+
+#options
+  - form_for [:admin, @activity] do |f|
+    %dl
+      %dt.form-label= f.label :name
+      %dd.form-option= f.text_field :name
+
+      %dt.form-label= f.label :description
+      %dd.form-option= f.text_area :description
+      
+      %fieldset#activity_categories
+        -# f.fields_for :activity_categories do |cat|
+        - for cat in @activity_categories do
+                  
+          <input type="hidden" name="activity[activity_category_ids][]" value="" />
+          
+          %dt.form-label= label_tag("activity_activity_category_ids_#{cat.id}", cat.name)
+          %dd.form-option= check_box_tag('activity[activity_category_ids][]', cat.id, activity_has_category?(@activity, cat), { :id => "activity_activity_category_ids_#{cat.id}" })
+          %p
+            **
+            = activity_has_category?(@activity, cat)
+            **
+
+    = f.submit(@activity.new_record? ? 'Create' : 'Save Changes')

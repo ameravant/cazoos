@@ -1,1 +1,20 @@
 %h1 Activities
+
+%div.box
+  %span.hmenu
+    = icon 'Plus', new_admin_activity_path
+    = link_to 'Add an activity', new_admin_activity_path
+
+    = icon "Dots Down", admin_activity_categories_path
+    = link_to "View Activity Categories", admin_activity_categories_path
+
+
+  %div
+    %table#activities.full_width
+      %tr
+        %th Name
+        %th Description
+      - for act in @activities
+        %tr[act]{ :class => cycle('odd','even') }
+          %td.activity_name= link_to(h(act.name), edit_admin_activity_path(act))
+          %td.act_description= h act.description

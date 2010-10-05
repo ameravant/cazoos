@@ -1,3 +1,5 @@
 class Activity < ActiveRecord::Base
-  # belongs_to :org
+  has_and_belongs_to_many :activity_categories
+  
+  validates_presence_of :name, :description
 end
