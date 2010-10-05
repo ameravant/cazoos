@@ -28,7 +28,7 @@ Factory.define :org do |f|
   f.zip "93101"
 end
 
-Factory.define :parnet, :class => Person do |f|
+Factory.define :parent, :class => Person do |f|
   f.association :user
   f.person_group_ids [PersonGroup.find_by_title('Parent')]
   f.sequence(:first_name) { |n| "John#{n}"}

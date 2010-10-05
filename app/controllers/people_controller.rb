@@ -10,10 +10,12 @@ class PeopleController < ApplicationController
     params[:person][:user_attributes]["login"] = params[:person][:email]
     @person = Person.new(params[:person])
     params[:person][:user_attributes].merge!({ :name => params[:person][:name], :email => params[:person][:email] })
-    params[:person][:person_group_ids] = [PersonGroup.find_by_title("Parent").id]
-    @person.confirmed = !@cms_config['site_settings']['member_confirmation']
-    logger.info(params[:person][:user_attributes][:login])
-    if @person.save 
+    params[:person][:person_group_ids] ||= []
+    @person.confirmed = true
+    if @person.save
+      #Have to use this strange assignment method because array appending doesn't work
+      @person.person_group_ids = @person.person_group_ids << PersonGroup.find_by_title("Parent").id
+      @person.save
       redirect_to new_session_path
       flash[:notice] = "Thanks for joining! Please log in to complete your profile."
     else
