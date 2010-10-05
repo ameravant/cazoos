@@ -1,6 +1,6 @@
 When /^I fill in the Org form with valid data(?: and call it "([^"]*)")$/ do |name|
   org_type = OrgType.last
-  owner = Person.last
+  owner = PersonGroup.find_by_title('Organization Owner').people.last
   
   inputs = %w{name description blurb min_age max_age contact contact_phone contact_email address city zip}
   selects = %w{gender}
