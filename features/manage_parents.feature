@@ -5,7 +5,7 @@ Background:
   Given the following parent record
     | first_name | last_name | email          | address1     | city        | state      | zip   | phone      |
     | John       | adams     | john@adams.com | 1234 Main St | Santa Maria | California | 93222 | 8055551212 |
-
+  
   @parent_new
   Scenario: Creating a Parent Profile 
     Given I am not logged in
@@ -29,8 +29,5 @@ Background:
   @parent_login  
   Scenario: Logging in as a Parent
     Given I am not logged in
-    And I am on the login page
-    When I fill in "login" with "foo1"
-    And I fill in "password" with "secret"
-    And I press "Sign in"
+    And I am logged in as "john@adams.com" with password "secret"
     Then I should be on the Parent Edit page for "john@adams.com"
