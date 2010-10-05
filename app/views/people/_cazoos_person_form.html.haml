@@ -28,13 +28,13 @@
         %dd= user.text_field :password
         %dt= user.label :password_confirmation
         %dd= user.text_field :password_confirmation
-      
-  -for group in @groups 
-    - unless group.is_event_registration_group
-      %p
-        = check_box_tag('person[person_group_ids][]', group.id, false, :id => "#{group.title}")
-        %label{:for=> "#{group.title}"}== Subscribe to #{group.title}
-      %p About this newsletter:
-      %span= truncate(group.description, :length => 100)
+  -if !@groups.blank?    
+    -for group in @groups 
+      - unless group.is_event_registration_group
+        %p
+          = check_box_tag('person[person_group_ids][]', group.id, false, :id => "#{group.title}")
+          %label{:for=> "#{group.title}"}== Subscribe to #{group.title}
+        %p About this newsletter:
+        %span= truncate(group.description, :length => 100)
   = clear
   =f.submit "Sign Up!"
