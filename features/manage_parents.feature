@@ -28,6 +28,5 @@ Background:
 
   @parent_login  
   Scenario: Logging in as a Parent
-    Given I am not logged in
-    And I am logged in as "john@adams.com" with password "secret"
+    Given I am logged in as parent with email "john@adams.com" with password "secret"
     Then I should be on the Parent Edit page for "john@adams.com"
