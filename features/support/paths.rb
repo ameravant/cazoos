@@ -20,6 +20,8 @@ module NavigationHelpers
       edit_admin_person_path(Person.find_by_email($1))
     when /^the People page$/
       people_path
+    when /^the admin People page$/
+      admin_people_path
       
     when /^the Organization Types Admin page$/
       admin_org_types_path
