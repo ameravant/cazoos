@@ -18,6 +18,8 @@ module NavigationHelpers
       new_person_path
     when /^the Parent Edit page for "(.*)"$/
       edit_admin_person_path(Person.find_by_email($1))
+    when /^the People page$/
+      people_path
       
     when /^the Organization Types Admin page$/
       admin_org_types_path

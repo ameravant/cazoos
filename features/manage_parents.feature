@@ -34,7 +34,7 @@ Background:
     Then I should see "Register Now!" within "a" 
     When I follow "Register Now!"
     Then I should be on the New Person page    
-    When I fill in "person_first_name" with "John"
+    When I fill in "First Name" with "John"
     And I fill in "person_last_name" with "Adams"
     And I fill in "person_email" with "john@adams.com"
     And I fill in "person_address1" with "1234 Main St"
@@ -45,7 +45,7 @@ Background:
     And I fill in "person_user_attributes_password" with "password"
     And I fill in "person_user_attributes_password_confirmation" with "password"
     And I press "Sign Up!"
-    Then I should be on the Person page for "john@adams.com"
+    Then I should be on the People page
     And I should see "is an email address already in the system"
     When I fill in "person_email" with "unique@new.com"
     And I press "Sign Up!"
