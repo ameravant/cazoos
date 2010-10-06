@@ -47,6 +47,6 @@
         %dd.form-option= org_form.text_field :contact_email  
 
         %dt.form-label= org_form.label :owner_id, "Organization Owner"
-        %dd.form-option= org_form.select :owner_id, !@people.nil? ? @people.map {|p| [ "#{p.first_name} #{p.last_name}", p.id ] } : [], { :include_blank => '&ndash; SELECT ONE &ndash;' }
+        %dd.form-option= org_form.select :owner_id, !@owners.nil? ? @owners.map {|p| [ "#{p.first_name} #{p.last_name}", p.id ] } : [], { :include_blank => '&ndash; SELECT ONE &ndash;' }
 
     = org_form.submit(@org.new_record? ? 'Create' : 'Save Changes')

@@ -15,7 +15,7 @@ Given /^I am logged in as "(.*)" with password "(.*)"$/ do |username, password|
   click_button "Sign in"
 end
 
-Given /^I am logged in as parent with email "(.*)" with password "(.*)"$/ do |email, password|
+Given /^I am logged in as person with email "([^"]*)" with password "([^"]*)"$/ do |email, password|
   visit new_session_url
   fill_in "login", :with => Person.find_by_email(email).user.login
   fill_in "password", :with => password

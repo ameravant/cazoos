@@ -1,18 +1,17 @@
 class Admin::OrgsController < AdminController
+  before_filter :block_intruders
+  before_filter :org_is_mine?, :except => [:index, :new, :create]
   before_filter :load_supporting_resources, :only => [:new, :create, :edit, :update]
-  
+    
   def index
     @orgs = Org.all
   end
   
   def new
     @org = Org.new
-    @people = Person.all  # In the future we will weed these out to only Organization Owners
-    # We will also add an assignment of @suspected_owner (the person who was just created using the admin/people system)
-    #    and that person will be pre-selected in the view...maybe
   end
   
-  def create
+   def create
     @org = Org.new(params[:org])
     if @org.save
       flash[:notice] = "You have successfully created a new organization."
@@ -23,11 +22,9 @@ class Admin::OrgsController < AdminController
   end
   
   def edit
-    @org = Org.find(params[:id])
   end
   
   def update
-    @org = Org.find(params[:id])
     if @org.update_attributes(params[:org])
       flash[:notice] = "You have successfully updated the organization."
       redirect_to admin_orgs_path
@@ -37,7 +34,6 @@ class Admin::OrgsController < AdminController
   end
   
   def destroy
-    @org = Org.find(params[:id])
     @org.destroy
     respond_to :js
   end
@@ -46,6 +42,15 @@ class Admin::OrgsController < AdminController
   
   def load_supporting_resources
     @org_types = OrgType.all
-    @people = Person.all
+    @owners = PersonGroup.find_by_title('Organization Owner').people    
+  end
+  
+  def block_intruders
+    authorize(['Admin', 'Organization Owner'], 'editing Organizations.')
+  end
+  
+  def org_is_mine?
+    @org = Org.find(params[:id])
+    authorize(['non-existent-role'], 'editing that Organization.') unless current_user == @org.owner.user
   end
 end
