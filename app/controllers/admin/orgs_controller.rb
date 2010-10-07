@@ -1,6 +1,6 @@
 class Admin::OrgsController < AdminController
   before_filter :block_intruders
-  before_filter :org_is_mine?, :except => [:index, :new, :create]
+  before_filter :load_org_and_reject_if_owner_not_logged_in, :except => [:index, :new, :create]
   before_filter :load_supporting_resources, :only => [:new, :create, :edit, :update]
     
   def index
@@ -49,8 +49,14 @@ class Admin::OrgsController < AdminController
     authorize(['Admin', 'Organization Owner'], 'editing Organizations')
   end
   
-  def org_is_mine?
+  def load_org_and_reject_if_owner_not_logged_in
     @org = Org.find(params[:id])
-    authorize(['non-existent-role'], 'editing that Organization') unless current_user.id == @org.owner.user.id
+    unless org_is_mine? or current_user.has_role('Admin')
+      authorize(['kick me out'], 'editing that Organization') 
+    end
+  end
+  
+  def org_is_mine?
+    current_user == @org.owner.user
   end
 end

@@ -9,127 +9,151 @@ describe Admin::OrgsController do
     end
   end
   
-  describe "creating a new Org while logged in as Admin" do
+  describe "managing Orgs while logged in as Admin" do
     before :each do
       stub_admin_login
     end
-    
-    it "should redirect to index with a notice when it the new Org is created successfully" do
-      Org.any_instance.stubs(:valid?).returns(true)
-      post 'create'
-      flash[:notice].should_not be_nil
-      response.should redirect_to(admin_orgs_url)
-    end
   end
   
-  it "should redirect to the new_session_url when nobody is logged in" do
-    get 'index'
-    response.should redirect_to(new_session_url)
-    get 'index'
-    response.should redirect_to(new_session_url)
-    post 'create'
-    response.should redirect_to(new_session_url)
-    get :edit, :id => 1
-    response.should redirect_to(new_session_url)
-    put :update, :id => 1
-    response.should redirect_to(new_session_url)
-    delete :destroy, :id => 1
-    response.should redirect_to(new_session_url)
-  end
-  
-  describe "should give an error and redirect back when an Org Owner tries to edit, update or destroy another dude's Org" do
+  describe "once through the authorization filters" do
     before :each do
-      stub_mismatched_org_owners
+      # user = stub(:user) do
+      #   stubs(:has_role).returns(true)
+      # end
+      # controller.stubs(:login_required).returns()
+      # controller.stubs(:current_user).returns(user)
+      # controller.stubs(:block_intruders).returns()
+      # controller.stubs(:load_org_and_reject_if_owner_not_logged_in).returns()
+      stub_admin_login
     end
     
-    it "should not allow edit" do
+    it "should show the Edit page for the Org" do
+      set_up_org_stub
       get :edit, :id => @org.id
-      flash[:error].should == 'You do not have access to editing that Organization.'
-      response.should redirect_to(root_url)
-    end
-    
-    it "should not allow update" do
-      put :update, :id => @org.id
-      flash[:error].should == 'You do not have access to editing that Organization.'
-      response.should redirect_to(root_url)
-    end
-    
-    it "should not allow destroy" do
-      delete :destroy, :id => @org.id
-      flash[:error].should == 'You do not have access to editing that Organization.'
-      response.should redirect_to(root_url)
-    end
-  end
-  
-  describe "should give a happy notice and go through when an Org Owner works on his own Org" do
-    before :each do
-      stub_matched_org_owners
-    end
-    
-    it "should allow edit" do
-      get :edit, :id => @org.id
-      flash[:error].should be_nil
       response.should render_template('edit')
     end
     
-    it "should allow update" do
-      put :update, :id => @org.id
-      flash[:error].should be_nil
-      response.should redirect_to(admin_orgs_url)
+    it "should show the New page for the Org" do
+      get :new
+      response.should render_template('new')
     end
     
-    it "should allow destroy" do
-      delete :destroy, :id => @org.id
-      flash[:error].should be_nil
-      response.should render_template('destroy')
+    it "should show the Index page for the Org" do
+      get :index
+      response.should render_template('index')
     end
+    
+    describe "when Org is valid" do
+      before :each do
+        Org.any_instance.stubs(:valid?).returns(true)
+      end
+      
+      it "should redirect to index with a notice when creating an Org" do
+        post 'create'
+        flash[:notice].should_not be_nil
+        response.should redirect_to(admin_orgs_url)
+      end
+      
+      it "should redirect to index with a notice when updating an Org" do
+      end
+    end
+    
   end
   
-    # it "should re-render the new template with errors when the save fails" do
-    #   Org.any_instance.stubs(:valid?).returns(false)
-    #   post 'create'
-    #   flash[:notice].should be_nil
-    #   response.should render_template('new')
-    # end
+  it "should redirect to the new_session_url when nobody is logged in" do
+    current_user = nil
+    controller.stubs(:current_user).returns(current_user)
+
+    get :index
+    response.should redirect_to(new_session_url)
+    
+    post :create
+    response.should redirect_to(new_session_url)
+    
+    get :edit, :id => 1
+    response.should redirect_to(new_session_url)
+    
+    put :update, :id => 1
+    response.should redirect_to(new_session_url)
+    
+    delete :destroy, :id => 1
+    response.should redirect_to(new_session_url)
+  end
+
+  describe "when an Org Owner is logged in" do
+    before :each do
+      set_up_org_stub
+      stub_org_owner_login
+    end
+    describe "and trying to mess with another dude's Org, he should get an error and redirect when he tries to" do
+      before :each do
+        controller.stubs(:org_is_mine?).returns(false)
+      end
+    
+      it "edit it" do
+        get :edit, :id => @org.id
+        flash[:error].should == 'You do not have access to editing that Organization.'
+        response.should redirect_to(root_url)
+      end
+    
+      it "update it" do
+        put :update, :id => @org.id
+        flash[:error].should == 'You do not have access to editing that Organization.'
+        response.should redirect_to(root_url)
+      end
+    
+      it "destroy it" do
+        delete :destroy, :id => @org.id
+        flash[:error].should == 'You do not have access to editing that Organization.'
+        response.should redirect_to(root_url)
+      end
+    end
+  
+    describe "and diddling with his own Org, he should get success when he" do
+      before :each do
+        controller.stubs(:org_is_mine?).returns(true)
+      end
+    
+      it "edits it" do
+        get :edit, :id => @org.id
+        flash[:error].should be_nil
+        response.should render_template('edit')
+      end
+    
+      it "updates it" do
+        put :update, :id => @org.id
+        flash[:error].should be_nil
+        flash[:notice].should include('success')
+        response.should redirect_to(admin_orgs_url)
+      end
+    
+      it "destroys it" do
+        delete :destroy, :id => @org.id
+        flash[:error].should be_nil
+        response.should render_template('destroy')
+      end
+    end
+  end
 end
 
 def stub_admin_login
-  # This works b/c having an Admin user belonging to the PersonGroup titled 'Admin' is required for the app to run
-  @current_user = PersonGroup.find_by_title('Admin').people.first.user
+  @current_user = stub(:user) do
+    stubs(:has_role).with() { |val| val.include?('Admin') }.returns(true)
+  end
   controller.stubs(:current_user).returns(@current_user)
 end
 
-def stub_matched_org_owners
-  stub_signed_in_user(1)
-  stub_org_owner(1)
-end 
-
-def stub_mismatched_org_owners
-  stub_signed_in_user(1)
-  stub_org_owner(2)
-end
-
-def stub_signed_in_user(user_id)  
-  signed_in_org_owner_user = stub(:user) do |u| 
-    u.stubs(:id).returns(user_id)
-    u.expects(:has_role).with(['Admin','Organization Owner']).returns(true)
-    u.expects(:has_role).with(['non-existent-role']).at_most_once.returns(false)      
-    # If this causes a fail, yank it; not related to Cazoos app but is there to satisfy mockspectations.
-    u.expects(:has_role).with(['Admin', 'Editor', 'Author', 'Moderator']).returns(false)
+def stub_org_owner_login  
+  signed_in_org_owner_user = stub(:user) do
+    stubs(:has_role).with() { |val| val.include?('Organization Owner') }.returns(true)
+    stubs(:has_role).with() { |val| !val.include?('Organization Owner') }.returns(false)
   end
-
   controller.stubs(:current_user).returns(signed_in_org_owner_user)
 end
 
-def stub_org_owner(user_id)
-  unsigned_in_user = stub(:user) do |u|
-    u.stubs(:id).returns(user_id)
-  end
-  person = stub(:person) do |p|
-    p.stubs(:user).returns(unsigned_in_user)
-  end
-  
-  @org = Factory :org
-  Org.any_instance.stubs(:owner).returns(person)
-  Org.any_instance.stubs(:valid?).returns(true)
+def set_up_org_stub(valid = true)
+  @org = Factory.build(:org)
+  @org.id = 100
+  Org.stubs(:find).returns(@org)
+  Org.any_instance.stubs(:valid?).returns(valid)
 end
