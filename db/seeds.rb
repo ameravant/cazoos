@@ -16,6 +16,7 @@ child = PersonGroup.create(:title => "Child", :role => true, :public => false, :
 person = Person.create(:first_name => "admin", :last_name => "admin", :email => "admin@mailinator.com")
 user = User.create( { :login => 'admin', :password => 'admin', :password_confirmation => 'admin' } )
 user.person_id = person.id
+person.person_group_ids = [ admin.id ]
 user.save
 
 # Create Settings table data

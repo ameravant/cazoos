@@ -46,11 +46,11 @@ class Admin::OrgsController < AdminController
   end
   
   def block_intruders
-    authorize(['Admin', 'Organization Owner'], 'editing Organizations.')
+    authorize(['Admin', 'Organization Owner'], 'editing Organizations')
   end
   
   def org_is_mine?
     @org = Org.find(params[:id])
-    authorize(['non-existent-role'], 'editing that Organization.') unless current_user == @org.owner.user
+    authorize(['non-existent-role'], 'editing that Organization') unless current_user.id == @org.owner.user.id
   end
 end
