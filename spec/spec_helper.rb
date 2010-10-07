@@ -64,3 +64,24 @@ def missing_required_field_test(klass, field_name)
   @inst.should be_new_record
   @inst.errors.on(field_name.to_sym).should include("can't be blank")
 end
+
+
+def stub_admin_login
+  @current_user = stub(:user) do
+    stubs(:has_role).with() { |val| val.include?('Admin') }.returns(true)
+  end
+  controller.stubs(:current_user).returns(@current_user)
+end
+
+def set_up_non_super_admin_user
+  current_user = stub(:user) do
+    stubs(:has_role).with() { |val| val.include?('Admin') }.returns(false)
+    stubs(:has_role).with() { |val| !val.include?('Admin') }.returns(true)
+  end
+  controller.stubs(:current_user).returns(current_user)
+end
+
+def verify_root_redirect_with_access_error
+  flash[:error].should include('do not have access')
+  response.should redirect_to(root_url)
+end

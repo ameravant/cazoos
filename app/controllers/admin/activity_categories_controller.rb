@@ -1,4 +1,5 @@
 class Admin::ActivityCategoriesController < AdminController
+  before_filter :require_super_user_login
   before_filter :load_record
 
   def index

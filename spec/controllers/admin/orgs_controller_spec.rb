@@ -3,27 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Admin::OrgsController do
   # integrate_views
 
-  describe "index" do
-    it "should route correctly" do
-      route_for(:controller => "admin/orgs", :action => "index").should == admin_orgs_path
-    end
-  end
-  
-  describe "managing Orgs while logged in as Admin" do
-    before :each do
-      stub_admin_login
-    end
-  end
-  
   describe "once through the authorization filters" do
     before :each do
-      # user = stub(:user) do
-      #   stubs(:has_role).returns(true)
-      # end
-      # controller.stubs(:login_required).returns()
-      # controller.stubs(:current_user).returns(user)
-      # controller.stubs(:block_intruders).returns()
-      # controller.stubs(:load_org_and_reject_if_owner_not_logged_in).returns()
       stub_admin_login
     end
     
@@ -43,42 +24,71 @@ describe Admin::OrgsController do
       response.should render_template('index')
     end
     
+    it "should render the destroy template when destroying an Org" do
+      set_up_org_stub
+      delete :destroy, :id => @org.id
+      response.should render_template('destroy')
+    end
+    
     describe "when Org is valid" do
       before :each do
-        Org.any_instance.stubs(:valid?).returns(true)
+        set_up_org_stub
       end
-      
+
       it "should redirect to index with a notice when creating an Org" do
-        post 'create'
-        flash[:notice].should_not be_nil
+        post :create
+        flash[:notice].should include('success')
         response.should redirect_to(admin_orgs_url)
       end
       
       it "should redirect to index with a notice when updating an Org" do
+        put :update, :id => @org.id
+        flash[:notice].should include('success')
+        response.should redirect_to(admin_orgs_url)
+      end      
+    end
+
+    describe "when Org is NOT valid" do
+      before :each do
+        set_up_org_stub(false)
       end
+      
+      it "should render the new template and show errors when creating an Org" do
+        post :create
+        flash[:notice].should be_nil
+        response.should render_template('new')
+      end
+      
+      it "should redirect to index with a notice when updating an Org" do
+        put :update, :id => @org.id
+        flash[:notice].should be_nil
+        response.should render_template('edit')
+      end      
     end
     
   end
-  
-  it "should redirect to the new_session_url when nobody is logged in" do
-    current_user = nil
-    controller.stubs(:current_user).returns(current_user)
 
-    get :index
-    response.should redirect_to(new_session_url)
-    
-    post :create
-    response.should redirect_to(new_session_url)
-    
-    get :edit, :id => 1
-    response.should redirect_to(new_session_url)
-    
-    put :update, :id => 1
-    response.should redirect_to(new_session_url)
-    
-    delete :destroy, :id => 1
-    response.should redirect_to(new_session_url)
-  end
+  # Because Admin::OrgsController is inherited from AdminController - as are all Admin::***Controllers -
+  #    this is unnecessary here and in future controllers
+  # it "should redirect to the new_session_url when nobody is logged in" do
+  #   current_user = nil
+  #   controller.stubs(:current_user).returns(current_user)
+  # 
+  #   get :index
+  #   response.should redirect_to(new_session_url)
+  #   
+  #   post :create
+  #   response.should redirect_to(new_session_url)
+  #   
+  #   get :edit, :id => 1
+  #   response.should redirect_to(new_session_url)
+  #   
+  #   put :update, :id => 1
+  #   response.should redirect_to(new_session_url)
+  #   
+  #   delete :destroy, :id => 1
+  #   response.should redirect_to(new_session_url)
+  # end
 
   describe "when an Org Owner is logged in" do
     before :each do
@@ -134,13 +144,6 @@ describe Admin::OrgsController do
       end
     end
   end
-end
-
-def stub_admin_login
-  @current_user = stub(:user) do
-    stubs(:has_role).with() { |val| val.include?('Admin') }.returns(true)
-  end
-  controller.stubs(:current_user).returns(@current_user)
 end
 
 def stub_org_owner_login  

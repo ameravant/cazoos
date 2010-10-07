@@ -1,4 +1,6 @@
-class Admin::OrgTypesController < AdminController
+ class Admin::OrgTypesController < AdminController
+  before_filter :require_super_user_login
+  
   def index
     @org_types = OrgType.all
   end
@@ -36,4 +38,11 @@ class Admin::OrgTypesController < AdminController
     @org_type.destroy
     respond_to :js
   end
+  
+  private
+  
+  # def require_super_user_login
+  #   authorize('Admin', 'editing Organization Types')
+  # end
+  # 
 end
