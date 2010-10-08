@@ -77,7 +77,7 @@ Factory.define :activity_category do |f|
 end
 
 Factory.define :activity do |f|
-  # f.association :org
+  f.association :org
   f.sequence(:name) { |n| "Activity#{n}" }
   f.description "Description of this Activity"
 end
