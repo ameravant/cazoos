@@ -1,10 +1,14 @@
 class Admin::ActivitiesController < AdminController
+  before_filter :allow_only_admin_and_org_owners
+  before_filter :load_activity_and_reject_if_owner_not_logged_in, :except => [:index, :new, :create]
+  
   def index
     # Write a scenario to ensure that an Org Owner sees only their own Activities, then rewrite this line
     @activities = Activity.all
   end
   
   def new
+    # @org = Org.find(params[:org_id])
     @activity = Activity.new
     @activity_categories = ActivityCategory.all
   end
@@ -39,4 +43,23 @@ class Admin::ActivitiesController < AdminController
     end
   end
   
+  def destroy
+  end
+  
+  private
+  
+  def allow_only_admin_and_org_owners
+    authorize(['Admin', 'Organization Owner'], 'editing Activities')
+  end
+  
+  def load_activity_and_reject_if_owner_not_logged_in
+    @activity = Activity.find(params[:id])
+    unless activity_is_mine? or current_user.has_role('Admin')
+      authorize(['kick me out'], 'editing that Activity') 
+    end
+  end
+  
+  def activity_is_mine?
+    current_user == @activity.org.owner.user
+  end
 end

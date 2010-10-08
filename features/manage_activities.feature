@@ -16,7 +16,7 @@ Feature: Adding an activity
     Given the following org record
       | name       |
       | Camp Valid |
-    Given I am logged in as the owner of "Camp Valid" with password "secret"
+    Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
       
   @activities_index  
   Scenario Outline: Vising the Activities Admin page
@@ -27,7 +27,8 @@ Feature: Adding an activity
     Then I should be on <destination>
     Examples:
       | link                       | destination                                       |
-      | "View Activity Categories" | the Activity Categories Admin page                |
+      # This link should actually not be visible to anyone but admin, the topic of another feature
+      # | "View Activity Categories" | the Activity Categories Admin page                |
       | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" |
       | "Add an activity"          | the New Activity page                             |
   

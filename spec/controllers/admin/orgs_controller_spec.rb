@@ -68,28 +68,6 @@ describe Admin::OrgsController do
     
   end
 
-  # Because Admin::OrgsController is inherited from AdminController - as are all Admin::***Controllers -
-  #    this is unnecessary here and in future controllers
-  # it "should redirect to the new_session_url when nobody is logged in" do
-  #   current_user = nil
-  #   controller.stubs(:current_user).returns(current_user)
-  # 
-  #   get :index
-  #   response.should redirect_to(new_session_url)
-  #   
-  #   post :create
-  #   response.should redirect_to(new_session_url)
-  #   
-  #   get :edit, :id => 1
-  #   response.should redirect_to(new_session_url)
-  #   
-  #   put :update, :id => 1
-  #   response.should redirect_to(new_session_url)
-  #   
-  #   delete :destroy, :id => 1
-  #   response.should redirect_to(new_session_url)
-  # end
-
   describe "when an Org Owner is logged in" do
     before :each do
       set_up_org_stub
