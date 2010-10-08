@@ -51,6 +51,33 @@ Background:
     And the "Last name" field should contain "Jacobs"
     And the "State" field should contain "Arizona" 
     And the "Phone" field should contain ""
+  
+  @add_childrens
+  Scenario: As a logged in parent I should be able to add children 
+    Given I am logged in as person with email "john@adams.com" with password "secret"
+    Then I should be on the Parent Edit page for "john@adams.com"
+    And I should see "Add a child"
+    When I follow "Add a child"
+    Then I should be on the New Child page
+    And the "Last name" field should contain "Adams"
+    When I fill in "First name" with "Timmy"
+    And I fill in "Last name" with "Tommy"
+    And I select "January" from "Month"
+    And I select "12" from "Day"
+    And I select "1999" from "Year"
+    And I select "4.1" from "Height"
+    And I select "Boy" from "Gender"
+    And I fill in "Weight" with "80"
+    And I fill in "School" with "Santa Barbara Elementary"
+    And I fill in "Allergies" with "Food and water"
+    And I fill in "Family doctor" with "Dr. Jekyll"
+    And I fill in "Doctor phone" with "8050081200"
+    And I fill in "Insurance carrier" with "Public option"
+    And I fill in "Policy Number" with "123123123"
+    And I fill in "Policy holder name" with "Bilbo Baggins"
+    And I press "Add Child"
+    Then I should be on the Parent Edit page for "john@adams.com"
+    And I should see "Timmy Tommy"
     
   @invalid_parent_new
   Scenario: Trying to create a Parent Profile that already exists
