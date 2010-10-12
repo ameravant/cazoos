@@ -22,6 +22,9 @@ module NavigationHelpers
       people_path
     when /^the admin People page$/
       admin_people_path
+
+    when /^the New Child page$/
+      new_admin_child_path
       
     when /^the Organization Types Admin page$/
       admin_org_types_path
