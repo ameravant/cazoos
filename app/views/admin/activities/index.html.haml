@@ -2,11 +2,13 @@
 
 %div.box
   %span.hmenu
-    = icon 'Plus', new_admin_activity_path
-    = link_to 'Add an activity', new_admin_activity_path
+    - if @current_user.is_super_user?
+      - if !@org.nil?
+        = icon 'Plus', new_admin_org_activity_path(@org)
+        = link_to 'Add an activity', new_admin_org_activity_path(@org)
 
-    = icon "Dots Down", admin_activity_categories_path
-    = link_to "View Activity Categories", admin_activity_categories_path
+      = icon "Dots Down", admin_activity_categories_path
+      = link_to "View Activity Categories", admin_activity_categories_path
 
 
   %div

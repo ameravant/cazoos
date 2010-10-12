@@ -6,8 +6,8 @@ Feature: Adding an activity
   
   Background:
     Given the following activity_category records
-      | name | description |
-      | Fun | Sessions that are for amusement |
+      | name        | description                            |
+      | Fun         | Sessions that are for amusement        |
       | Educational | Sessions that teach something valuable |
     Given the following activity records
       | name                 | description                                                 |
@@ -16,21 +16,72 @@ Feature: Adding an activity
     Given the following org record
       | name       |
       | Camp Valid |
+    Given the following parent record
+      | email           |
+      | parent@home.com |
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
       
   @activities_index  
-  Scenario Outline: Vising the Activities Admin page
-    Given I am on the Activities Admin page
-    Then I should see "Activities" within "h1"
-    And I should see "Horseback Riding 101" within "table#activities.full_width tr.activity td.activity_name"
+  Scenario Outline: Visiting the Activities Admin page as Various Types of People
+    Given I am logged in as <login> with password <password>
+    Given I am on the homepage
+    When I go to the Activities Admin page
+    Then I should be on <should_be_on>
+    Then I should <only_admin> see "Activities" within "h1"
+    And I should <only_admin> see "Horseback Riding 101"
+    And I should <if_logged_in_but_not_admin> see "do not have access"
+    And I should not see "Add an activity" within "a"
+    Examples:
+      | login                                                 | password | should_be_on              | only_admin | if_logged_in_but_not_admin |
+      | "admin"                                               | "admin"  | the Activities Admin page |            | not                        |
+      | the owner of the Org that owns "Horseback Riding 101" | "secret" | the homepage              | not        |                            |
+      | person with email "parent@home.com"                   | "secret" | the homepage              | not        |                            |
+      | "anonymous"                                           | "bogus"  | the login page            | not        | not                        |
+  
+  @activities_index    
+  Scenario Outline: Leaving the Activities Admin page
+    Given I am logged in as "admin" with password "admin"
+    And I am on the Activities Admin page
     When I follow <link> 
     Then I should be on <destination>
     Examples:
       | link                       | destination                                       |
-      # This link should actually not be visible to anyone but admin, the topic of another feature
-      # | "View Activity Categories" | the Activity Categories Admin page                |
+      | "View Activity Categories" | the Activity Categories Admin page                |
       | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" |
-      | "Add an activity"          | the New Activity page                             |
+
+  @org_activities_index
+  Scenario Outline: Visiting the Activities Admin page for a particular Org
+    Given I am logged in as <login> with password <password>
+    When I go to the Activities Admin page for the Org with "Horseback Riding 101"
+    Then I should be on <should_be_on>
+    And I should <owner_or_admin> see "Horseback Riding 101"
+    Examples:
+      | login                                                 | password | should_be_on                                                      | owner_or_admin | 
+      | "admin"                                               | "admin"  | the Activities Admin page for the Org with "Horseback Riding 101" |                | 
+      | the owner of the Org that owns "Horseback Riding 101" | "secret" | the Activities Admin page for the Org with "Horseback Riding 101" |                | 
+      | the owner of the Org that owns "Archery"              | "secret" | the homepage                                                      | not            | 
+      | "anonymous"                                           | "bogus"  | the login page                                                    | not            | 
+    
+  @org_activities_index
+  Scenario Outline: Leaving the Activities Admin page for a particular Org (as SuperAdmin)
+    Given I am logged in as "admin" with password "admin"
+    And I am on the Activities Admin page for the Org with "Horseback Riding 101"
+    When I follow <link>
+    Then I should be on <destination>
+    Examples:
+      | link                       | destination                                       |
+      | "View Activity Categories" | the Activity Categories Admin page                |
+      | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" |
+      | "Add an activity"          | the New Activity page for the Org with "Horseback Riding 101" |
+
+  @org_activities_index
+  Scenario: Leaving the Activities Admin page for a particular Org (as Org Owner)
+    Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
+    And I am on the Activities Admin page for the Org with "Horseback Riding 101"
+    Then I should not see "View Activity Categories" within "a"
+    Then I should not see "Add an Activity" within "a"
+    When I follow "Horseback Riding 101"
+    Then I should be on the Activity Edit page for "Horseback Riding 101"
   
   @activity_edit
   Scenario: Editing an Activity

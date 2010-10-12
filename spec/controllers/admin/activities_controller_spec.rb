@@ -40,125 +40,144 @@ describe Admin::ActivitiesController do
       admin_activities_path.should == "/admin/activities"
     end
   end
-#   describe "once through the authorization filters" do
-#     before :each do
-#       stub_admin_login
-#     end
-#     
-#     it "should show the Edit page for the Activity" do
-#       set_up_activity_stub
-#       get :edit, :id => @activity.id
-#       response.should render_template('edit')
-#     end
-#     
-#     it "should show the New page for the Activity" do
-#       get :new
-#       response.should render_template('new')
-#     end
-#     
-#     it "should show the Index page for the Activity" do
-#       get :index
-#       response.should render_template('index')
-#     end
-#     
-#     it "should render the destroy template when destroying an Activity" do
-#       set_up_activity_stub
-#       delete :destroy, :id => @activity.id
-#       response.should render_template('destroy')
-#     end
-#     
-#     describe "when Activity is valid" do
-#       before :each do
-#         set_up_activity_stub
-#       end
-# 
-#       it "should redirect to index with a notice when creating an Activity" do
-#         post :create
-#         flash[:notice].should include('success')
-#         response.should redirect_to(admin_activities_url)
-#       end
-#       
-#       it "should redirect to index with a notice when updating an Activity" do
-#         put :update, :id => @activity.id
-#         flash[:notice].should include('success')
-#         response.should redirect_to(admin_activities_url)
-#       end      
-#     end
-# 
-#     describe "when Activity is NOT valid" do
-#       before :each do
-#         set_up_activity_stub(false)
-#       end
-#       
-#       it "should render the new template and show errors when creating an Activity" do
-#         post :create
-#         flash[:notice].should be_nil
-#         response.should render_template('new')
-#       end
-#       
-#       it "should redirect to index with a notice when updating an Activity" do
-#         put :update, :id => @activity.id
-#         flash[:notice].should be_nil
-#         response.should render_template('edit')
-#       end      
-#     end
-#     
-#   end
-# 
-#   describe "when an Org Owner is logged in" do
-#     before :each do
-#       set_up_activity_stub
-#       stub_activity_owner_login
-#     end
-#     describe "and trying to mess with another dude's Activity, he should get an error and redirect when he tries to" do
-#       before :each do
-#         controller.stubs(:activity_is_mine?).returns(false)
-#       end
-#     
-#       it "edit it" do
-#         get :edit, :id => @activity.id
-#         flash[:error].should == 'You do not have access to editing that Activity.'
-#         response.should redirect_to(root_url)
-#       end
-#     
-#       it "update it" do
-#         put :update, :id => @activity.id
-#         flash[:error].should == 'You do not have access to editing that Activity.'
-#         response.should redirect_to(root_url)
-#       end
-#     
-#       it "destroy it" do
-#         delete :destroy, :id => @activity.id
-#         flash[:error].should == 'You do not have access to editing that Activity.'
-#         response.should redirect_to(root_url)
-#       end
-#     end
-#   
-#     describe "and diddling with his own Activity, he should get success when he" do
-#       before :each do
-#         controller.stubs(:activity_is_mine?).returns(true)
-#       end
-#     
-#       it "edits it" do
-#         get :edit, :id => @activity.id
-#         flash[:error].should be_nil
-#         response.should render_template('edit')
-#       end
-#     
-#       it "updates it" do
-#         put :update, :id => @activity.id
-#         flash[:error].should be_nil
-#         flash[:notice].should include('success')
-#         response.should redirect_to(admin_activities_url)
-#       end
-#     
-#       it "destroys it" do
-#         delete :destroy, :id => @activity.id
-#         flash[:error].should be_nil
-#         response.should render_template('destroy')
-#       end
-#     end
-#   end
+  
+  describe "once through the authorization filters" do
+    before :each do
+      stub_admin_login
+    end
+    
+    it "should show the Edit page for the Activity" do
+      set_up_record_stub :activity
+      get :edit, :id => @activity.id
+      response.should render_template('edit')
+    end
+    
+    it "should show the New page for the Activity" do
+      set_up_record_stub :org
+      get :new, :org_id => @org.id
+      response.should render_template('new')
+    end
+    
+    it "should show the Index page for the Activity" do
+      get :index
+      response.should render_template('index')
+    end
+    
+    it "should render the destroy template when destroying an Activity" do
+      set_up_record_stub :activity
+      delete :destroy, :id => @activity.id
+      response.should render_template('destroy')
+    end
+    
+    describe "when Activity is valid" do
+      before :each do
+        set_up_record_stub :activity
+      end
+
+      it "should redirect to index with a notice when creating an Activity" do
+        set_up_record_stub :org
+        post :create, :org_id => @org.id
+        flash[:notice].should include('success')
+        response.should redirect_to(admin_activities_url)
+      end
+      
+      it "should redirect to index with a notice when updating an Activity" do
+        put :update, :id => @activity.id
+        flash[:notice].should include('success')
+        response.should redirect_to(admin_activities_url)
+      end      
+    end
+
+    describe "when Activity is NOT valid" do
+      before :each do
+        set_up_record_stub :activity, false
+      end
+      
+      it "should render the new template and show errors when creating an Activity" do
+        set_up_record_stub :org
+        post :create, :org_id => @org.id
+        flash[:notice].should be_nil
+        response.should render_template('new')
+      end
+      
+      it "should redirect to index with a notice when updating an Activity" do
+        put :update, :id => @activity.id
+        flash[:notice].should be_nil
+        response.should render_template('edit')
+      end      
+    end
+    
+  end
+
+  describe "when an Org Owner is logged in" do
+    before :each do
+      set_up_record_stub :activity
+      stub_activity_owner_login
+    end
+
+    it "should not allow visit to the index page without an org_id" do
+      get :index
+      flash[:error].should include 'do not have access'
+      response.should redirect_to(root_url)
+    end
+
+    describe "and trying to mess with another dude's Activity, he should get an error and redirect when he tries to" do
+      before :each do
+        controller.stubs(:activity_is_mine?).returns(false)
+      end
+      
+      it "see the Org's Activities" do
+        set_up_record_stub :org
+        controller.stubs(:org_is_mine?).returns(false)
+        get :index, :org_id => @org.id
+        flash[:error].should include "do not have access to that."
+        response.should redirect_to(root_url)
+      end
+      
+      it "edit it" do
+        get :edit, :id => @activity.id
+        flash[:error].should == 'You do not have access to editing that Activity.'
+        response.should redirect_to(root_url)
+      end
+    
+      it "update it" do
+        put :update, :id => @activity.id
+        flash[:error].should == 'You do not have access to editing that Activity.'
+        response.should redirect_to(root_url)
+      end
+    
+      it "destroy it" do
+        delete :destroy, :id => @activity.id
+        flash[:error].should == 'You do not have access to editing that Activity.'
+        response.should redirect_to(root_url)
+      end
+    end
+  
+    describe "and diddling with his own Activity, he should get success when he" do
+      before :each do
+        controller.stubs(:activity_is_mine?).returns(true)
+      end
+    
+      it "edits it" do
+        get :edit, :id => @activity.id
+        flash[:error].should be_nil
+        response.should render_template('edit')
+      end
+    
+      it "updates it" do
+        put :update, :id => @activity.id
+        flash[:error].should be_nil
+        flash[:notice].should include('success')
+        response.should redirect_to(admin_activities_url)
+      end
+    
+      it "destroys it" do
+        delete :destroy, :id => @activity.id
+        flash[:error].should be_nil
+        response.should render_template('destroy')
+      end
+    end
+  end
 end
 
 def stub_activity_owner_login  
@@ -167,11 +186,4 @@ def stub_activity_owner_login
     stubs(:has_role).with() { |val| !val.include?('Organization Owner') }.returns(false)
   end
   controller.stubs(:current_user).returns(signed_in_org_owner_user)
-end
-
-def set_up_activity_stub(valid = true)
-  @activity = Factory.build(:activity)
-  @activity.id = 10929
-  Activity.stubs(:find).returns(@activity)
-  Activity.any_instance.stubs(:valid?).returns(valid)
 end

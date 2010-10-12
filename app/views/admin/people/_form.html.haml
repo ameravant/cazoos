@@ -119,6 +119,7 @@
               %div{:class => "small gray"}== &mdash; #{group.description}
             = cycle(nil,nil,clear)
       %div{:style => "float: left; border-left: 1px solid #ccc; padding-left: 40px; width: 260px"}
+
         %h2= large_icon('User') + ' ' + "Children"
         =link_to "Add a child", new_admin_child_path
         =debug @person.children
