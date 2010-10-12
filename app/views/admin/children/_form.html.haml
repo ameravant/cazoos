@@ -6,7 +6,7 @@
       %dt.form-label= f.label :first_name
       %dd.form-option= f.text_field :first_name
       %dt.form-label= f.label :last_name
-      %dd.form-option= text_field :child, :last_name, :value => "#{@child.last_name.blank? ? @parent.last_name : @child.last_name.blank?}"
+      %dd.form-option= text_field :child, :last_name, :value => "#{@child.last_name.blank? ? @person.last_name : @child.last_name.blank?}"
       %dt.form-label= f.label :birthday
       %dd.form-option= f.date_select :birthday
       %dt.form-label= f.label :height

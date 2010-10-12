@@ -122,10 +122,10 @@
 
         %h2= large_icon('User') + ' ' + "Children"
         =link_to "Add a child", new_admin_child_path
-        =debug @person.children
-        / -if !@person.children.blank?
-        /   -@person.children.each do |c|
-        /     =link_to edit_admin_child_path(c)
+        -if !@person.children.blank?
+          -@person.children.each do |c|
+            =link_to "#{@person.children[0].first_name} #{@person.children[0].last_name}", edit_admin_child_path(c)
+            
       = clear
       %br
       =f.submit "Update Profile"

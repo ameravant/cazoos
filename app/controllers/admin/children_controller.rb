@@ -9,7 +9,7 @@ class Admin::ChildrenController < AdminController
     @child.person_id = @person.id
     if @child.save
       flash[:notice] = 'You have added a child.'
-      redirect_to edit_admin_person_path(@parent)
+      redirect_to edit_admin_person_path(@person)
     else
       render 'new'
     end
