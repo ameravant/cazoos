@@ -65,6 +65,15 @@ def missing_required_field_test(klass, field_name)
   @inst.errors.on(field_name.to_sym).should include("can't be blank")
 end
 
+def set_up_record_stub(klass, valid = true, params = nil)
+  klass = klass.to_s
+  id = params && params[:id] ? params[:id] : 23498
+  record = Factory.build(klass.to_sym)
+  record.id = id
+  eval "@#{klass} = record"
+  klass.camelize.constantize.stubs(:find).returns(record)
+  klass.camelize.constantize.any_instance.stubs(:valid?).returns(valid)
+end
 
 def stub_admin_login
   @current_user = stub(:user) do

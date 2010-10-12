@@ -1,10 +1,13 @@
 class Admin::ActivitiesController < AdminController
   before_filter :allow_only_admin_and_org_owners
   before_filter :load_activity_and_reject_if_owner_not_logged_in, :except => [:index, :new, :create]
+  before_filter :reject_org_owner_from_general_index, :only => :index
+  before_filter :reject_org_owner_from_other_org_activities_index, :only => :index
   
   def index
     # Write a scenario to ensure that an Org Owner sees only their own Activities, then rewrite this line
     @activities = Activity.all
+    @org = Org.find(params[:org_id]) if !params[:org_id].nil?
   end
   
   def new
@@ -57,6 +60,20 @@ class Admin::ActivitiesController < AdminController
     unless activity_is_mine? or current_user.has_role('Admin')
       authorize(['kick me out'], 'editing that Activity') 
     end
+  end
+  
+  def reject_org_owner_from_general_index
+    authorize(['kick me out'], 'Activities Admin') unless !params[:org_id].nil? or current_user.has_role('Admin')
+  end
+  
+  def reject_org_owner_from_other_org_activities_index
+    if !params[:org_id].nil?
+      authorize(['kick me out'], 'that') unless org_is_mine?
+    end
+  end
+
+  def org_is_mine?
+    current_user.has_role('Admin') || Org.find(params[:org_id]).owner.user == current_user
   end
   
   def activity_is_mine?

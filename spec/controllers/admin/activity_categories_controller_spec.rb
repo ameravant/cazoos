@@ -2,6 +2,38 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Admin::ActivityCategoriesController do
   
+  describe "routes description" do
+    before :each do
+      @record = Factory.build :activity_category
+      @record.id = 78697
+      @cont = 'admin/activity_categories'
+    end
+    
+    it "should have a New Record route" do
+      route_for(:controller => @cont, :action => 'new').should == new_admin_activity_category_path
+      new_admin_activity_category_path.should == "/admin/activity_categories/new"
+    end
+    it "should have a Create Record route" do
+      route_for(:controller => @cont, :action => 'create').should == 
+        { :path => "/admin/activity_categories", :method => :post }
+    end
+    it "should have a List-All Record route" do
+      route_for(:controller => @cont, :action => 'index').should == "/admin/activity_categories"
+    end
+    it "should have an Edit Record route" do
+      route_for(:controller => @cont, :action => 'edit', :id => "#{@record.id}").should == edit_admin_activity_category_path(@record)
+      edit_admin_activity_category_path(@record).should == "/admin/activity_categories/#{@record.id}/edit"
+    end
+    it "should have an Update Record route" do
+      route_for(:controller => @cont, :action => 'update', :id => "#{@record.id}").should == 
+        { :path => "/admin/activity_categories/#{@record.id}", :method => :put }
+    end
+    it "should have a Destroy Record route" do
+      route_for(:controller => @cont, :action => 'destroy', :id => "#{@record.id}").should == 
+        { :path => "/admin/activity_categories/#{@record.id}", :method => :delete }
+    end
+  end
+  
   describe "- in filtering out unwelcome users -" do
     it "should redirect to the root when someone is logged in other than an admin" do
       set_up_non_super_admin_user
