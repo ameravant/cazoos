@@ -1,2 +1,1 @@
-require 'user_ext'
-require 'person.rb'
+require 'cazoos_person_ext'
