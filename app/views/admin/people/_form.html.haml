@@ -119,8 +119,13 @@
               %div{:class => "small gray"}== &mdash; #{group.description}
             = cycle(nil,nil,clear)
       %div{:style => "float: left; border-left: 1px solid #ccc; padding-left: 40px; width: 260px"}
-        %h2= large_icon('User') + ' ' + "Add Children"
+
+        %h2= large_icon('User') + ' ' + "Children"
         =link_to "Add a child", new_admin_child_path
+        -if !@person.children.blank?
+          -@person.children.each do |c|
+            =link_to "#{@person.children[0].first_name} #{@person.children[0].last_name}", edit_admin_child_path(c)
+            
       = clear
       %br
       =f.submit "Update Profile"
