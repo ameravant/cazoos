@@ -161,7 +161,7 @@ Feature: Adding an activity
     Then I should be on the Activities Admin page for the Org with "Horseback Riding 101"
     # And I should see "New Activity successfully created."
     When I follow "Cliff Diving" within "table#activities.full_width tr.activity td.activity_name"
-    Then I should be on the Activity Edit page for "Cliff Diving"
+    Then I should be on the Activity Edit page for "Cliff Diving" specific to its Org
     And the "Educational" checkbox within "fieldset#activity_categories" should be checked
   
   @activity_create @invalid

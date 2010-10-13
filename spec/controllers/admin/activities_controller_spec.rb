@@ -91,7 +91,7 @@ describe Admin::ActivitiesController do
         set_up_record_stub :org
         post :create, :org_id => @org.id
         flash[:notice].should include('success')
-        response.should redirect_to(admin_activities_url)
+        response.should redirect_to(admin_org_activities_url(@org))
       end
       
       it "should redirect to index with a notice when updating an Activity" do
@@ -169,19 +169,20 @@ describe Admin::ActivitiesController do
     describe "and diddling with his own Activity, he should get success when he" do
       before :each do
         controller.stubs(:activity_is_mine?).returns(true)
+        set_up_record_stub :org
       end
     
       it "edits it" do
-        get :edit, :id => @activity.id
+        get :edit, :id => @activity.id, :org_id => @org.id
         flash[:error].should be_nil
         response.should render_template('edit')
       end
     
       it "updates it" do
-        put :update, :id => @activity.id
+        put :update, :id => @activity.id, :org_id => @org.id
         flash[:error].should be_nil
         flash[:notice].should include('success')
-        response.should redirect_to(admin_activities_url)
+        response.should redirect_to(admin_org_activities_url(@org))
       end
     
       it "destroys it" do
@@ -190,6 +191,27 @@ describe Admin::ActivitiesController do
         response.should render_template('destroy')
       end
     end
+  end
+  
+  describe "when an Admin is logged in" do
+    before :each do
+      stub_admin_login      
+      set_up_record_stub :activity
+    end
+    
+    it "should assign only the activities belonging to the Org (:org_id) to the variable @activities" do
+      set_up_record_stub :org
+      Activity.expects(:all).with(:conditions => ['org_id=?', "#{@org.id}"]).returns([@activity])
+      get :index, :org_id => @org.id
+      assigns[:activities].should == [@activity]
+    end
+    
+    it "should assign all activities to the variable @activities" do
+      Activity.expects(:all).returns([@activity])
+      get :index
+      assigns[:activities].should == [@activity]
+    end 
+    
   end
 end
 
