@@ -2,11 +2,11 @@
 
 %div.box
   %span.hmenu
-    - if @current_user.is_super_user?
-      - if !@org.nil?
-        = icon 'Plus', new_admin_org_activity_path(@org)
-        = link_to 'Add an activity', new_admin_org_activity_path(@org)
-
+    - if !@org.nil?
+      = icon 'Plus', new_admin_org_activity_path(@org)
+      = link_to 'Add an activity', new_admin_org_activity_path(@org)
+  
+    - if @current_user.is_super_user?      
       = icon "Dots Down", admin_activity_categories_path
       = link_to "View Activity Categories", admin_activity_categories_path
 
@@ -18,5 +18,5 @@
         %th Description
       - for act in @activities
         %tr[act]{ :class => cycle('odd','even') }
-          %td.activity_name= link_to(h(act.name), edit_admin_activity_path(act))
+          %td.activity_name= link_to(h(act.name), !@org.nil? ? edit_admin_org_activity_path(@org, act) : edit_admin_activity_path(act))
           %td.act_description= h act.description

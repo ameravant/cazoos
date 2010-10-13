@@ -58,9 +58,12 @@ module NavigationHelpers
       edit_admin_activity_path(Activity.find_by_name($1))
     when /^the Activity page for "(.*)"$/
       admin_activity_path(Activity.find_by_name($1))
+    when /^the Activity page for "(.*)" specific to its Org$/
+      admin_org_activity_path(Activity.find_by_name($1).org, Activity.find_by_name($1))
     when /^the Activities Admin page for the Org with "([^"]*)"$/
       admin_org_activities_path(Activity.find_by_name($1).org)
-      
+    when /^the Activity Edit page for "([^"]*)" specific to its Org$/
+      edit_admin_org_activity_path(Activity.find_by_name($1).org, Activity.find_by_name($1))      
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

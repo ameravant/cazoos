@@ -23,6 +23,19 @@ describe Admin::ActivitiesController do
       admin_org_activities_path(@org).should == "/admin/organizations/#{@org.id}/activities"
     end
     
+    # Edit and Update don't really need this, since the :id unambigously identifies the Activity, 
+    #    but it helps to track what scope the user came from when redirecting them back after a successful update
+    it "should have an Edit Record route nested in the Organization" do
+      route_for(:controller => @cont, :action => 'edit', :org_id => "#{@org.id}", :id => "#{@activity.id}").should == 
+        edit_admin_org_activity_path(@org, @activity)
+      edit_admin_org_activity_path(@org, @activity).should == "/admin/organizations/#{@org.id}/activities/#{@activity.id}/edit"
+    end
+    it "should have an Edit Record route nested in the Organization" do
+      route_for(:controller => @cont, :action => 'update', :org_id => "#{@org.id}", :id => "#{@activity.id}").should == 
+        { :path => "/admin/organizations/#{@org.id}/activities/#{@activity.id}", :method => :put }
+    end
+    
+    # Un-nested routes
     it "should have an Edit Record route" do
       route_for(:controller => @cont, :action => 'edit', :id => "#{@activity.id}").should == edit_admin_activity_path(@activity)
       edit_admin_activity_path(@activity).should == "/admin/activities/#{@activity.id}/edit"

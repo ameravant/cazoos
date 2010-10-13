@@ -39,7 +39,7 @@ Feature: Adding an activity
       | "anonymous"                                           | "bogus"  | the login page            | not        | not                        |
   
   @activities_index    
-  Scenario Outline: Leaving the Activities Admin page
+  Scenario Outline: Leaving the Activities Admin page (which is available only to SuperAdmin)
     Given I am logged in as "admin" with password "admin"
     And I am on the Activities Admin page
     When I follow <link> 
@@ -69,83 +69,111 @@ Feature: Adding an activity
     When I follow <link>
     Then I should be on <destination>
     Examples:
-      | link                       | destination                                       |
-      | "View Activity Categories" | the Activity Categories Admin page                |
-      | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" |
-      | "Add an activity"          | the New Activity page for the Org with "Horseback Riding 101" |
+      | link                       | destination                                                           |
+      | "View Activity Categories" | the Activity Categories Admin page                                    |
+      | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" specific to its Org |
+      | "Add an activity"          | the New Activity page for the Org with "Horseback Riding 101"         |
 
   @org_activities_index
-  Scenario: Leaving the Activities Admin page for a particular Org (as Org Owner)
+  Scenario Outline: Leaving the Activities Admin page for a particular Org (as Org Owner)
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
     And I am on the Activities Admin page for the Org with "Horseback Riding 101"
     Then I should not see "View Activity Categories" within "a"
-    Then I should not see "Add an Activity" within "a"
-    When I follow "Horseback Riding 101"
-    Then I should be on the Activity Edit page for "Horseback Riding 101"
-  
-  @activity_edit
-  Scenario: Editing an Activity
-    Given I am on the Activity Edit page for "Horseback Riding 101"
+    And I should see "Add an activity" within "a"
+    When I follow <link>
+    Then I should be on the <destination_page>
+    Examples:
+      | link                   | destination_page                                                  |
+      | "Horseback Riding 101" | Activity Edit page for "Horseback Riding 101" specific to its Org |
+      | "Add an activity"      | New Activity page for the Org with "Horseback Riding 101"         |
+
+  @activity_edit @org_activity_edit
+  Scenario Outline: Editing an Activity
+    Given I am logged in as "admin" with password "admin"
+    Given I am on <start_page>
     Then I should see "Edit Activity: Horseback Riding 101" within "h1"
     Then the "activity_name" field should contain "Horseback Riding 101"
     And the "activity_description" field should contain "Beginning Horseback Riding, perfect for ages 9-13"
     And I should see labels "Fun, Educational" within "fieldset#activity_categories"
     And the "Fun" checkbox within "fieldset#activity_categories" should not be checked
     And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
-    
+    Examples:
+      | start_page                                                            |
+      | the Activity Edit page for "Horseback Riding 101"                     |
+      | the Activity Edit page for "Horseback Riding 101" specific to its Org |
+
+  @activity_edit
+  Scenario: An Org Owner should not be able to get into editing an Org other than his own
+    Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
+    When I go to the Activity Edit page for "Horseback Riding 101"
+    Then I should be on the homepage
+    And I should see "do not have access"
+    When I go to the Activity Edit page for "Horseback Riding 101" specific to its Org
+    Then I should be on the Activity Edit page for "Horseback Riding 101" specific to its Org
+  
   @activity_update
-  Scenario: Updating an Activity
-    Given I am on the Activity Edit page for "Horseback Riding 101"
+  Scenario Outline: Updating an Activity
+    Given I am logged in as "admin" with password "admin"
+    Given I am on the <start_page>
     When I check "Fun"
     And I fill in "Horseback Riding 102" for "Name"
     And I press "Save Changes"
-    Then I should be on the Activities Admin page
+    Then I should be on the <end_page>
     And I should see "Activity has been successfully updated."
     When I follow "Horseback Riding 102"
     Then the "Fun" checkbox within "fieldset#activity_categories" should be checked
     And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
+    Examples:
+      | start_page                                                        | end_page                                                      |
+      | Activity Edit page for "Horseback Riding 101"                     | Activities Admin page                                         |
+      | Activity Edit page for "Horseback Riding 101" specific to its Org | Activities Admin page for the Org with "Horseback Riding 102" |
 
   @activity_update @invalid
-  Scenario: Updating an Activity with Invalid Data followed by Corrections
-    Given I am on the Activity Edit page for "Horseback Riding 101"
+  Scenario Outline: Updating an Activity with Invalid Data followed by Corrections
+    Given I am logged in as "admin" with password "admin"
+    Given I am on the Activity Edit page for <record> 
     When I fill in "" for "Name"
     And I press "Save Changes"
-    Then I should be on the Activity page for "Horseback Riding 101"
+    Then I should be on the Activity page for <record>
     And I should not see "Activity has been successfully updated."
     And I should see "Name can't be blank"
     When I fill in "Horseback and Sundries" for "Name"
     And I check "Fun"
     And I press "Save Changes"
-    Then I should be on the Activities Admin page
+    Then I should be on the Activities Admin <page_specific_to_org_or_not>
     And I should see "Horseback and Sundries" within "table#activities.full_width tr.activity td.activity_name"
     When I follow "Horseback and Sundries"
     Then the "Fun" checkbox should be checked
+    Examples:
+      | record                                     | page_specific_to_org_or_not                    |
+      | "Horseback Riding 101"                     | page                                           |
+      | "Horseback Riding 101" specific to its Org | page for the Org with "Horseback and Sundries" |
     
   @activity_create
   Scenario: Creating a New Activity
-    Given I am on the New Activity page
+    Given I am on the New Activity page for the Org with "Horseback Riding 101"
     Then the "Fun" checkbox within "fieldset#activity_categories" should not be checked
     And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
     When I fill in "Cliff Diving" for "Name"
     And I fill in "The most exhilarating thing you'll ever try!" for "Description"
     And I check "Educational"
     And I press "Create"
-    Then I should be on the Activities Admin page
-    And I should see "New Activity successfully created."
+    Then I should be on the Activities Admin page for the Org with "Horseback Riding 101"
+    # And I should see "New Activity successfully created."
     When I follow "Cliff Diving" within "table#activities.full_width tr.activity td.activity_name"
     Then I should be on the Activity Edit page for "Cliff Diving"
     And the "Educational" checkbox within "fieldset#activity_categories" should be checked
   
   @activity_create @invalid
   Scenario: Creating a New Activity with Invalid Data followed by Corrections
-    Given I am on the New Activity page
+    Given I am on the New Activity page for the Org with "Horseback Riding 101"
     When I fill in "Cliff Diving" for "Name"
     And I check "Educational"
     And I press "Create"
-    Then I should be on the Activities Admin page
+    Then I should be on the Activities Admin page for the Org with "Horseback Riding 101"
     And I should see "Description can't be blank"
     And the "Educational" checkbox should be checked
     When I fill in "Description" with "A valid description"
     And I press "Create"
-    Then I should be on the Activities Admin page
-    And I should see "New Activity successfully created."
+    Then I should be on the Activities Admin page for the Org with "Horseback Riding 101"
+    # And I should see "New Activity successfully created."
