@@ -51,6 +51,13 @@ Background:
     And the "Last name" field should contain "Jacobs"
     And the "State" field should contain "Arizona" 
     And the "Phone" field should contain ""
+
+  # @child_edit
+  # Scenario: As a logged in parent I should be able to edit my children
+  #   Given I am logged in as person with email "john@adams.com" with password "secret"
+  #   Then I should be on the Parent Show page for "john@adams.com"
+  
+  
   
   @add_childrens
   Scenario: As a logged in parent I should be able to add children 
