@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Activity do
+describe Offering do
   before(:each) do
     cat = Factory :activity_category
     org = Factory :org
@@ -13,38 +13,38 @@ describe Activity do
   end
   
   it "should save a valid record" do
-    act = Activity.create(@valid_attributes)
+    act = Offering.create(@valid_attributes)
     act.should_not be_new_record
     act.should be_valid
   end
   
   it "should have and belong to many Activity Categories" do
-    pending# Activity.should
+    pending# Offering.should
   end
   
   describe 'validations' do
     describe 'on required fields' do
       it "should fail to create a new record if 'name' is missing" do
-        missing_required_field_test(:activity, :name)
+        missing_required_field_test(:offering, :name)
       end
       
       it "should fail to create a new record if 'description' is missing" do
-        missing_required_field_test(:activity, :description)
+        missing_required_field_test(:offering, :description)
       end
   
       it "should fail to create a record if 'org_id' is missing" do
-        missing_required_field_test(:activity, :org_id)
+        missing_required_field_test(:offering, :org_id)
       end
     end
     
     it "should fail to create a record if the associated Org is not valid" do
-      @activity = Activity.new(@valid_attributes)
-      @org = Org.find(@activity.org_id)
+      @offering = Offering.new(@valid_attributes)
+      @org = Org.find(@offering.org_id)
       @org.name = ''
       @org.save(false)
-      @activity.save
-      @activity.should_not be_valid
-      @activity.should be_new_record
+      @offering.save
+      @offering.should_not be_valid
+      @offering.should be_new_record
     end
   end
     

@@ -29,9 +29,9 @@ Given /^I am logged in as the owner of "(.*)" with password "(.*)"$/ do |org_nam
   click_button "Sign in"
 end
 
-Given /^I am logged in as the owner of the Org that owns "(.*)" with password "(.*)"$/ do |activity_name, password|
+Given /^I am logged in as the owner of the Org that owns "(.*)" with password "(.*)"$/ do |offering_name, password|
   visit new_session_url
-  fill_in "login", :with => Activity.find_by_name(activity_name).org.owner.user.login
+  fill_in "login", :with => Offering.find_by_name(offering_name).org.owner.user.login
   fill_in "password", :with => password
   click_button "Sign in"
 end

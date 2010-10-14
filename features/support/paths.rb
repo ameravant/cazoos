@@ -53,23 +53,23 @@ module NavigationHelpers
     when /^the Activity Category Edit page for "(.*)"$/
       edit_admin_activity_category_path(ActivityCategory.find_by_name($1) || ActivityCategory.find_by_permalink($1))
 
-    when /^the Activities Admin page$/
-      admin_activities_path
-    when /^the New Activity page for the Org with "([^"]*)"$/
-      new_admin_org_activity_path(Activity.find_by_name($1).org)
-    when /^the Activity Edit page for "(.*)"$/
-      edit_admin_activity_path(Activity.find_by_name($1))
-    when /^the Activity page for "(.*)"$/
-      admin_activity_path(Activity.find_by_name($1))
-    when /^the Activity page for "(.*)" specific to its Org$/
-      admin_org_activity_path(Activity.find_by_name($1).org, Activity.find_by_name($1))
-    when /^the Activities Admin page for the Org with "([^"]*)"$/
-      admin_org_activities_path(Activity.find_by_name($1).org)
-    when /^the Activity Edit page for "([^"]*)" specific to its Org$/
-      edit_admin_org_activity_path(Activity.find_by_name($1).org, Activity.find_by_name($1))      
+    when /^the Offerings Admin page$/
+      admin_offerings_path
+    when /^the New Offering page for the Org with "([^"]*)"$/
+      new_admin_org_offering_path(Offering.find_by_name($1).org)
+    when /^the Offering Edit page for "(.*)"$/
+      edit_admin_offering_path(Offering.find_by_name($1))
+    when /^the Offering page for "(.*)"$/
+      admin_offering_path(Offering.find_by_name($1))
+    when /^the Offering page for "(.*)" specific to its Org$/
+      admin_org_offering_path(Offering.find_by_name($1).org, Offering.find_by_name($1))
+    when /^the Offerings Admin page for the Org with "([^"]*)"$/
+      admin_org_offerings_path(Offering.find_by_name($1).org)
+    when /^the Offering Edit page for "([^"]*)" specific to its Org$/
+      edit_admin_org_offering_path(Offering.find_by_name($1).org, Offering.find_by_name($1))      
 
-    when /^the Events Admin page for the Org with Activity "(.*)"$/
-      admin_org_events_path(Activity.find_by_name($1).org)
+    when /^the Events Admin page for the Org with Offering "(.*)"$/
+      admin_org_events_path(Offering.find_by_name($1).org)
       
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -8,3 +8,11 @@ NOTES on Cucumber:
 
 To set up the test environment, run rake cazoos:cucumber_setup
 You will then be able to run cucumber features from the base app.
+
+There are several files that need to be set up out of RAILS_ROOT in order for things to run properly:
+
+config/environments/(test.rb,cucumber.rb)
+config/initializers/require_factories.rb  (not required but useful, contains the line "require 'factory_girl' if RAILS_ENV=='test'")
+lib/tasks/(cucumber.rake,spec.rake)
+
+db/seeds.rb should point to vendor/plugins/siteninja/cazoos/db/seeds.rb
