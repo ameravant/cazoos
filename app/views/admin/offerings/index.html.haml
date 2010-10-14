@@ -4,7 +4,7 @@
   %span.hmenu
     - if !@org.nil?
       = icon 'Plus', new_admin_org_offering_path(@org)
-      = link_to 'Add an activity', new_admin_org_offering_path(@org)
+      = link_to 'Add an offering', new_admin_org_offering_path(@org)
   
     - if @current_user.is_super_user?      
       = icon "Dots Down", admin_activity_categories_path

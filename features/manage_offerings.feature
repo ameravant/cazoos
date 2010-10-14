@@ -94,7 +94,7 @@ Feature: Adding an offering
     Then I should see "Edit Offering: Horseback Riding 101" within "h1"
     Then the "offering_name" field should contain "Horseback Riding 101"
     And the "offering_description" field should contain "Beginning Horseback Riding, perfect for ages 9-13"
-    And I should see labels "Fun, Educational" within "fieldset#offering_categories"
+    And I should see labels "Fun, Educational" within "fieldset#activity_categories"
     And the "Fun" checkbox within "fieldset#activity_categories" should not be checked
     And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
     Examples:
@@ -162,7 +162,7 @@ Feature: Adding an offering
     # And I should see "New Offering successfully created."
     When I follow "Cliff Diving" within "table#offerings.full_width tr.offering td.offering_name"
     Then I should be on the Offering Edit page for "Cliff Diving" specific to its Org
-    And the "Educational" checkbox within "fieldset#offering_categories" should be checked
+    And the "Educational" checkbox within "fieldset#activity_categories" should be checked
   
   @offering_create @invalid
   Scenario: Creating a New Offering with Invalid Data followed by Corrections

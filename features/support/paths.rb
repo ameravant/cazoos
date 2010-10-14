@@ -68,8 +68,8 @@ module NavigationHelpers
     when /^the Offering Edit page for "([^"]*)" specific to its Org$/
       edit_admin_org_offering_path(Offering.find_by_name($1).org, Offering.find_by_name($1))      
 
-    when /^the Events Admin page for the Org with Offering "(.*)"$/
-      admin_org_events_path(Offering.find_by_name($1).org)
+    when /^the Events Admin page for the Offering "(.*)"$/
+      admin_offering_events_path(Offering.find_by_name($1).org)
       
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
