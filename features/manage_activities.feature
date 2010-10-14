@@ -1,15 +1,15 @@
-@activities
-Feature: Adding an activity
-  In order to have activities for org owners to choose from
+@offerings
+Feature: Adding an offering
+  In order to have offerings for org owners to choose from
   As an admin 
-  I want add new activities to the system
+  I want add new offerings to the system
   
   Background:
     Given the following activity_category records
       | name        | description                            |
       | Fun         | Sessions that are for amusement        |
       | Educational | Sessions that teach something valuable |
-    Given the following activity records
+    Given the following offering records
       | name                 | description                                                 |
       | Horseback Riding 101 | Beginning Horseback Riding, perfect for ages 9-13...        |
       | Archery              | For the child who likes to push him/herself, concentrate... |
@@ -21,7 +21,7 @@ Feature: Adding an activity
       | parent@home.com |
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
       
-  @activities_index  
+  @offerings_index  
   Scenario Outline: Visiting the Activities Admin page as Various Types of People
     Given I am logged in as <login> with password <password>
     Given I am on the homepage
@@ -30,7 +30,7 @@ Feature: Adding an activity
     Then I should <only_admin> see "Activities" within "h1"
     And I should <only_admin> see "Horseback Riding 101"
     And I should <if_logged_in_but_not_admin> see "do not have access"
-    And I should not see "Add an activity" within "a"
+    And I should not see "Add an offering" within "a"
     Examples:
       | login                                                 | password | should_be_on              | only_admin | if_logged_in_but_not_admin |
       | "admin"                                               | "admin"  | the Activities Admin page |            | not                        |
@@ -38,7 +38,7 @@ Feature: Adding an activity
       | person with email "parent@home.com"                   | "secret" | the homepage              | not        |                            |
       | "anonymous"                                           | "bogus"  | the login page            | not        | not                        |
   
-  @activities_index    
+  @offerings_index    
   Scenario Outline: Leaving the Activities Admin page (which is available only to SuperAdmin)
     Given I am logged in as "admin" with password "admin"
     And I am on the Activities Admin page
@@ -49,7 +49,7 @@ Feature: Adding an activity
       | "View Activity Categories" | the Activity Categories Admin page                |
       | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" |
 
-  @org_activities_index
+  @org_offerings_index
   Scenario Outline: Visiting the Activities Admin page for a particular Org
     Given I am logged in as <login> with password <password>
     When I go to the Activities Admin page for the Org with "Horseback Riding 101"
@@ -62,7 +62,7 @@ Feature: Adding an activity
       | the owner of the Org that owns "Archery"              | "secret" | the homepage                                                      | not            | 
       | "anonymous"                                           | "bogus"  | the login page                                                    | not            | 
     
-  @org_activities_index
+  @org_offerings_index
   Scenario Outline: Leaving the Activities Admin page for a particular Org (as SuperAdmin)
     Given I am logged in as "admin" with password "admin"
     And I am on the Activities Admin page for the Org with "Horseback Riding 101"
@@ -72,29 +72,29 @@ Feature: Adding an activity
       | link                       | destination                                                           |
       | "View Activity Categories" | the Activity Categories Admin page                                    |
       | "Horseback Riding 101"     | the Activity Edit page for "Horseback Riding 101" specific to its Org |
-      | "Add an activity"          | the New Activity page for the Org with "Horseback Riding 101"         |
+      | "Add an offering"          | the New Activity page for the Org with "Horseback Riding 101"         |
 
-  @org_activities_index
+  @org_offerings_index
   Scenario Outline: Leaving the Activities Admin page for a particular Org (as Org Owner)
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
     And I am on the Activities Admin page for the Org with "Horseback Riding 101"
     Then I should not see "View Activity Categories" within "a"
-    And I should see "Add an activity" within "a"
+    And I should see "Add an offering" within "a"
     When I follow <link>
     Then I should be on the <destination_page>
     Examples:
       | link                   | destination_page                                                  |
       | "Horseback Riding 101" | Activity Edit page for "Horseback Riding 101" specific to its Org |
-      | "Add an activity"      | New Activity page for the Org with "Horseback Riding 101"         |
+      | "Add an offering"      | New Activity page for the Org with "Horseback Riding 101"         |
 
-  @activity_edit @org_activity_edit
+  @offering_edit @org_offering_edit
   Scenario Outline: Editing an Activity
     Given I am logged in as "admin" with password "admin"
     Given I am on <start_page>
     Then I should see "Edit Activity: Horseback Riding 101" within "h1"
-    Then the "activity_name" field should contain "Horseback Riding 101"
-    And the "activity_description" field should contain "Beginning Horseback Riding, perfect for ages 9-13"
-    And I should see labels "Fun, Educational" within "fieldset#activity_categories"
+    Then the "offering_name" field should contain "Horseback Riding 101"
+    And the "offering_description" field should contain "Beginning Horseback Riding, perfect for ages 9-13"
+    And I should see labels "Fun, Educational" within "fieldset#offering_categories"
     And the "Fun" checkbox within "fieldset#activity_categories" should not be checked
     And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
     Examples:
@@ -102,7 +102,7 @@ Feature: Adding an activity
       | the Activity Edit page for "Horseback Riding 101"                     |
       | the Activity Edit page for "Horseback Riding 101" specific to its Org |
 
-  @activity_edit
+  @offering_edit
   Scenario: An Org Owner should not be able to get into editing an Org other than his own
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
     When I go to the Activity Edit page for "Horseback Riding 101"
@@ -111,7 +111,7 @@ Feature: Adding an activity
     When I go to the Activity Edit page for "Horseback Riding 101" specific to its Org
     Then I should be on the Activity Edit page for "Horseback Riding 101" specific to its Org
   
-  @activity_update
+  @offering_update
   Scenario Outline: Updating an Activity
     Given I am logged in as "admin" with password "admin"
     Given I am on the <start_page>
@@ -128,7 +128,7 @@ Feature: Adding an activity
       | Activity Edit page for "Horseback Riding 101"                     | Activities Admin page                                         |
       | Activity Edit page for "Horseback Riding 101" specific to its Org | Activities Admin page for the Org with "Horseback Riding 102" |
 
-  @activity_update @invalid
+  @offering_update @invalid
   Scenario Outline: Updating an Activity with Invalid Data followed by Corrections
     Given I am logged in as "admin" with password "admin"
     Given I am on the Activity Edit page for <record> 
@@ -141,7 +141,7 @@ Feature: Adding an activity
     And I check "Fun"
     And I press "Save Changes"
     Then I should be on the Activities Admin <page_specific_to_org_or_not>
-    And I should see "Horseback and Sundries" within "table#activities.full_width tr.activity td.activity_name"
+    And I should see "Horseback and Sundries" within "table#offerings.full_width tr.offering td.offering_name"
     When I follow "Horseback and Sundries"
     Then the "Fun" checkbox should be checked
     Examples:
@@ -149,7 +149,7 @@ Feature: Adding an activity
       | "Horseback Riding 101"                     | page                                           |
       | "Horseback Riding 101" specific to its Org | page for the Org with "Horseback and Sundries" |
     
-  @activity_create
+  @offering_create
   Scenario: Creating a New Activity
     Given I am on the New Activity page for the Org with "Horseback Riding 101"
     Then the "Fun" checkbox within "fieldset#activity_categories" should not be checked
@@ -160,11 +160,11 @@ Feature: Adding an activity
     And I press "Create"
     Then I should be on the Activities Admin page for the Org with "Horseback Riding 101"
     # And I should see "New Activity successfully created."
-    When I follow "Cliff Diving" within "table#activities.full_width tr.activity td.activity_name"
+    When I follow "Cliff Diving" within "table#offerings.full_width tr.offering td.offering_name"
     Then I should be on the Activity Edit page for "Cliff Diving" specific to its Org
-    And the "Educational" checkbox within "fieldset#activity_categories" should be checked
+    And the "Educational" checkbox within "fieldset#offering_categories" should be checked
   
-  @activity_create @invalid
+  @offering_create @invalid
   Scenario: Creating a New Activity with Invalid Data followed by Corrections
     Given I am on the New Activity page for the Org with "Horseback Riding 101"
     When I fill in "Cliff Diving" for "Name"

@@ -1,4 +1,4 @@
-class Activity < ActiveRecord::Base
+class Offering < ActiveRecord::Base
   has_and_belongs_to_many :activity_categories
   belongs_to :org
   

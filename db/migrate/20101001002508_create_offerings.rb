@@ -1,6 +1,6 @@
-class CreateActivities < ActiveRecord::Migration
+class CreateOfferings < ActiveRecord::Migration
   def self.up
-    create_table :activities do |t|
+    create_table :offerings do |t|
       t.integer :org_id
       t.string :name
       t.text :description
@@ -10,6 +10,6 @@ class CreateActivities < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :activities
+    drop_table :offerings
   end
 end

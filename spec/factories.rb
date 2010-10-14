@@ -76,7 +76,7 @@ Factory.define :activity_category do |f|
   f.blurb "Blurb about this category"
 end
 
-Factory.define :activity do |f|
+Factory.define :offering do |f|
   f.association :org
   f.sequence(:name) { |n| "Activity#{n}" }
   f.description "Description of this Activity"

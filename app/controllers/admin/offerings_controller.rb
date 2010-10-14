@@ -1,4 +1,4 @@
-class Admin::ActivitiesController < AdminController
+class Admin::OfferingsController < AdminController
   before_filter :allow_only_admin_and_org_owners
   before_filter :load_activity_and_reject_if_owner_not_logged_in, :except => [:index, :new, :create]
   before_filter :reject_org_owner_if_org_info_missing_from_URL, :only => [:edit, :update, :index]

@@ -5,16 +5,16 @@ describe Admin::EventsController do
     before :each do
       # @org = Factory.build :org
       # @org.id = 12343
-      @activity = Factory.build :activity
-      @activity.id = 78697
+      @offering = Factory.build :offering
+      @offering.id = 78697
       @cont = 'admin/events'
     end
     
     it "should have one a List-all route nested in an Activity" do
-      assert_recognizes( {:controller => @cont, :action => 'index', :activity_id => "#{@activity.id}"}, 
-        admin_activity_events_path(@activity))
-      assert_recognizes( {:controller => @cont, :action => 'index', :activity_id => "#{@activity.id}"}, 
-        "/admin/activities/#{@activity.id}/events")
+      assert_recognizes( {:controller => @cont, :action => 'index', :offering_id => "#{@offering.id}"}, 
+        admin_activity_events_path(@offering))
+      assert_recognizes( {:controller => @cont, :action => 'index', :offering_id => "#{@offering.id}"}, 
+        "/admin/activities/#{@offering.id}/events")
     end
     
   end
