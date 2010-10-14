@@ -82,6 +82,12 @@ describe Admin::ActivitiesController do
       response.should render_template('destroy')
     end
     
+    it "should destroy the record when called to do so" do
+      set_up_record_stub :activity
+      @activity.expects(:destroy)
+      delete :destroy, :id => @activity.id
+    end
+    
     describe "when Activity is valid" do
       before :each do
         set_up_record_stub :activity

@@ -36,8 +36,6 @@ class Admin::ActivitiesController < AdminController
   # GET /admin/activities/:id/edit (only as SuperAdmin)
   def edit
     @org = Org.find(params[:org_id]) if !params[:org_id].nil?
-    # Should not need this following line, since it's loaded in a before_filter
-    # @activity = Activity.find(params[:id])
     @activity_categories = ActivityCategory.all
   end
   
@@ -58,6 +56,8 @@ class Admin::ActivitiesController < AdminController
   # DELETE /admin/organizations/:org_id/activities/:id
   # DELETE /admin/activities/:id
   def destroy
+    @activity.destroy
+    respond_to :js
   end
   
   private
