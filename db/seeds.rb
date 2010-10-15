@@ -86,3 +86,17 @@ Plugin.create(:url => "git@github.com:ameravant/siteninja_store.git", :position 
 Plugin.create(:url => "git@github.com:ameravant/cazoos.git", :position => 10)
 Plugin.create(:url => "git@github.com:ameravant/cazoos_pages.git", :position => 12)
 
+
+if RAILS_ENV == 'development'
+  per = Person.new(:first_name => 'Org', :last_name => 'Owner', :email => 'owner@org.org')
+  per.person_groups << PersonGroup.find_by_title('Organization Owner')
+  per.user = User.create(:login => 'owner@org.org', :password => 'secret', :password_confirmation => 'secret')
+  per.save
+
+  org_type = OrgType.create(:title => 'Camp', :description => 'Camps')
+
+  org = Org.new(:name => 'Camp Something', :description => 'A camp...', :min_age => 6, :max_age => 9, :contact => 'Jim Adams', :contact_phone => '80522288288', :contact_email => 'jim@adams.com', :address => '1234 Org St.', :city => 'Santa Barbara', :state => 'CA', :zip => '93101', :gender => 'coed')
+  org.org_type = org_type
+  org.owner = per
+  org.save
+end

@@ -9,4 +9,6 @@ Feature: Managing Events
   
   Scenario: Creating an Event as an Org Owner
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
-    When I am on the Events Admin page for the Offering "Horseback Riding 101"
+    When I go to the Events Admin page for the "Horseback Riding 101" offering
+    Then I should see "Events" within "h1"
+    # And I follow "Add an event"

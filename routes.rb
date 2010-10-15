@@ -1,5 +1,5 @@
 namespace :admin do |admin|
-  admin.resources :orgs, :as => 'organizations', :except => :show do |org|
+  admin.resources :orgs, :as => 'organizations' do |org|
     org.resources :offerings, :only => [:new, :create, :index, :edit, :update]
   end
   admin.resources :org_types, :as => 'organization_types', :except => :show

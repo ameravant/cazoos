@@ -1,6 +1,7 @@
 class Admin::OrgsController < AdminController
   before_filter :block_intruders
   before_filter :load_org_and_reject_if_owner_not_logged_in, :except => [:index, :new, :create]
+  before_filter :require_admin_login_for_index, :only => :index
   before_filter :load_supporting_resources, :only => [:new, :create, :edit, :update]
     
   def index
@@ -54,6 +55,10 @@ class Admin::OrgsController < AdminController
     unless org_is_mine? or current_user.has_role('Admin')
       authorize(['kick me out'], 'editing that Organization') 
     end
+  end
+  
+  def require_admin_login_for_index
+    authorize(['kick me out'], 'that') unless current_user.has_role('Admin')
   end
   
   def org_is_mine?

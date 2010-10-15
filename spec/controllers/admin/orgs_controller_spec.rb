@@ -3,6 +3,19 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe Admin::OrgsController do
   # integrate_views
 
+  describe "routes" do
+    before :each do
+      @org = Factory.build :org
+      @org.id = 29899
+      @cont = 'admin/orgs'
+    end
+    
+    it "should include a Show route" do
+      assert_recognizes({:controller => @cont, :action => 'show', :id => @org.id.to_s}, admin_org_path(@org))
+      assert_recognizes({:controller => @cont, :action => 'show', :id => @org.id.to_s}, "/admin/organizations/#{@org.id}")
+    end
+  end
+  
   describe "once through the authorization filters" do
     before :each do
       stub_admin_login
@@ -73,6 +86,13 @@ describe Admin::OrgsController do
       set_up_org_stub
       stub_org_owner_login
     end
+    
+    it "should reject him if he tries to see the list of all Organizations" do
+      get :index
+      response.should redirect_to(root_url)
+      flash[:error].should include('do not have access')
+    end
+    
     describe "and trying to mess with another dude's Org, he should get an error and redirect when he tries to" do
       before :each do
         controller.stubs(:org_is_mine?).returns(false)
