@@ -18,5 +18,5 @@
         %th Description
       - for act in @offerings
         %tr[act]{ :class => cycle('odd','even') }
-          %td.offering_name= link_to(h(act.name), !@org.nil? ? edit_admin_org_offering_path(@org, act) : edit_admin_offering_path(act))
+          %td.offering_name= link_to(h(act.name), !@org.nil? ? admin_org_offering_path(@org, act) : admin_offering_path(act))
           %td.act_description= h act.description

@@ -23,16 +23,21 @@ describe Admin::OfferingsController do
       admin_org_offerings_path(@org).should == "/admin/organizations/#{@org.id}/offerings"
     end
     
-    # Edit and Update don't really need this, since the :id unambigously identifies the Offering, 
+    # Edit, Update and Show don't really need this, since the :id unambigously identifies the Offering, 
     #    but it helps to track what scope the user came from when redirecting them back after a successful update
     it "should have an Edit Record route nested in the Organization" do
       route_for(:controller => @cont, :action => 'edit', :org_id => "#{@org.id}", :id => "#{@offering.id}").should == 
         edit_admin_org_offering_path(@org, @offering)
       edit_admin_org_offering_path(@org, @offering).should == "/admin/organizations/#{@org.id}/offerings/#{@offering.id}/edit"
     end
-    it "should have an Edit Record route nested in the Organization" do
+    it "should have an Update Record route nested in the Organization" do
       route_for(:controller => @cont, :action => 'update', :org_id => "#{@org.id}", :id => "#{@offering.id}").should == 
         { :path => "/admin/organizations/#{@org.id}/offerings/#{@offering.id}", :method => :put }
+    end
+    it "should have a Show Record route nested in the Organization" do
+      assert_recognizes( {:controller => @cont, :action => 'show', :org_id => "#{@org.id}", :id => "#{@offering.id}"},
+        { :path => admin_org_offering_path(@org, @offering), :method => 'get' } )
+      admin_org_offering_path(@org, @offering).should == "/admin/organizations/#{@org.id}/offerings/#{@offering.id}"
     end
     
     # Un-nested routes
@@ -43,6 +48,11 @@ describe Admin::OfferingsController do
     it "should have an Update Record route" do
       route_for(:controller => @cont, :action => 'update', :id => "#{@offering.id}").should == 
         { :path => "/admin/offerings/#{@offering.id}", :method => :put }
+    end
+    it "should have a Show Record route" do
+      assert_recognizes( { :controller => @cont, :action => 'show', :id => "#{@offering.id}" },
+        admin_offering_path(@offering) )
+      admin_offering_path(@offering).should == "/admin/offerings/#{@offering.id}"
     end
     it "should have a Destroy Record route" do
       route_for(:controller => @cont, :action => 'destroy', :id => "#{@offering.id}").should == 

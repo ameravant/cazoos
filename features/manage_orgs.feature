@@ -132,27 +132,25 @@ Feature: Manage Orgs
   @org_permissions
   Scenario: Editing My Own Organization but not Someone Else's
     Given I am logged in as the owner of "Camp TittiCaca" with password "secret"
-    When I go to the Organizations Admin page
-    And I follow "Camp TittiCaca"
+    When I go to the Organization Edit page for "Camp TittiCaca"
     Then I should be on the Organization Edit page for "Camp TittiCaca"
-    When I go to the Organizations Admin page
-    And I follow "Camp DoYaWanna"
-    Then I should be on the Organizations Admin page
+    When I go to the Organization Edit page for "Camp DoYaWanna"
+    Then I should be on the Organization Edit page for "Camp TittiCaca"
     And I should see "You do not have access to editing that Organization."
 
-    @org_permissions
-    Scenario: Trying to Edit Organizations as a Parent
-    Given the following parent record
-      | email             |
-      | parent@family.com |
-    Given I am logged in as person with email "parent@family.com" with password "secret"
-    Given I am on the homepage
-    When I go to the Organizations Admin page
-    Then I should be on the homepage
-    And I should see "You do not have access to editing Organizations."
-    When I go to the Organization Edit page for "Camp TittiCaca"
-    Then I should be on the homepage
-    And I should see "You do not have access to editing Organizations."
+  @org_permissions
+  Scenario: Trying to Edit Organizations as a Parent
+  Given the following parent record
+    | email             |
+    | parent@family.com |
+  Given I am logged in as person with email "parent@family.com" with password "secret"
+  Given I am on the homepage
+  When I go to the Organizations Admin page
+  Then I should be on the homepage
+  And I should see "You do not have access to editing Organizations."
+  When I go to the Organization Edit page for "Camp TittiCaca"
+  Then I should be on the homepage
+  And I should see "You do not have access to editing Organizations."
     
   #   
   # @org_permissions

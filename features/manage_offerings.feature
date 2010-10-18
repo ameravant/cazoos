@@ -45,10 +45,20 @@ Feature: Adding an offering
     When I follow <link> 
     Then I should be on <destination>
     Examples:
-      | link                       | destination                                       |
-      | "View Activity Categories" | the Activity Categories Admin page                |
-      | "Horseback Riding 101"     | the Offering Edit page for "Horseback Riding 101" |
+      | link                       | destination                                  |
+      | "View Activity Categories" | the Activity Categories Admin page           |
+      | "Horseback Riding 101"     | the Offering page for "Horseback Riding 101" |
 
+  @offering_show
+  Scenario: Going to Edit an Offering (from the general scope - no Org in URL)
+    Given I am logged in as "admin" with password "admin"
+    And I am on the Offering page for "Horseback Riding 101"
+    When I follow "Edit"
+    Then I should be on the Offering Edit page for "Horseback Riding 101"
+    When I go to the Offering page for "Horseback Riding 101"
+    And I follow "Manage Schedule"
+    Then I should be on the Events Admin page for the "Horseback Riding 101" offering
+    
   @org_offerings_index
   Scenario Outline: Visiting the Offerings Admin page for a particular Org
     Given I am logged in as <login> with password <password>
@@ -69,11 +79,11 @@ Feature: Adding an offering
     When I follow <link>
     Then I should be on <destination>
     Examples:
-      | link                       | destination                                                           |
-      | "View Activity Categories" | the Activity Categories Admin page                                    |
-      | "Horseback Riding 101"     | the Offering Edit page for "Horseback Riding 101" specific to its Org |
-      | "Add an offering"          | the New Offering page for the Org with "Horseback Riding 101"         |
-
+      | link                       | destination                                                      |
+      | "View Activity Categories" | the Activity Categories Admin page                               |
+      | "Horseback Riding 101"     | the Offering page for "Horseback Riding 101" specific to its Org |
+      | "Add an offering"          | the New Offering page for the Org with "Horseback Riding 101"    |
+  
   @org_offerings_index
   Scenario Outline: Leaving the Offerings Admin page for a particular Org (as Org Owner)
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
@@ -83,10 +93,10 @@ Feature: Adding an offering
     When I follow <link>
     Then I should be on the <destination_page>
     Examples:
-      | link                   | destination_page                                                  |
-      | "Horseback Riding 101" | Offering Edit page for "Horseback Riding 101" specific to its Org |
-      | "Add an offering"      | New Offering page for the Org with "Horseback Riding 101"         |
-
+      | link                   | destination_page                                             |
+      | "Horseback Riding 101" | Offering page for "Horseback Riding 101" specific to its Org |
+      | "Add an offering"      | New Offering page for the Org with "Horseback Riding 101"    |
+  
   @offering_edit @org_offering_edit
   Scenario Outline: Editing an Offering
     Given I am logged in as "admin" with password "admin"
@@ -101,7 +111,7 @@ Feature: Adding an offering
       | start_page                                                            |
       | the Offering Edit page for "Horseback Riding 101"                     |
       | the Offering Edit page for "Horseback Riding 101" specific to its Org |
-
+  
   @offering_edit
   Scenario: An Org Owner should not be able to get into editing an Org other than his own
     Given I am logged in as the owner of the Org that owns "Horseback Riding 101" with password "secret"
@@ -121,59 +131,63 @@ Feature: Adding an offering
     Then I should be on the <end_page>
     And I should see "Offering has been successfully updated."
     When I follow "Horseback Riding 102"
+    And I follow "Edit"
     Then the "Fun" checkbox within "fieldset#activity_categories" should be checked
     And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
     Examples:
       | start_page                                                        | end_page                                                      |
       | Offering Edit page for "Horseback Riding 101"                     | Offerings Admin page                                         |
       | Offering Edit page for "Horseback Riding 101" specific to its Org | Offerings Admin page for the Org with "Horseback Riding 102" |
-
-  @offering_update @invalid
-  Scenario Outline: Updating an Offering with Invalid Data followed by Corrections
-    Given I am logged in as "admin" with password "admin"
-    Given I am on the Offering Edit page for <record> 
-    When I fill in "" for "Name"
-    And I press "Save Changes"
-    Then I should be on the Offering page for <record>
-    And I should not see "Offering has been successfully updated."
-    And I should see "Name can't be blank"
-    When I fill in "Horseback and Sundries" for "Name"
-    And I check "Fun"
-    And I press "Save Changes"
-    Then I should be on the Offerings Admin <page_specific_to_org_or_not>
-    And I should see "Horseback and Sundries" within "table#offerings.full_width tr.offering td.offering_name"
-    When I follow "Horseback and Sundries"
-    Then the "Fun" checkbox should be checked
-    Examples:
-      | record                                     | page_specific_to_org_or_not                    |
-      | "Horseback Riding 101"                     | page                                           |
-      | "Horseback Riding 101" specific to its Org | page for the Org with "Horseback and Sundries" |
     
-  @offering_create
-  Scenario: Creating a New Offering
-    Given I am on the New Offering page for the Org with "Horseback Riding 101"
-    Then the "Fun" checkbox within "fieldset#activity_categories" should not be checked
-    And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
-    When I fill in "Cliff Diving" for "Name"
-    And I fill in "The most exhilarating thing you'll ever try!" for "Description"
-    And I check "Educational"
-    And I press "Create"
-    Then I should be on the Offerings Admin page for the Org with "Horseback Riding 101"
-    # And I should see "New Offering successfully created."
-    When I follow "Cliff Diving" within "table#offerings.full_width tr.offering td.offering_name"
-    Then I should be on the Offering Edit page for "Cliff Diving" specific to its Org
-    And the "Educational" checkbox within "fieldset#activity_categories" should be checked
-  
-  @offering_create @invalid
-  Scenario: Creating a New Offering with Invalid Data followed by Corrections
-    Given I am on the New Offering page for the Org with "Horseback Riding 101"
-    When I fill in "Cliff Diving" for "Name"
-    And I check "Educational"
-    And I press "Create"
-    Then I should be on the Offerings Admin page for the Org with "Horseback Riding 101"
-    And I should see "Description can't be blank"
-    And the "Educational" checkbox should be checked
-    When I fill in "Description" with "A valid description"
-    And I press "Create"
-    Then I should be on the Offerings Admin page for the Org with "Horseback Riding 101"
-    # And I should see "New Offering successfully created."
+    @offering_update @invalid
+    Scenario Outline: Updating an Offering with Invalid Data followed by Corrections
+      Given I am logged in as "admin" with password "admin"
+      Given I am on the Offering Edit page for <record> 
+      When I fill in "" for "Name"
+      And I press "Save Changes"
+      Then I should be on the Offering page for <record>
+      And I should not see "Offering has been successfully updated."
+      And I should see "Name can't be blank"
+      When I fill in "Horseback and Sundries" for "Name"
+      And I check "Fun"
+      And I press "Save Changes"
+      Then I should be on the Offerings Admin <page_specific_to_org_or_not>
+      And I should see "Horseback and Sundries" within "table#offerings.full_width tr.offering td.offering_name"
+      When I follow "Horseback and Sundries"
+      And I follow "Edit"
+      Then the "Fun" checkbox should be checked
+      Examples:
+        | record                                     | page_specific_to_org_or_not                    |
+        | "Horseback Riding 101"                     | page                                           |
+        | "Horseback Riding 101" specific to its Org | page for the Org with "Horseback and Sundries" |
+      
+    @offering_create
+    Scenario: Creating a New Offering
+      Given I am on the New Offering page for the Org with "Horseback Riding 101"
+      Then the "Fun" checkbox within "fieldset#activity_categories" should not be checked
+      And the "Educational" checkbox within "fieldset#activity_categories" should not be checked
+      When I fill in "Cliff Diving" for "Name"
+      And I fill in "The most exhilarating thing you'll ever try!" for "Description"
+      And I check "Educational"
+      And I press "Create"
+      Then I should be on the Offerings Admin page for the Org with "Horseback Riding 101"
+      # And I should see "New Offering successfully created."
+      When I follow "Cliff Diving" within "table#offerings.full_width tr.offering td.offering_name"
+      Then I should be on the Offering page for "Cliff Diving" specific to its Org
+      When I follow "Edit"
+      Then I should be on the Offering Edit page for "Cliff Diving" specific to its Org
+      And the "Educational" checkbox within "fieldset#activity_categories" should be checked
+    
+    @offering_create @invalid
+    Scenario: Creating a New Offering with Invalid Data followed by Corrections
+      Given I am on the New Offering page for the Org with "Horseback Riding 101"
+      When I fill in "Cliff Diving" for "Name"
+      And I check "Educational"
+      And I press "Create"
+      Then I should be on the Offerings Admin page for the Org with "Horseback Riding 101"
+      And I should see "Description can't be blank"
+      And the "Educational" checkbox should be checked
+      When I fill in "Description" with "A valid description"
+      And I press "Create"
+      Then I should be on the Offerings Admin page for the Org with "Horseback Riding 101"
+      # And I should see "New Offering successfully created."

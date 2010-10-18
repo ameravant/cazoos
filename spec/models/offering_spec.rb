@@ -18,9 +18,9 @@ describe Offering do
     act.should be_valid
   end
   
-  it "should have and belong to many Activity Categories" do
-    pending# Offering.should
-  end
+  # it "should have and belong to many Activity Categories" do
+  #   pending# Offering.should
+  # end
   
   describe 'validations' do
     describe 'on required fields' do

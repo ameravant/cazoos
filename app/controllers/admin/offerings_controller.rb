@@ -32,6 +32,12 @@ class Admin::OfferingsController < AdminController
     end
   end
   
+  # GET /admin/organizations/:org_id/offerings/:id
+  # GET /admin/offerings/:id (only as SuperAdmin)
+  def show
+    @org = Org.find(params[:org_id]) if !params[:org_id].nil?    
+  end
+  
   # GET /admin/organizations/:org_id/offerings/:id/edit
   # GET /admin/offerings/:id/edit (only as SuperAdmin)
   def edit

@@ -1,0 +1,19 @@
+%h1
+  Offering:
+  = h @offering.name
+  
+%table{ :cellspacing => "0" }
+  %tbody
+    %tr{ :class => cycle('odd', 'even') }
+      %th Name
+      %td= h @offering.name
+    %tr{ :class => cycle('odd', 'even') }
+      %th Description
+      %td= h @offering.description
+    %tr.top{ :class => cycle('odd', 'even') }
+%p
+  = link_to 'Edit', @org.nil? ? edit_admin_offering_path(@offering) : edit_admin_org_offering_path(@org, @offering)
+  |
+  = link_to 'Go back', admin_offerings_path
+  |
+  = link_to 'Manage Schedule', admin_offering_events_path(@offering)
