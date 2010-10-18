@@ -69,7 +69,9 @@ module NavigationHelpers
       edit_admin_org_offering_path(Offering.find_by_name($1).org, Offering.find_by_name($1))      
 
     when /^the Events Admin page for the "(.*)" offering$/
-      admin_offering_events_path(Offering.find_by_name($1).org)
+      admin_offering_events_path(Offering.find_by_name($1))
+    when /^the New Event page for the "(.*)" offering$/
+      new_admin_offering_event_path(Offering.find_by_name($1))
       
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

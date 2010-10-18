@@ -1,0 +1,4 @@
+%h1= "Schedule #{h @offering.name}"
+
+- form_for [:admin, @offering, @event], :html => { :onsubmit => "form_submitted();" } do |f|
+  = render :partial => 'form', :locals => { :f => f }

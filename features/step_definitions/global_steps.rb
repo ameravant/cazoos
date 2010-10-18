@@ -48,3 +48,30 @@ Then /^I should see (input|select|textarea)s "([^"]*)"(?: within "([^"]*)")?$/ d
     end
   end
 end
+
+Then /^I should see datetime selects "([^"]*)" within "([^"]*)"$/ do |inputs, selector|
+  inputs.split(', ').each do |field|
+    with_scope(selector) do
+      label = find('label', :text => field)
+      (1..5).to_a.each do |n|
+        sub_field = find_by_id("#{label[:for]}_#{n}i")
+        if sub_field.respond_to? :should
+          sub_field.should_not be_nil
+        else
+          assert !sub_field.nil?
+        end
+      end
+    end
+  end
+end
+
+When /^I select datetime "([^"]*)" from "([^"]*)" within "([^"]*)"$/ do |data, field, selector|
+  data = data.to_datetime.strftime('%Y %B %d %H %M').sub(/^([\d]*\s[A-Za-z]*\s)0?(\d\s[\d]{2}\s[\d]{2})$/, '\1\2')
+  data = data.split(' ')
+  with_scope(selector) do
+    label = find('label', :text => field)
+    (0..4).to_a.each do |n|
+      select(data[n], :from => "#{label[:for]}_#{n+1}i")
+    end
+  end
+end

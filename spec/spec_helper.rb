@@ -71,8 +71,10 @@ def set_up_record_stub(klass, valid = true, params = nil)
   record = Factory.build(klass.to_sym)
   record.id = id
   eval "@#{klass} = record"
-  klass.camelize.constantize.stubs(:find).returns(record)
-  klass.camelize.constantize.any_instance.stubs(:valid?).returns(valid)
+  klass = klass.camelize.constantize
+  klass.stubs(:find).returns(record)
+  klass.any_instance.stubs(:valid?).returns(valid)
+  record.stubs(:save).returns(valid)
 end
 
 def stub_admin_login

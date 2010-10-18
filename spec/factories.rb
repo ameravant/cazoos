@@ -81,3 +81,30 @@ Factory.define :offering do |f|
   f.sequence(:name) { |n| "Activity#{n}" }
   f.description "Description of this Activity"
 end
+
+Factory.define :event do |e|
+  e.association :offering
+	e.name 'Event Name'
+	# e.permalink string
+	e.address '1624 Olive St., Santa Barbara, CA 93101'
+	e.description 'Description of Event'
+	e.date_and_time '2010-11-01 09:00:00'
+	# e.person_id integer
+	e.images_count 0
+	e.features_count 0
+	e.assets_count 0
+	e.registration_limit 3
+	e.payment_instructions 'Pay now, play later'
+	e.registration_closed_text 'Sorry. This camp session is full.'
+	e.blurb 'Meets each day at 9am.  Campers should have their own snorkeling gear, or you can call us to arrange something.'
+	e.registration true
+	# e.allow_cash boolean
+	# e.allow_check boolean
+	# e.allow_other boolean
+	e.allow_card true
+	e.allow_credit_card true
+	# e.check_instructions text
+	e.end_date_and_time '2010-11-05 12:00:00'
+	e.registration_deadline '2010-10-18 11:59:59'
+	# e.master_group_id integer
+end

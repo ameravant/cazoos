@@ -4,8 +4,8 @@ namespace :admin do |admin|
   end
   admin.resources :org_types, :as => 'organization_types', :except => :show
   admin.resources :activity_categories, :only => [:new, :create, :index, :edit, :update, :destroy] 
-    offering.resources :events, :only => [:index]
   admin.resources :offerings, :only => [:edit, :update, :destroy, :index, :show] do |offering|
+    offering.resources :events, :only => [:index, :new, :create]
   end
   admin.resources :children
 end

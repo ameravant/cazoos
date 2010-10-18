@@ -133,5 +133,10 @@ describe Org do
       org.should be_new_record
     end
     
+    it "should return a mappable address" do
+      org = Factory.build :org
+      org.map_address.should == "#{org.address}, #{org.city}, #{org.state} #{org.zip}"
+    end
+    
   end
 end

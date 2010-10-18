@@ -17,6 +17,9 @@ class Org < ActiveRecord::Base
   
   before_save :validates_ages
   
+  def map_address
+    "#{self.address}, #{self.city}, #{self.state} #{self.zip}"
+  end
   
   private
   
