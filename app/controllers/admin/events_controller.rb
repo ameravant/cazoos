@@ -36,7 +36,7 @@ class Admin::EventsController < AdminController
     @event = Event.new_offering(@offering, params[:event])
     if @event.save
       flash[:notice] = 'You have successfully created the Event.'
-      redirect_to admin_offering_path(@offering)
+      redirect_to admin_org_offering_path(@offering.org, @offering)
     else
       render :action => 'new'
     end

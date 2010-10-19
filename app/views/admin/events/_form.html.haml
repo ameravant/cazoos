@@ -27,17 +27,75 @@
       = f.label :end_date_and_time, "Event End date/time"
     %td
       = f.datetime_select :end_date_and_time
-      
+    
 %h2
   Registration Options
 %div
   %div#registration-ops
     = f.check_box :registration, :checked => true
-    = f.label :registration, 'Registration Required'
-
-    = f.label :registration_deadline
-    = f.datetime_select :registration_deadline
-            
+    %label{ :for => "event_registration" }
+      Registration Required
+  %div.registration-options---remove-this-weirdness-when-ready-to-fix-javascript
+    #registration_limit
+      %br
+      %div
+        = f.label :registration_limit, "Registration Limit"
+        = f.text_field :registration_limit, :size => 4
+        %span children
+      %br
+      %div
+        = f.label :registration_deadline, "Deadline to register"
+        = f.datetime_select :registration_deadline        
+      %br
+      %div
+        =f.label :registration_closed_text, "Message to display when registration is full or past the deadline and now closed:"
+      %div
+        = f.text_area :registration_closed_text, :size => "60x4", :class => "mceEditor"
+    #price
+      -fields_for :event_price_options do |p|
+        =p.label :price, "Price"
+        =p.text_field :price
+        =p.hidden_field :title, :value =>"Standard"
+        %span.note Leave blank if event is free
+        %br
+        =p.label :public, "Show this price to the public?"
+        =p.check_box :public, :checked => "checked"
+    #payments-allowed
+      %h3
+        Accepted Payments
+      %div
+        = f.check_box :allow_card
+        %label{ :for => "event_allow_card" }
+          Allow credit card payment via Google Checkout
+        %span.small.gray
+          \&mdash; must have Google Checkout configured in
+          = link_to "settings ", edit_admin_setting_path
+          under the 'Advanced' tab
+      %div
+        = f.check_box :allow_cash
+        %label{ :for => "event_allow_cash" }
+          Allow cash payment
+        %span.small.gray
+          \&mdash; only if registration is required
+      %div.checks
+        = f.check_box :allow_check
+        %label{ :for => "event_allow_check" }
+          Allow check payment
+        %span.small.gray
+          \&mdash; only if registration is required
+      %div
+        = f.check_box :allow_other
+        %label{ :for => "event_allow_other" }
+          Allow other
+        %span.small.gray
+          \&mdash; Use this option for any other payment types
+      #check-payment-options          
+        %h3= f.label :check_instructions, "Check Instructions"
+        = f.text_area :check_instructions, :size => "60x8", :class => "mceEditor"
+        %p
+          ==Let registrants know any pertinent information relating to payment for the #{@cms_config['site_settings']['event_title']}.
+      /check-payment-options
+    /payments-allowed
 %h2= f.label :description, "Description"
 - unless @event.images.empty?
   =# Commented out cuz it's not required to make a Scenario pass... render :partial => "admin/shared/image_options", :locals => {:images => @event.images}

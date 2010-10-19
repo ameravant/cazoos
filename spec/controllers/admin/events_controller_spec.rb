@@ -87,7 +87,7 @@ describe Admin::EventsController do
       Event.expects(:new_offering).returns(@event).returns(@event)
       post :create, :offering_id => @offering.id, :event => {}
       flash[:notice].should == 'You have successfully created the Event.'
-      response.should redirect_to(admin_offering_path(@offering))
+      response.should redirect_to(admin_org_offering_path(@offering.org, @offering))
     end
 
     it "should not save an invalid record, and it should render " do

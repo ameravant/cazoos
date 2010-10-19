@@ -8,11 +8,16 @@ module CazoosEventExt
     def cazoos_event_extra_methods
       belongs_to :offering
       
+      validates_presence_of :description, :end_date_and_time, :registration_deadline, :offering_id
+      validates_numericality_of :registration_limit, :only_integer => true, 
+        :message => 'must be a whole number', :allow_nil => true
+      
       def new_offering(off, atts = {})
         Event.new( 
           { :name => off.name, 
             :description => off.description, 
-            :address => off.org.map_address
+            :address => off.org.map_address,
+            :offering => off
           }.merge(atts)
         )
       end

@@ -66,6 +66,19 @@ Then /^I should see datetime selects "([^"]*)" within "([^"]*)"$/ do |inputs, se
 end
 
 When /^I select datetime "([^"]*)" from "([^"]*)" within "([^"]*)"$/ do |data, field, selector|
+  fill_in_datetime(data, field, selector)
+  # data = data.to_datetime.strftime('%Y %B %d %H %M').sub(/^([\d]*\s[A-Za-z]*\s)0?(\d\s[\d]{2}\s[\d]{2})$/, '\1\2')
+  # data = data.split(' ')
+  # with_scope(selector) do
+  #   label = find('label', :text => field)
+  #   (0..4).to_a.each do |n|
+  #     select(data[n], :from => "#{label[:for]}_#{n+1}i")
+  #   end
+  # end
+end
+
+
+def fill_in_datetime(data, field, selector)
   data = data.to_datetime.strftime('%Y %B %d %H %M').sub(/^([\d]*\s[A-Za-z]*\s)0?(\d\s[\d]{2}\s[\d]{2})$/, '\1\2')
   data = data.split(' ')
   with_scope(selector) do
