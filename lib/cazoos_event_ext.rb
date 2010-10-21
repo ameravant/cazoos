@@ -11,10 +11,6 @@ module CazoosEventExt
       validates_numericality_of :registration_limit, :only_integer => true, 
         :message => 'must be a whole number', :if => :registration
       
-      validates_presence_of :description, :end_date_and_time, :registration_deadline, :offering_id
-      validates_numericality_of :registration_limit, :only_integer => true, 
-        :message => 'must be a whole number', :allow_nil => true
-      
       def new_offering(off, atts = {})
         Event.new( 
           { :name => off.name, 
