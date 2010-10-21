@@ -13,15 +13,15 @@ Feature: Managing Events
     Then I should see "Schedule for Horseback Riding 101" within "h1"
     And I follow "Add a new Event"
     Then I should be on the New Event page for the "Horseback Riding 101" offering
-    And I should see "Schedule Horseback Riding 101" within "h1"
-    And the "Name" field within "form#new_event" should contain "Horseback Riding 101"
-    And the "Address" field within "form#new_event" should contain the mappable address of the Org with "Horseback Riding 101"
-    And I should see datetime selects "Event Start date/time, Event End date/time" within "form#new_event"
-    And the "Description" field within "form#new_event" should contain "Beginning Horseback Riding, perfect for ages 9-13..."
-    And I should see "Fill this out with details about the sessions (E.g. 'Meets M-F 9am - 5pm')" within "form#new_event span#blurb_clarification.weak"
-    And the "Registration Required" checkbox within "form#new_event" should be checked
-    When I select datetime "July 5, 2011 09:00 am" from "Event Start date/time" within "form#new_event"
-    And I select datetime "July 9, 2011 05:00 pm" from "Event End date/time" within "form#new_event"
-    And I select datetime "June 15, 2011 11:59 pm" from "Registration deadline" within "form#new_event"
+    And I should see "Add Event for Horseback Riding 101" within "h1"
+    And the "Name" field within "form" should contain "Horseback Riding 101"
+    And the "Address" field within "form" should contain the mappable address of the Org with "Horseback Riding 101"
+    And I should see datetime selects "Event Start date/time, Event End date/time" within "form"
+    And the "Description" field within "form" should contain "Beginning Horseback Riding, perfect for ages 9-13..."
+    And I should see "Fill this out with details about the sessions (E.g. 'Meets M-F 9am - 5pm')" within "form span#blurb_clarification.weak.gray"
+    And the "Registration Required" checkbox within "form" should be checked
+    When I select datetime "July 5, 2011 09:00 am" from "Event Start date/time" within "form"
+    And I select datetime "July 9, 2011 05:00 pm" from "Event End date/time" within "form"
+    And I select datetime "June 15, 2011 11:59 pm" from "Deadline to register" within "form"
     And I press "Save Event"
     # Then I should be on the     

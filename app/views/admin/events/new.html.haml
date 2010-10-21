@@ -1,4 +1,6 @@
-%h1= "Schedule #{h @offering.name}"
+- content_for(:title) { concat "Add #{@cms_config['site_settings']['event_title']} for #{h @offering.name}" }
+%h1
+  = yield :title
+- form_for :event, :url => admin_offering_events_path, :html => { :onsubmit => "form_submitted();" } do |f|
+  = render :partial => "form", :locals => { :f => f }
 
-- form_for [:admin, @offering, @event], :html => { :onsubmit => "form_submitted();" } do |f|
-  = render :partial => 'form', :locals => { :f => f }

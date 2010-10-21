@@ -86,11 +86,11 @@ describe Admin::EventsController do
       @event.expects(:save).returns(true)
       Event.expects(:new_offering).returns(@event).returns(@event)
       post :create, :offering_id => @offering.id, :event => {}
-      flash[:notice].should == 'You have successfully created the Event.'
-      response.should redirect_to(admin_offering_path(@offering))
+      flash[:notice].should == 'Event created, would you like to add price options'
+      response.should redirect_to(new_admin_event_event_price_option_path(@event))
     end
 
-    it "should not save an invalid record, and it should render " do
+    it "should not save an invalid record, and it should render 'new' template" do
       @event.expects(:save).returns(false)
       Event.expects(:new_offering).returns(@event).returns(@event)
       post :create, :offering_id => @offering.id, :event => {}
