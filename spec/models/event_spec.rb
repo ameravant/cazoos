@@ -17,11 +17,23 @@ describe Event do
     @event.should respond_to(:offering_id)
     @event.offering.should be_valid
   end
-  
-  it "should recognize a valid record as such and save it" do
+  it "should validate the associated offering before saving" do
+    @event.offering_id = 0
+    @event.should_not be_valid
+    @event.save.should == false
+    @event.errors.on(:offering_id).should include('must belong to an offering')
+  end
+  it "should require registration_limit if registration is true" do
+    @event.registration = true
+    @event.registration_limit = nil
+    @event.should_not be_valid
+    @event.errors.on(:registration_limit).should include('must be a whole number')
+  end
+  it "should not require registration_limit if registration is false" do
+    @event.registration = false
+    @event.registration_limit = nil
     @event.should be_valid
-    @event.save
-    @event.should_not be_new_record
+    @event.errors.on(:registration_limit).should be_nil
   end
   
   describe "creating a new record related to a known offering using the new_offering method" do
@@ -43,37 +55,7 @@ describe Event do
       event.address.should == @offering.org.map_address
       event.offering.should == @offering
       event.blurb.should == 'Blurbity blurb'
-    end
-  end
-  
-  describe "validations" do
-    describe 'on required fields' do
-      it "should fail to create a new record if 'name' is missing" do
-        missing_required_field_test(:event, :name)
-      end
-      it "should fail to create a new record if 'description' is missing" do
-        missing_required_field_test(:event, :description)
-      end
-      it "should fail to create a new record if 'date_and_time' is missing" do
-        missing_required_field_test(:event, :date_and_time)
-      end
-      it "should fail to create a new record if 'end_date_and_time' is missing" do
-        missing_required_field_test(:event, :end_date_and_time)
-      end
-      it "should fail to create a new record if 'registration_deadline' is missing" do
-        missing_required_field_test(:event, :registration_deadline)
-      end
-      it "should fail to create a new record if 'offering_id' is missing" do
-        missing_required_field_test(:event, :offering_id)
-      end
-    end
-    
-    it "should allow only integer input for Registration Limit" do
-      event = Factory.build :event
-      event.registration_limit = '10.5'
-      event.save.should == false
-      event.should be_new_record
-      event.errors.on(:registration_limit).should include('must be a whole number')
+      event.offering.should == @offering
     end
   end
 end
