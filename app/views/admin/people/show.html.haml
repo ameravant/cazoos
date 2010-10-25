@@ -1,0 +1,35 @@
+%h1= large_icon('User') + ' ' + "My profile"
+=link_to "Edit profile", edit_admin_person_path(@parent)
+.parent
+  %dl
+    %dt First Name
+    %dd= @parent.first_name
+    
+/Other fields to display in a snazzy way cue the design team @parent dump btw
+/ "last_name"
+/ "title"
+/ "company"
+/ "address1"
+/ "address2"
+/ "city"
+/ "state"
+/ "zip"
+/ "phone"
+/ "email"
+/ "created_at"           
+/ "updated_at"           
+/ "articles_count",      
+/ "active",              
+/ "images_count"         
+/ "assets_count"         
+/ "features_count"       
+/ "avatar_file_name"     
+/ "avatar_content_type"  
+/ "avatar_file_size"     
+/ "avatar_updated_at"    
+/ "notes"                
+/ "permalink"            
+/ "confirmed",           
+/ "web_address"          
+/ "type"                 
+/ "no_newsletters"

@@ -1,3 +1,3 @@
 class Child < ActiveRecord::Base
-  belongs_to :person
+  belongs_to :parent, :class_name => 'Person'
 end

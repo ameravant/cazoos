@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
       if self.current_user.has_role("admin")
         redirect_back_or_default('/admin')
       elsif self.current_user.has_role("Parent")
-        redirect_to edit_admin_person_path(self.current_user.person)
+        redirect_to admin_person_path(self.current_user.person)
       else
         redirect_back_or_default('/')
       end
