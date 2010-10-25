@@ -41,6 +41,23 @@ Factory.define :parent, :class => Person do |f|
   f.zip '93203'
 end
 
+Factory.define :child, :class => Child do |f|
+  f.association :parent
+  f.sequence(:first_name) { |n| "John#{n}"}
+  f.last_name 'Adams'
+  f.birthday '1990-10-11'
+  f.height '4.2'
+  f.gender true
+  f.weight '300'
+  f.school 'Valley View'
+  f.allergies 'everything'
+  f.family_doc 'Dr death'
+  f.doc_phone '900-000-0000'
+  f.insurance_car 'kaiser'
+  f.policy_num "123"
+  f.policy_name 'cheapy'  
+end
+
 Factory.define :owner, :class => Person do |f|
   f.association :user
   f.person_group_ids [PersonGroup.find_by_title('Organization Owner')]
