@@ -5,6 +5,9 @@ Background:
   Given the following parent record
     | first_name | last_name | email          | address1     | city        | state | zip   | phone      |
     | John       | Adams     | john@adams.com | 1234 Main St | Santa Maria | CA    | 93222 | 8055551212 |
+  Given the following child record
+    | first_name | last_name | birthday   | height | gender | weight | school      | allergies  | family_doc | doc_phone    | insurance_car | policy_num | policy_name |
+    | Billy      | Billsacks | 1990-10-11 | 4.2    | true   | 300    | Valley View | everything | Dr Death   | 900-000-0000 | kaiser        | 123        | cheap       |
 
   @parent_new
   Scenario: Create a Parent Profile
@@ -27,9 +30,17 @@ Background:
     Then I should be on the login page
     And I should see "Thanks for joining! Please log in to complete your profile."
 
+  @parent_show
+  Scenario: As a parent see my Parent Profile show page
+    Given I am logged in as person with email "john@adams.com" with password "secret"
+    Then I should be on the Parent Show page for "john@adams.com"
+    #Need to check for all the shit that a parent should see when they log in
+
   @parent_edit
   Scenario: Edit a Parent Profile
     Given I am logged in as person with email "john@adams.com" with password "secret"
+    Then I should be on the Parent Show page for "john@adams.com"
+    When I follow "Edit profile"
     Then I should be on the Parent Edit page for "john@adams.com"
     And the "First name" field should contain "John"
     And the "Last name" field should contain "Adams"
@@ -52,24 +63,24 @@ Background:
     And the "State" field should contain "Arizona" 
     And the "Phone" field should contain ""
 
-  # @child_edit
-  # Scenario: As a logged in parent I should be able to edit my children
-  #   Given I am logged in as person with email "john@adams.com" with password "secret"
-  #   Then I should be on the Parent Show page for "john@adams.com"
-  
-  
+  @child_edit
+  Scenario: As a logged in parent I should be able to edit my children
+    Given I am logged in as person with email "john@adams.com" with password "secret"
+    Then I should be on the Parent Show page for "john@adams.com"
+    When I follow "Edit profile"
   
   @add_childrens
   Scenario: As a logged in parent I should be able to add children 
     Given I am logged in as person with email "john@adams.com" with password "secret"
-    Then I should be on the Parent Edit page for "john@adams.com"
+    Then I should be on the Parent Show page for "john@adams.com"
+    When I follow "Edit profile"
     And I should see "Add a child"
     When I follow "Add a child"
     Then I should be on the New Child page
     And the "Last name" field should contain "Adams"
     When I fill in "First name" with "Timmy"
     And I fill in "Last name" with "Tommy"
-    #Date select?
+    #Date select this is kinda hairy w/ capybara not sure how to schwing it?
     # And I select "January" from "Month"
     # And I select "12" from "Day"
     # And I select "1999" from "Year"
@@ -117,4 +128,5 @@ Background:
     Given I am logged in as person with email "john@adams.com" with password "wrong"
     Then I should see "Your account information could not be verified. Please try again."
     Given I am logged in as person with email "john@adams.com" with password "secret"
-    Then I should be on the Parent Edit page for "john@adams.com"
+    Then I should be on the Parent Show page for "john@adams.com"
+    When I follow "Edit profile"
