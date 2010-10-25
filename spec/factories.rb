@@ -41,22 +41,41 @@ Factory.define :parent, :class => Person do |f|
   f.zip '93203'
 end
 
-Factory.define :child, :class => Child do |f|
-  f.association :parent
-  f.sequence(:first_name) { |n| "John#{n}"}
+Factory.define :child, :class => Person do |f|
+  # f.association :user
+  f.association :person_groups, :factory => :child_group
+  f.person_groups [PersonGroup.find_by_title('Child')]
+  f.sequence(:first_name) { |n| "Little Jimmmy#{n}"}
   f.last_name 'Adams'
-  f.birthday '1990-10-11'
-  f.height '4.2'
-  f.gender true
-  f.weight '300'
-  f.school 'Valley View'
-  f.allergies 'everything'
-  f.family_doc 'Dr death'
-  f.doc_phone '900-000-0000'
-  f.insurance_car 'kaiser'
-  f.policy_num "123"
-  f.policy_name 'cheapy'  
+  f.sequence(:email) { |n| "child#{n}@blah.com" }
+  f.parent_id 1
+  # f.phone '805-234-1234'
+  # f.address1 '555 Main St.'
+  # f.city 'Santa Barbara'
+  # f.state 'CALIFORNIA'
+  # f.zip '93203'
 end
+
+Factor.define :child_group, :class => PersonGroup do |f|
+  
+end  
+
+# Factory.define :child, :class => Person do |f|
+#   # f.association :parent
+#   f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
+#   f.last_name 'Adams'
+#   f.birthday '1998-10-11'
+#   f.height '4.2'
+#   f.gender 'boy'
+#   f.weight '300'
+#   f.school 'Valley View'
+#   f.allergies 'everything'
+#   f.family_doc 'Dr. Bob'
+#   f.doc_phone '800-666-8888'
+#   f.insurance_car 'kaiser'
+#   f.policy_num "123"
+#   f.policy_name 'cheapy'  
+# end
 
 Factory.define :owner, :class => Person do |f|
   f.association :user

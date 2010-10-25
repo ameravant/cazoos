@@ -96,3 +96,7 @@ def verify_root_redirect_with_access_error
   flash[:error].should include('do not have access')
   response.should redirect_to(root_url)
 end
+
+def twice
+  [yield, yield]
+end
