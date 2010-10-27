@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spork'
 ENV["RAILS_ENV"] ||= 'test'
 
-Spork.prefork do
+#Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However, 
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
@@ -57,7 +57,7 @@ Spork.prefork do
     # == Notes
     #
     # For more information take a look at Spec::Runner::Configuration and Spec::Runner
-  end
+  #end
   def missing_required_field_test(klass, field_name)
     @inst = klass.to_s.camelize.constantize.create(@valid_attributes.except(field_name.to_sym))
     @inst.should_not be_valid
