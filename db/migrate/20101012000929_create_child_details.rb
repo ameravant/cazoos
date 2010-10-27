@@ -1,7 +1,7 @@
-class CreateChildren < ActiveRecord::Migration
+class CreateChildDetails < ActiveRecord::Migration
   def self.up
-    create_table :children do |t|
-      t.integer :person_id
+    create_table :child_details do |t|
+      t.integer :child_id
       t.string :first_name
       t.string :last_name
       t.date :birthday
@@ -20,6 +20,6 @@ class CreateChildren < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :children
+    drop_table :child_details
   end
 end

@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   unloadable # http://dev.rubyonrails.org/ticket/6001
 
   def create
-    self.current_user = User.authenticate(params[:login], params[:password])
+    current_user = User.authenticate(params[:login], params[:password])
     if @cms_config['site_settings']['require_login_for_comments']
       session[:return_to] = request.referer
     end
@@ -12,10 +12,10 @@ class SessionsController < ApplicationController
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
       flash[:error] = nil
-      if self.current_user.has_role("admin")
+      if current_user.admin?
         redirect_back_or_default('/admin')
-      elsif self.current_user.has_role("Parent")
-        redirect_to admin_person_path(self.current_user.person)
+      elsif current_user.is_a?(Parent)
+        redirect_to admin_parent_path(current_user.person)
       else
         redirect_back_or_default('/')
       end

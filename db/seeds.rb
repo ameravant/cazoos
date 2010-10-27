@@ -6,11 +6,11 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
 
-# Create PersonGroups
+# Create PersonGroups.  'Admin' will be used for permissions.  Others will be for email bulletins
 admin = PersonGroup.create(:title => "Admin", :role => true, :public => false, :description => "Has access to all areas of the CMS.")
-# org_owner = PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
-# parent = PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
-# child = PersonGroup.create(:title => "Child", :role => true, :public => false, :description => "A child in the system")
+PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
+PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
+# PersonGroup.create(:title => "Child", :role => true, :public => false, :description => "A child in the system")
 
 # Create 'admin' user
 person = Person.create(:first_name => "admin", :last_name => "admin", :email => "admin@mailinator.com")
