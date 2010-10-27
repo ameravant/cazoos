@@ -4,14 +4,8 @@ Factory.define :user do |f|
   f.password_confirmation { |u| u.password }
 end
 
-Factory.define :super_user, :class => User do |f|
-  f.login "admin"
-  f.password "admin"
-  f.password_confirmation "admin"
-end
-
 Factory.define :org do |f|
-  f.association :owner
+  f.association :owner, :factory => :org_owner
   f.association :org_type
   f.name "Camp Something"
   f.description "Camp Something has many things, none of which are in this description."
@@ -28,9 +22,21 @@ Factory.define :org do |f|
   f.zip "93101"
 end
 
-Factory.define :parent, :class => Person do |f|
+Factory.define :super_user, :class => 'Person' do |f|
   f.association :user
-  f.person_group_ids [PersonGroup.find_by_title('Parent')]
+  f.person_group_ids [ PersonGroup.find_by_title('Admin').id ]
+  f.sequence(:first_name) { |n| "Minnie#{n}"}
+  f.last_name 'Straytor'
+  f.sequence(:email) { |n| "admin#{n}@org.com" }
+  f.phone '805-234-1234'
+  f.address1 '555 Main St.'
+  f.city 'Santa Barbara'
+  f.state 'CALIFORNIA'
+  f.zip '93203'
+end
+
+Factory.define :parent do |f|
+  f.association :user
   f.sequence(:first_name) { |n| "John#{n}"}
   f.last_name 'Adams'
   f.sequence(:email) { |n| "parent#{n}@blah.com" }
@@ -41,45 +47,25 @@ Factory.define :parent, :class => Person do |f|
   f.zip '93203'
 end
 
-Factory.define :child, :class => Person do |f|
-  # f.association :user
-  f.association :person_groups, :factory => :child_group
-  f.person_groups [PersonGroup.find_by_title('Child')]
-  f.sequence(:first_name) { |n| "Little Jimmmy#{n}"}
+Factory.define :child do |f|
+  f.association :parent
+  f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
   f.last_name 'Adams'
-  f.sequence(:email) { |n| "child#{n}@blah.com" }
-  f.parent_id 1
-  # f.phone '805-234-1234'
-  # f.address1 '555 Main St.'
-  # f.city 'Santa Barbara'
-  # f.state 'CALIFORNIA'
-  # f.zip '93203'
+  f.birthday '1998-10-11'
+  f.height '4.2'
+  f.gender 'boy'
+  f.weight '300'
+  f.school 'Valley View'
+  f.allergies 'everything'
+  f.family_doc 'Dr. Bob'
+  f.doc_phone '800-666-8888'
+  f.insurance_car 'kaiser'
+  f.policy_num "123"
+  f.policy_name 'cheapy'  
 end
 
-Factor.define :child_group, :class => PersonGroup do |f|
-  
-end  
-
-# Factory.define :child, :class => Person do |f|
-#   # f.association :parent
-#   f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
-#   f.last_name 'Adams'
-#   f.birthday '1998-10-11'
-#   f.height '4.2'
-#   f.gender 'boy'
-#   f.weight '300'
-#   f.school 'Valley View'
-#   f.allergies 'everything'
-#   f.family_doc 'Dr. Bob'
-#   f.doc_phone '800-666-8888'
-#   f.insurance_car 'kaiser'
-#   f.policy_num "123"
-#   f.policy_name 'cheapy'  
-# end
-
-Factory.define :owner, :class => Person do |f|
+Factory.define :org_owner do |f|
   f.association :user
-  f.person_group_ids [PersonGroup.find_by_title('Organization Owner')]
   f.sequence(:first_name) { |n| "Orgo#{n}"}
   f.last_name 'Owner'
   f.sequence(:email) { |n| "owner#{n}@org.com" }
@@ -89,17 +75,6 @@ Factory.define :owner, :class => Person do |f|
   f.state 'CA'
   f.zip '93203'
 end
-
-# Factory.define :person do |f|
-#   f.sequence(:first_name) { |n| "Person#{n}"}
-#   f.last_name 'Smith'
-#   f.sequence(:email) { |n| "person#{n}@org.com" }
-#   f.phone '805-234-1234'
-#   f.address1 '555 Main St.'
-#   f.city 'Santa Maria'
-#   f.state 'CA'
-#   f.zip '93203'
-# end
 
 Factory.define :org_type do |f|
   f.sequence(:title) { |n| "Organization Type #{n}" }

@@ -2,6 +2,7 @@ SETTINGS_FILE = "#{RAILS_ROOT}/config/cms.yml"
 PERMISSIONS_FILE = "#{RAILS_ROOT}/config/permissions.yml"
 
 require 'cazoos_person_ext'
+require 'cazoos_user_ext'
 require 'user_ext'
 require 'cazoos_event_ext'
 

@@ -43,7 +43,8 @@ class Admin::OrgsController < AdminController
   
   def load_supporting_resources
     @org_types = OrgType.all
-    @owners = PersonGroup.find_by_title('Organization Owner').people    
+    @owners = OrgOwner.all
+    #PersonGroup.find_by_title('Organization Owner').people    
   end
   
   def block_intruders

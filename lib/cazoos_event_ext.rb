@@ -11,16 +11,16 @@ module CazoosEventExt
       validates_numericality_of :registration_limit, :only_integer => true, 
         :message => 'must be a whole number', :if => :registration
       
-      def new_offering(off, atts = {})
-        Event.new( 
-          { :name => off.name, 
-            :description => off.description, 
-            :address => off.org.map_address,
-            :offering => off
-          }.merge(atts)
-        )
-      end
-      
+      def build_from_offering(off, atts = {})
+          Event.new( 
+            { :name => off.name, 
+              :description => off.description, 
+              :address => off.org.map_address,
+              :offering => off
+            }.merge(atts)
+          )
+        end
+  
       include CazoosEventExt::InstanceMethods
     end
   end

@@ -28,12 +28,12 @@ describe Event do
     @event.errors.on(:registration_limit).should be_nil
   end
   
-  describe "creating a new record related to a known offering using the new_offering method" do
+  describe "creating a new record related to a known offering using the build_from_offering method" do
     before :each do
       @offering = Factory.build :offering
     end
     it "should work with @offering as the argument" do
-      event = Event.new_offering(@offering)
+      event = Event.build_from_offering(@offering)
       event.name.should == @offering.name
       event.description.should == @offering.description
       event.address.should == @offering.org.map_address
@@ -41,7 +41,7 @@ describe Event do
     end
     it "should work with a second argument (hash of values), deferring to hash for duplicate values" do
       offering = Factory.build :offering
-      event = Event.new_offering(@offering, {:name => 'Overwrite name', :blurb => 'Blurbity blurb'})
+      event = Event.build_from_offering(@offering, {:name => 'Overwrite name', :blurb => 'Blurbity blurb'})
       event.name.should == 'Overwrite name'
       event.description.should == @offering.description
       event.address.should == @offering.org.map_address

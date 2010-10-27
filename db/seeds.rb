@@ -8,15 +8,15 @@
 
 # Create PersonGroups
 admin = PersonGroup.create(:title => "Admin", :role => true, :public => false, :description => "Has access to all areas of the CMS.")
-org_owner = PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
-parent = PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
-child = PersonGroup.create(:title => "Child", :role => true, :public => false, :description => "A child in the system")
+# org_owner = PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
+# parent = PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
+# child = PersonGroup.create(:title => "Child", :role => true, :public => false, :description => "A child in the system")
 
 # Create 'admin' user
 person = Person.create(:first_name => "admin", :last_name => "admin", :email => "admin@mailinator.com")
 user = User.create( { :login => 'admin', :password => 'admin', :password_confirmation => 'admin' } )
 user.person_id = person.id
-person.person_group_ids = [ admin.id ]
+person.person_groups << admin
 user.save
 
 # Create Settings table data
@@ -88,15 +88,17 @@ Plugin.create(:url => "git@github.com:ameravant/cazoos_pages.git", :position => 
 
 
 if RAILS_ENV == 'development'
-  per = Person.new(:first_name => 'Org', :last_name => 'Owner', :email => 'owner@org.org')
-  per.person_groups << PersonGroup.find_by_title('Organization Owner')
-  per.user = User.create(:login => 'owner@org.org', :password => 'secret', :password_confirmation => 'secret')
-  per.save
-
+  owner = OrgOwner.new(:first_name => 'Org', :last_name => 'Owner', :email => 'owner@org.org')
+  owner.user = User.create(:login => 'owner@org.org', :password => 'secret', :password_confirmation => 'secret')
+  owner.save
+  
   org_type = OrgType.create(:title => 'Camp', :description => 'Camps')
-
+  
   org = Org.new(:name => 'Camp Something', :description => 'A camp...', :min_age => 6, :max_age => 9, :contact => 'Jim Adams', :contact_phone => '80522288288', :contact_email => 'jim@adams.com', :address => '1234 Org St.', :city => 'Santa Barbara', :state => 'CA', :zip => '93101', :gender => 'coed')
   org.org_type = org_type
-  org.owner = per
+  org.owner = owner
   org.save
+  
+  ActivityCategory.create(:name => 'Horseback Riding', :description => 'Fun for everyone involved. Even the horse likes it!')
+  ActivityCategory.create(:name => 'Soccer', :description => 'Not just a passing fad; the next World Cup is in four short years!')
 end

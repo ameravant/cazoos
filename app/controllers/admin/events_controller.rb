@@ -16,11 +16,11 @@ class Admin::EventsController < AdminController
 
   def new
     @event_categories = EventCategory.active
-    @event = Event.new_offering(@offering)
+    @event = Event.build_from_offering(@offering)
   end
 
   def create
-    @event = Event.new_offering(@offering, params[:event])
+    @event = Event.build_from_offering(@offering, params[:event])
     @event.event_price_options.build(params[:event_price_options])
     if @event.save
       flash[:notice] = "Event created, would you like to add price options"

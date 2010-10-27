@@ -1,5 +1,6 @@
 class Admin::ChildrenController < AdminController  
   before_filter :find_parent
+
   def new
     @child = Child.new
   end

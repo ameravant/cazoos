@@ -54,8 +54,8 @@ describe Admin::EventsController do
     end
     
     it "should assign @event to the view with the name & description of the offering and the address of the Org" do
-      new_event = Event.new_offering(@offering)
-      Event.expects(:new_offering).returns(new_event)
+      new_event = Event.build_from_offering(@offering)
+      Event.expects(:build_from_offering).returns(new_event)
       get :new, :offering_id => @offering.id
       assigns[:event].should == new_event
     end
@@ -75,7 +75,7 @@ describe Admin::EventsController do
     end
 
     it "should build the event from the offering and the parameters" do
-      Event.expects(:new_offering).with() do |offering, event_params| 
+      Event.expects(:build_from_offering).with() do |offering, event_params| 
         offering == @offering
         event_params.is_a?(Hash)
       end.returns(@event)
@@ -84,7 +84,7 @@ describe Admin::EventsController do
     
     it "should save a valid record and redirect to the Offering page" do
       @event.expects(:save).returns(true)
-      Event.expects(:new_offering).returns(@event).returns(@event)
+      Event.expects(:build_from_offering).returns(@event).returns(@event)
       post :create, :offering_id => @offering.id, :event => {}
       flash[:notice].should == 'Event created, would you like to add price options'
       response.should redirect_to(new_admin_event_event_price_option_path(@event))
@@ -92,7 +92,7 @@ describe Admin::EventsController do
 
     it "should not save an invalid record, and it should render 'new' template" do
       @event.expects(:save).returns(false)
-      Event.expects(:new_offering).returns(@event).returns(@event)
+      Event.expects(:build_from_offering).returns(@event).returns(@event)
       post :create, :offering_id => @offering.id, :event => {}
       flash[:notice].should be_nil
       response.should render_template('new')

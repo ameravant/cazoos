@@ -16,7 +16,7 @@ Feature: Manage Orgs
       | contact       | Jim Contact                                   | Joe Contact                                 |
       | contact_phone | 805-555-1212                                  | 800-396-CAMP                                |
       | contact_email | jim@camptitticaca.com                         | joe@campdoyawanna.com                       |  
-    Given the following owner record
+    Given the following org_owner record
       | first_name | last_name | email         | phone      | address1     | city | state | zip   |
       | Orgo       | Owner     | owner@org.org | 8055551212 | 1234 My Ave. | SB   | CA    | 93101 |
     Given the following org_type record
