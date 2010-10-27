@@ -19,3 +19,4 @@ module CazoosPersonExt
 end
 ActiveRecord::Base.send(:include, CazoosPersonExt)
 Person.send(:cazoos_person_extra_methods)
+Parent.send(:cazoos_person_extra_methods)

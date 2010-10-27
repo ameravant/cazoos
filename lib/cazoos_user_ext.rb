@@ -14,6 +14,7 @@ module CazoosUserExt
     def admin?
       respond_to?(:person) && person.admin?
     end
+    
     def is_a?(klass)
       super(klass) || (respond_to?(:person) && person.is_a?(klass))
     end

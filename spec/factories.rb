@@ -48,7 +48,20 @@ Factory.define :parent do |f|
 end
 
 Factory.define :child do |f|
+  f.association :user
   f.association :parent
+  f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
+  f.last_name 'Adams'
+  f.sequence(:email) { |n| "child#{n}@blah.com" }
+  f.phone ''
+  f.address1 ''
+  f.city ''
+  f.state ''
+  f.zip ''
+end
+
+Factory.define :child_detail do |f|
+  f.association :child
   f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
   f.last_name 'Adams'
   f.birthday '1998-10-11'

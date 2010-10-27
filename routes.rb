@@ -8,4 +8,6 @@ namespace :admin do |admin|
     offering.resources :events, :only => [:index, :new, :create]
   end
   admin.resources :children
+  admin.resources :parents, :only => [:show]
 end
+resources :parents, :only => [:new, :create]
