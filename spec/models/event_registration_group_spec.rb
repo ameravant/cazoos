@@ -33,7 +33,7 @@ describe EventRegistrationGroup do
               :event_group_id => @event_group.id,
               :person_id => g.id,
               :price_option_id => @price_options[i]
-              )}
+              )
     end
     @event_group.total.should == @price_options.sum{|p| p.price }
   end

@@ -26,3 +26,4 @@ describe Admin::EventPriceOptionsController do
   #       get 'index'
   #       assigns[:cities].should == cities
   #     end
+end
