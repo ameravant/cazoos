@@ -49,4 +49,27 @@ describe Event do
       event.offering.should == @offering
     end
   end
+
+  describe "association" do
+    it "should have many price options" do
+      event = Factory(:random_event)
+      price_opt = Factory(:random_price_option, :event_id => event.id)
+      price_opt2 = Factory(:random_price_option, :event_id => event.id)
+      price_opt3 = Factory(:random_price_option, :event_id => event.id + 1)
+      event.price_options.should == [price_opt, price_opt2]
+      event.price_options.should_not include price_opt3      
+    end
+  end
+  describe "scopes" do
+    before(:each) do
+      @events = threeTimes{Factory(:random_event)}
+    end
+  end
+
+  # Added by John Lawrence on 2010-10-20.  Never run.  Delete or modify if necessary.
+  it "should recognize a valid record as such and save it" do
+    @events[0].should be_valid
+    @events[0].save
+    @events[0].should_not be_new_record
+  end
 end

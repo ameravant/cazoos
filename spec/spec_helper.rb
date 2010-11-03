@@ -100,6 +100,20 @@ Spork.prefork do
   def twice
     [yield, yield]
   end
+
+  def threeTimes
+    [yield, yield, yield]
+  end
+
+  def login_as_admin
+    # @person = Factory(:random_person)
+    @session = mock
+    @user = Factory(:random_user)
+    @session.stubs(:user).returns(@user)
+    @admin = true
+    @session.stubs(:record) 
+    Session.stubs(:find).returns( @session ) 
+  end
   
 end
 
