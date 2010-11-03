@@ -1,15 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Person do
-  it "should respond to admin? with TRUE if in the administrator person_group" do
-    person = Factory :super_user
+  it "should respond to admin? with TRUE if person is an admin" do
+    person = Factory :super_user_person
     person.should be_admin
   end
-  it "should respond to admin? with FALSE if not in the administrator person_group" do
+  it "should respond to admin? with FALSE if not an admin" do
     person = Factory :parent
     person.should_not be_admin
   end
-
+  it "should respond to full_name with the first and last names concatenated together" do
+    person = Factory :parent
+    person.full_name.should == "#{person.first_name} #{person.last_name}"
+  end
   # This is admittedly abnormal for a has_and_belongs_to_many relationship.  In Cazoos app, however, we
   #     don't ever want a person in two of the four PersonGroups(Admin, Org Owner, Parent, Child)
   # it "should not allow a person in the system to belong to more than one group" do

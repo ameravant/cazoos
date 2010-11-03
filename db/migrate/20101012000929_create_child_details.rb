@@ -2,11 +2,9 @@ class CreateChildDetails < ActiveRecord::Migration
   def self.up
     create_table :child_details do |t|
       t.integer :child_id
-      t.string :first_name
-      t.string :last_name
       t.date :birthday
       t.string :height
-      t.boolean :gender
+      t.string :gender
       t.integer :weight
       t.string :school
       t.string :allergies

@@ -1,9 +1,11 @@
 %h1= large_icon('User') + ' ' + "My profile"
-=link_to "Edit profile", edit_admin_person_path(@parent)
+=link_to "Edit Personal Information", edit_admin_parent_path(@parent)
 .parent
   %dl
-    %dt First Name
-    %dd= @parent.first_name
+    %dd= @parent.full_name
+    %dd= address(@parent)
+    %dd= format_phone(@parent.phone)
+    %dd= @parent.email
     
 /Other fields to display in a snazzy way cue the design team @parent dump btw
 / "last_name"
@@ -33,3 +35,10 @@
 / "web_address"          
 / "type"                 
 / "no_newsletters"
+
+%h2= large_icon('User') + ' ' + "Children"
+%dl
+  -@parent.children.each do |c|
+    %dt= link_to "#{c.first_name} #{c.last_name}", edit_admin_parent_child_path(@parent, c)
+=link_to "Add a child", new_admin_parent_child_path(@parent)
+    

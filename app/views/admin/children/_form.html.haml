@@ -1,39 +1,40 @@
 = error_messages_for :child
 
 #options
-  - form_for [:admin, @child] do |f|
+  - form_for [:admin, @parent, @child] do |f|
     %dl
       %dt.form-label= f.label :first_name
       %dd.form-option= f.text_field :first_name
       %dt.form-label= f.label :last_name
-      %dd.form-option= text_field :child, :last_name, :value => "#{@child.last_name.blank? ? @person.last_name : @child.last_name.blank?}"
-      %dt.form-label= f.label :birthday
-      %dd.form-option= f.date_select :birthday
-      %dt.form-label= f.label :height
-      %dd.form-option= f.text_field :height
-      %dt.form-label= f.label :weight
-      %dd.form-option= f.text_field :weight
-      %dt.form-label= f.label :gender
-      %dd.form-option
-        =label :child_gender, "true", "Male"
-        =radio_button "child","gender", "true"
-        =label :child_gender, "false", "Female"
-        =radio_button "child","gender", "false"
-      %dt.form-label= f.label :school
-      %dd.form-option= f.text_field :school
-      %dt.form-label= f.label :allergies
-      %dd.form-option= f.text_field :allergies
-      %dt.form-label= f.label :family_doc, "Family doctor"
-      %dd.form-option= f.text_field :family_doc
-      %dt.form-label= f.label :doc_phone, "Doctor phone"
-      %dd.form-option= f.text_field :doc_phone
-      %dt.form-label= f.label :insurance_car, "Insurance carrier"
-      %dd.form-option= f.text_field :insurance_car
-      %dt.form-label= f.label :policy_num, "Policy number"
-      %dd.form-option= f.text_field :policy_num
-      %dt.form-label= f.label :policy_name, "Policy holder name"
-      %dd.form-option= f.text_field :policy_name
+      %dd.form-option= text_field :child, :last_name, :value => ( @child.last_name.blank? ? @parent.last_name : @child.last_name.blank? )
+      - f.fields_for :detail do |d|
+        %dt.form-label= d.label :birthday
+        %dd.form-option= d.date_select :birthday
+        %dt.form-label= d.label :height
+        %dd.form-option= d.text_field :height
+        %dt.form-label= d.label :weight
+        %dd.form-option= d.text_field :weight
+        %dt.form-label= d.label :gender
+        %dd.form-option
+          = d.label :child_gender, "Male"
+          = d.radio_button :gender, "Male"
+          = d.label :child_gender, "Female"
+          = d.radio_button :gender, "Female"
+        %dt.form-label= d.label :school
+        %dd.form-option= d.text_field :school
+        %dt.form-label= d.label :allergies
+        %dd.form-option= d.text_field :allergies
+        %dt.form-label= d.label :family_doc, "Family doctor"
+        %dd.form-option= d.text_field :family_doc
+        %dt.form-label= d.label :doc_phone, "Doctor phone"
+        %dd.form-option= d.text_field :doc_phone
+        %dt.form-label= d.label :insurance_car, "Insurance carrier"
+        %dd.form-option= d.text_field :insurance_car
+        %dt.form-label= d.label :policy_num, "Policy number"
+        %dd.form-option= d.text_field :policy_num
+        %dt.form-label= d.label :policy_name, "Policy holder name"
+        %dd.form-option= d.text_field :policy_name
     
       
-    - fancy_submit admin_children_path do
+    - fancy_submit admin_parent_children_path do
       = f.submit "Save Child"

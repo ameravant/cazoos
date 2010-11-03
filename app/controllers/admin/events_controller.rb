@@ -1,5 +1,5 @@
 class Admin::EventsController < AdminController
-  before_filter :load_offering_or_404
+  before_filter :load_offering_or_404, :only => [:new, :create, :edit, :update]
 
   def index
     if params[:q].blank?
