@@ -22,8 +22,8 @@ Factory.define :org do |f|
   f.zip "93101"
 end
 
-Factory.define :super_user, :class => 'Person' do |f|
-  f.association :user
+Factory.define :super_user_person, :class => 'Person' do |f|
+  f.association :user, :factory => :super_user
   f.person_group_ids [ PersonGroup.find_by_title('Admin').id ]
   f.sequence(:first_name) { |n| "Minnie#{n}"}
   f.last_name 'Straytor'
@@ -33,6 +33,13 @@ Factory.define :super_user, :class => 'Person' do |f|
   f.city 'Santa Barbara'
   f.state 'CALIFORNIA'
   f.zip '93203'
+end
+
+Factory.define :super_user, :class => 'User' do |f|
+  f.sequence(:login) { |n| "foo#{n}"}
+  f.password "secret"
+  f.password_confirmation { |u| u.password }
+  f.is_admin true
 end
 
 Factory.define :parent do |f|
@@ -50,20 +57,19 @@ end
 Factory.define :child do |f|
   f.association :user
   f.association :parent
-  f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
+  f.sequence(:first_name) { |n| "Little Jimmy#{n}" }
   f.last_name 'Adams'
-  f.sequence(:email) { |n| "child#{n}@blah.com" }
+#  f.sequence(:email) { |n| "child#{n}@blah.com" }
   f.phone ''
   f.address1 ''
   f.city ''
   f.state ''
   f.zip ''
+  # f.after_build { |a| Factory.build(:detail) }
 end
 
 Factory.define :child_detail do |f|
   f.association :child
-  f.sequence(:first_name) { |n| "Little Jimmy#{n}"}
-  f.last_name 'Adams'
   f.birthday '1998-10-11'
   f.height '4.2'
   f.gender 'boy'
@@ -79,7 +85,7 @@ end
 
 Factory.define :org_owner do |f|
   f.association :user
-  f.sequence(:first_name) { |n| "Orgo#{n}"}
+  f.sequence(:first_name) { |n| "Orgo#{n}" }
   f.last_name 'Owner'
   f.sequence(:email) { |n| "owner#{n}@org.com" }
   f.phone '805-234-1234'

@@ -12,7 +12,7 @@ module CazoosUserExt
   
   module InstanceMethods
     def admin?
-      respond_to?(:person) && person.admin?
+      is_admin
     end
     
     def is_a?(klass)

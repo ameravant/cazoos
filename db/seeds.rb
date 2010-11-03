@@ -7,16 +7,17 @@
 #   Major.create(:name => 'Daley', :city => cities.first)
 
 # Create PersonGroups.  'Admin' will be used for permissions.  Others will be for email bulletins
-admin = PersonGroup.create(:title => "Admin", :role => true, :public => false, :description => "Has access to all areas of the CMS.")
-PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
-PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
+admin_group = PersonGroup.create(:title => "Admin", :role => true, :public => false, :description => "Has access to all areas of the CMS.")
+owner_group = PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
+parent_group = PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
 # PersonGroup.create(:title => "Child", :role => true, :public => false, :description => "A child in the system")
 
 # Create 'admin' user
 person = Person.create(:first_name => "admin", :last_name => "admin", :email => "admin@mailinator.com")
 user = User.create( { :login => 'admin', :password => 'admin', :password_confirmation => 'admin' } )
 user.person_id = person.id
-person.person_groups << admin
+person.person_groups << admin_group
+user.is_admin = true
 user.save
 
 # Create Settings table data
@@ -90,6 +91,7 @@ Plugin.create(:url => "git@github.com:ameravant/cazoos_pages.git", :position => 
 if RAILS_ENV == 'development'
   owner = OrgOwner.new(:first_name => 'Org', :last_name => 'Owner', :email => 'owner@org.org')
   owner.user = User.create(:login => 'owner@org.org', :password => 'secret', :password_confirmation => 'secret')
+  owner.person_groups = [ owner_group ]
   owner.save
   
   org_type = OrgType.create(:title => 'Camp', :description => 'Camps')

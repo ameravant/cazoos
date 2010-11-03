@@ -7,7 +7,8 @@ namespace :admin do |admin|
   admin.resources :offerings, :only => [:edit, :update, :destroy, :index, :show] do |offering|
     offering.resources :events, :only => [:index, :new, :create]
   end
-  admin.resources :children
-  admin.resources :parents, :only => [:show]
+  admin.resources :parents, :only => [:show, :edit, :update] do |parent|
+    parent.resources :children, :only => [:index, :new, :create, :edit, :update]
+  end
 end
 resources :parents, :only => [:new, :create]
