@@ -5,14 +5,17 @@
 #   
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
+puts "Seeding DB"
 
 # Create PersonGroups.  'Admin' will be used for permissions.  Others will be for email bulletins
+puts "Creating PersonGroups"
 admin_group = PersonGroup.create(:title => "Admin", :role => true, :public => false, :description => "Has access to all areas of the CMS.")
 owner_group = PersonGroup.create( :title => "Organization Owner", :role => true, :public => false, :description => "Can login and manage his/her camp, camp offerings and schedules")
 parent_group = PersonGroup.create(:title => "Parent", :role => true, :public => false, :description => "A parent with children in the Cazoos system")
 # PersonGroup.create(:title => "Child", :role => true, :public => false, :description => "A child in the system")
 
 # Create 'admin' user
+puts "Creating Admin User/Person"
 person = Person.create(:first_name => "admin", :last_name => "admin", :email => "admin@mailinator.com")
 user = User.create( { :login => 'admin', :password => 'admin', :password_confirmation => 'admin' } )
 user.person_id = person.id
@@ -21,6 +24,7 @@ user.is_admin = true
 user.save
 
 # Create Settings table data
+puts "Creating Settings"
 Setting.create(
   :newsletter_from_email => 'admin@ameravant.com',
   :footer_text => '<p style="text-align: center;">&copy; 2008-#YEAR# Site-Ninja.com</p>
@@ -40,6 +44,7 @@ pageTracker._trackPageview();
 )
 
 # Create pages and menus
+puts "Creating Pages"
 @cms_config = YAML::load_file("#{RAILS_ROOT}/config/cms.yml")
 home = Page.create(:title => 'Home', :body => 'home',
   :meta_title => "Home", :permalink => "home", :can_delete => false, :position => 1)
@@ -75,6 +80,7 @@ home = Page.create(:title => 'Home', :body => 'home',
     menu.save
   end
 
+puts "Creating Plugins"
 Plugin.create(:url => "git@github.com:ameravant/siteninja_core.git", :position => 1)
 Plugin.create(:url => "git@github.com:ameravant/siteninja_pages.git", :position => 11)
 Plugin.create(:url => "git@github.com:ameravant/siteninja_blogs.git", :position => 3) if @cms_config['modules']['blog']
@@ -89,6 +95,7 @@ Plugin.create(:url => "git@github.com:ameravant/cazoos_pages.git", :position => 
 
 
 if RAILS_ENV == 'development'
+  puts "Creating OrgOwner (development environment only)"
   owner = OrgOwner.new(:first_name => 'Org', :last_name => 'Owner', :email => 'owner@org.org')
   owner.user = User.create(:login => 'owner@org.org', :password => 'secret', :password_confirmation => 'secret')
   owner.person_groups = [ owner_group ]
@@ -101,6 +108,7 @@ if RAILS_ENV == 'development'
   org.owner = owner
   org.save
   
+  puts "Creating ActivityCategories (development environment only)"
   ActivityCategory.create(:name => 'Horseback Riding', :description => 'Fun for everyone involved. Even the horse likes it!')
   ActivityCategory.create(:name => 'Soccer', :description => 'Not just a passing fad; the next World Cup is in four short years!')
 end

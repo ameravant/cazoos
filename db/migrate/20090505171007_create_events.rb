@@ -4,7 +4,7 @@ class CreateEvents < ActiveRecord::Migration
     t.string :name, :permalink, :address
     t.text :description
     t.datetime :date_and_time
-    t.integer :person_id
+#    t.integer :person_id
     t.integer :images_count, :features_count, :assets_count, :default => 0
 
     # Registration-specific fields

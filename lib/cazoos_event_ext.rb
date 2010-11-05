@@ -33,7 +33,7 @@ module CazoosEventExt
       begin
         Offering.find(self.offering_id)
       rescue ActiveRecord::RecordNotFound
-        self.errors.add :offering_id, 'must belong to an offering'
+        self.errors.add :offering_id, 'does not exist'
         false
       end
       # This also would work; not sure which is a better practice, although I think the find_by_id method may get

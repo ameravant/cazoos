@@ -18,12 +18,12 @@ describe Parent do
     it "should validate_presence of 'first_name'" do
       @parent.first_name = ''
       @parent.should_not be_valid
-      @parent.errors.on(:first_name).should include("can't be blank")
+      @parent.errors.on(:first_name).should == "can't be blank"
     end
     it "should validate_presence of 'last_name'" do
       @parent.last_name = ''
       @parent.should_not be_valid
-      @parent.errors.on(:last_name).should include("can't be blank")
+      @parent.errors.on(:last_name).should == "can't be blank"
     end
     ###  END validations that are included in the SiteNinja core
     

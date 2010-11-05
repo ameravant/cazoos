@@ -141,6 +141,7 @@ end
 
 # From the events module
 Factory.define :random_event, :class => Event do |f|
+  f.association :offering
   f.name "my new event"
   f.date_and_time 1.day.from_now.to_s
   f.allow_check true
