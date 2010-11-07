@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    self.current_user = User.authenticate(params[:login], params[:password])
+    current_user = User.authenticate(params[:login], params[:password])
     if @cms_config['site_settings']['require_login_for_comments']
       session[:return_to] = request.referer
     end

@@ -8,12 +8,11 @@ class Child < Person
   
   def validates_existence_of_parent_and_assign_email
     begin
-      parent = Parent.find(self.parent_id)
       self.email = "#{self.first_name.gsub(/[^A-Za-z0-9]/,'')}-#{parent.email}"
+      parent = Parent.find(self.parent_id)
     rescue ActiveRecord::RecordNotFound
       self.errors.add :parent_id, 'must be registered as a parent in the system'
       false
     end
   end
-
 end
