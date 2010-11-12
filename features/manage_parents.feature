@@ -29,6 +29,10 @@ Background:
     And I press "Sign Up!"
     Then I should be on the login page
     And I should see "Thanks for joining! Please log in to complete your profile."
+    When I fill in "Login" with "new@blah.com"
+    And I fill in "Password" with "password"
+    And I press "Sign In"
+    Then I should not see "Your account information could not be verified. Please try again."
 
   @parent_show
   Scenario: As a parent see my Parent Profile show page

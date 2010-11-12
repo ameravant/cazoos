@@ -25,6 +25,9 @@ module CazoosPersonExt
     def full_name
       first_name + ' ' + last_name
     end
+    def what?
+      puts "yup!"
+    end
   end
 
 end
