@@ -1,0 +1,9 @@
+%div
+  %table#org_types.full_width
+    %tr
+      %th Title
+      %th Delete
+    - for type in org_types
+      %tr[type]{ :class => cycle('odd','even') }
+        %td.org_type_title= link_to(h(type.title), edit_admin_org_type_path(type))
+        %td.small= trash_icon(type, admin_org_type_path(type), h(type.title))

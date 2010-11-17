@@ -1,0 +1,4 @@
+%h1 Organization Owner Details
+= error_messages_for :org_owner
+- form_for [:admin, @owner] do |f|
+  = render :partial => 'admin/shared/person_form', :locals => {:f => f, :button_text => "Next Step"}

@@ -1,0 +1,37 @@
+%dl
+  %fieldset      
+    %dt= f.label :first_name
+    %dd= f.text_field :first_name
+    %dt= f.label :last_name
+    %dd= f.text_field :last_name
+    %dt= f.label :address1
+    %dd= f.text_field :address1
+    %dt= f.label :city
+    %dd= f.text_field :city
+    %dt= f.label :state
+    %dd= f.select :state, $USA_STATES_ARRAY 
+    %dt= f.label :zip
+    %dd= f.text_field :zip
+    %dt= f.label :phone
+    %dd= f.text_field :phone
+    %dt= f.label :email
+    %dd
+      = f.text_field :email
+      Used to sign into the site.
+
+  %fieldset
+    -f.fields_for :user do |user|
+      %dt= user.label :password
+      %dd= user.password_field :password
+      %dt= user.label :password_confirmation
+      %dd= user.password_field :password_confirmation
+-if !@groups.blank?    
+  -for group in @groups 
+    - unless group.is_event_registration_group
+      %p
+        = check_box_tag('person[person_group_ids][]', group.id, false, :id => "#{group.title}")
+        %label{:for=> "#{group.title}"}== Subscribe to #{group.title}
+      %p About this newsletter:
+      %span= truncate(group.description, :length => 100)
+= clear
+=f.submit button_text
