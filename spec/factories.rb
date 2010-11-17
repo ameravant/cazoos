@@ -24,7 +24,7 @@ end
 
 Factory.define :super_user_person, :class => 'Person' do |f|
   f.association :user, :factory => :super_user
-  f.person_group_ids [ PersonGroup.find_by_title('Admin').id ]
+  f.person_group_ids [ PersonGroup.find_or_create_by_title('Admin').id ]
   f.sequence(:first_name) { |n| "Minnie#{n}"}
   f.last_name 'Straytor'
   f.sequence(:email) { |n| "admin#{n}@org.com" }

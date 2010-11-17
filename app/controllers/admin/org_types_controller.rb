@@ -7,15 +7,21 @@
   
   def new
     @org_type = OrgType.new
+    @org_types = OrgType.all
   end
   
   def create
+    @org_types = OrgType.all
     @org_type = OrgType.new(params[:org_type])
     if @org_type.save
       flash[:notice] = "The new organization type was successfully created."
-      redirect_to admin_org_types_path
+      if session[:org_owner_id]
+        redirect_to new_admin_org_path
+      else
+        redirect_to admin_org_types_path
+      end
     else
-      render 'new'
+      render :action => 'new'
     end
   end
   

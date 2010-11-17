@@ -13,7 +13,8 @@ module NavigationHelpers
     #~~~~LOGIN HERE~~~~
     when /^the login page$/
       new_session_path
-    
+    when /^the admin dashboard page$/
+      '/admin'
     when /^the New Person page$/
       new_person_path
     when /^the Parent Show page for "(.*)"$/
@@ -24,10 +25,10 @@ module NavigationHelpers
       people_path
     when /^the admin People page$/
       admin_people_path
-
     when /^the New Child page$/
       new_admin_child_path
-      
+    when /^the new org owner page$/
+      new_admin_org_owner_path
     when /^the Organization Types Admin page$/
       admin_org_types_path
     when /^the New Organization Type page$/

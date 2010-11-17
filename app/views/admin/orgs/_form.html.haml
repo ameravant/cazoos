@@ -38,15 +38,12 @@
         %dd.form-option= org_form.text_field :zip  
 
         %dt.form-label= org_form.label :contact, "Main Contact"
-        %dd.form-option= org_form.text_field :contact  
-
-        %dt.form-label= org_form.label :contact_phone, "Main Contact Phone"
-        %dd.form-option= org_form.text_field :contact_phone  
-
-        %dt.form-label= org_form.label :contact_email, "Main Contact Email"
+        %dd.form-option= org_form.text_field :contact
+        
+        %dt.form-label= org_form.label :contact_email, "Contact Email"
         %dd.form-option= org_form.text_field :contact_email  
 
-        %dt.form-label= org_form.label :owner_id, "Organization Owner"
-        %dd.form-option= org_form.select :owner_id, !@owners.nil? ? @owners.map {|p| [ "#{p.first_name} #{p.last_name}", p.id ] } : [], { :include_blank => '&ndash; SELECT ONE &ndash;' }
+        %dt.form-label= org_form.label :contact_phone, "Main Contact Phone"
+        %dd.form-option= org_form.text_field :contact_phone    
 
-    = org_form.submit(@org.new_record? ? 'Create' : 'Save Changes')
+    = org_form.submit(@org.new_record? ? 'Create Organization' : 'Save Changes')

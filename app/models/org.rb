@@ -2,7 +2,7 @@ class Org < ActiveRecord::Base
   belongs_to :owner, :class_name => 'OrgOwner'
   belongs_to :org_type
   has_many :offerings
-  # accepts_nested_attributes_for :person
+  accepts_nested_attributes_for :owner
 
   validates_presence_of :owner_id
   validates_associated :owner

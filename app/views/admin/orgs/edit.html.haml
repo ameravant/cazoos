@@ -1,5 +1,6 @@
 %h1 
   Edit Organization: 
   = h @org.name
+  ="Owner: %s" % @org.owner.name 
   
 = render :partial => 'form'

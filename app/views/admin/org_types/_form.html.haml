@@ -9,4 +9,8 @@
       %dt.form-label= f.label :description
       %dd.form-option= f.text_area :description
 
-    = f.submit(@org_type.new_record? ? 'Create' : 'Save Changes')
+    = f.submit(@org_type.new_record? ? 'Create Type' : 'Save Changes')
+
+-if session[:org_owner_id]
+  #sign_in_button
+    = link_to "The Type is in the list, continue to the next step", new_admin_org_path, :class => 'bold green'

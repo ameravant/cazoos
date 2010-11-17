@@ -6,8 +6,8 @@ Feature: Viewing the Site
 
   Scenario: Anonymous Visitor to the Homepage
     Given I am not logged in
-    When I go to to the homepage
-    Then I should see "Register Now!" within "a" 
+    And I am on the homepage
+    Then I should see "Register Now!" 
   
   # Scenario: Beginning the Registration Process for Parents or Camp Owners
   #   Given I am not logged in

@@ -22,6 +22,7 @@ resources :events, :as => events_path, :has_many => :images, :collection => { :p
 end
 
 namespace :admin do |admin|
+  admin.resources :org_owners
   admin.resources :events, :has_many => [ :event_price_options, :features, :assets ] do |event|
   admin.resources :event_categories, :has_many => { :features, :menus } do |event_category|
     event_category.resources :menus
@@ -35,4 +36,5 @@ namespace :admin do |admin|
   end
 end
 resources :event_categories
+
 addpeople '/addpeople', :controller => "registration_people", :action => "index"

@@ -1,3 +1,7 @@
-%h1 Add a New Organization
+-if session[:org_owner_id]
+  %h1 Step 3(last one!)
+  %h1 Add Organization Details
+-else
+  %h1 Add a New Organization
 
 = render :partial => 'form'

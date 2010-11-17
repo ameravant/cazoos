@@ -10,12 +10,15 @@ class Admin::OrgsController < AdminController
   
   def new
     @org = Org.new
+    @org.build_owner
   end
   
    def create
+    params[:org][:owner_id] = session[:org_owner_id]
     @org = Org.new(params[:org])
     if @org.save
       flash[:notice] = "You have successfully created a new organization."
+      session[:org_owner_id] = nil
       redirect_to admin_orgs_path
     else
       render 'new'

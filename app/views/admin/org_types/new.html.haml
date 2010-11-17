@@ -1,3 +1,9 @@
-%h1 Add a New Organization Type
+-if session[:org_owner_id]
+  %h1 Step 2
+  %h1 Add the Type of Organization
+-else
+  %h1 Add a New Organization Type
 
 = render :partial => 'form'
+
+=render :partial => "org_type_list", :locals => {:org_types => @org_types}
