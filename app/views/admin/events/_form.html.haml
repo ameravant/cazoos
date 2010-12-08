@@ -44,6 +44,14 @@
       = f.label :end_date_and_time, "Event End date/time"
     %td
       = f.datetime_select :end_date_and_time
+  %tr.top
+    %td
+      =f.label :min_age, "Age Range"
+    %td
+      = f.text_field :min_age
+      %span through
+      = f.text_field :max_age
+
 - if @cms_config['features']['event_registration']
   %h2
     Registration Options

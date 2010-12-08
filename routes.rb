@@ -35,5 +35,5 @@ namespace :admin do |admin|
   end
 end
 resources :event_categories
-
+resources :camp_searches
 addpeople '/addpeople', :controller => "registration_people", :action => "index"

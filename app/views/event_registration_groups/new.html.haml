@@ -45,7 +45,6 @@
       %br.clear
       %dt{:style=> "width:13em; margin-right:0;"}=f.label :is_attending, "I am attending this event"
       %dd=check_box :event_registration_group, :is_attending, {:checked => 'checked'}, true, false
-      = text_field_tag  "event_kind", "", :id => "eventkind"
     %br.clear
     =f.submit "Save and continue" 
 -else
