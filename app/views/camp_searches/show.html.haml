@@ -1,0 +1,7 @@
+%h1 Search Results
+%ul
+  -for event in @search.events
+    %li 
+      =link_to event.title, event
+      =truncate(event.description.strip, :length => 50)
+

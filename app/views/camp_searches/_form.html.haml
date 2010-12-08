@@ -1,0 +1,6 @@
+- content_for :side_column_2 do
+  #trip-finder
+    %h1 Camp Finder
+    -form_for @search do |f|
+      = select("camp_search", "age", (3...18).to_a.collect{|c| [c.to_s, c]}, {:include_blank => "Age"})
+      %p= f.submit "Submit"
