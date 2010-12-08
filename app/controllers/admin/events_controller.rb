@@ -1,5 +1,4 @@
 class Admin::EventsController < AdminController
-  before_filter :load_offering_or_404, :only => [:new, :create, :edit, :update]
 
   def index
     if params[:q].blank?
@@ -16,11 +15,12 @@ class Admin::EventsController < AdminController
 
   def new
     @event_categories = EventCategory.active
-    @event = Event.build_from_offering(@offering)
+    @event = Event.new
+    @org = Org.find(params[:org_id]) if params[:org_id]
   end
 
   def create
-    @event = Event.build_from_offering(@offering, params[:event])
+    @event = Event.new(params[:event])
     @event.event_price_options.build(params[:event_price_options])
     if @event.save
       flash[:notice] = "Event created, would you like to add price options"
@@ -28,17 +28,6 @@ class Admin::EventsController < AdminController
     else
       render :action => "new"
     end
-  end
-
-  private 
-
-  def load_offering_or_404
-    if !params[:offering_id].nil?
-      @offering = Offering.find(params[:offering_id])  
-    else
-      @offering = Event.find(params[:id]).offering
-    end
-    render_404 if @offering.nil?
   end
 end
 

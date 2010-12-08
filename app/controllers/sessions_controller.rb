@@ -18,8 +18,10 @@ class SessionsController < ApplicationController
       flash[:error] = nil
       if current_user.is_admin?
         redirect_back_or_default('/admin')
-      elsif current_user.is_a?(Parent)
+      elsif current_user.person.is_a?(Parent) 
         redirect_to admin_parent_path(current_user.person)
+      elsif current_user.person.is_a?(OrgOwner)
+        redirect_back_or_default('/admin')
       else
         redirect_back_or_default('/')
       end

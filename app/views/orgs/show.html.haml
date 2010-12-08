@@ -1,0 +1,7 @@
+%h1= @org.name
+%h2 Description
+%p= @org.description
+%ul.events-list
+  -unless @org.events.empty?
+    -for event in @org.events
+      %li link_to event.title, org_event_path(event)

@@ -6,6 +6,8 @@ class Admin::OrgOwnersController < AdminController
   def create
     params[:org_owner][:user_attributes]["login"] = params[:org_owner][:email]
     @owner = OrgOwner.new(params[:org_owner])
+    @owner.person_group_ids ||= []
+    @owner.person_group_ids = @owner.person_group_ids << PersonGroup.find_by_name("admin").id
     if @owner.save
       redirect_to new_admin_org_type_path
       session[:org_owner_id] = @owner.id

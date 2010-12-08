@@ -1,25 +1,24 @@
 namespace :admin do |admin|
   admin.resources :orgs, :as => 'organizations' do |org|
-    org.resources :offerings, :only => [:new, :create, :index, :edit, :update, :show]
+    org.resources :events, :as => 'programs'
   end
-  admin.resources :org_types, :as => 'organization_types', :except => :show
+  admin.resources :org_types, :as => 'organization-types', :except => :show
   admin.resources :activity_categories, :only => [:new, :create, :index, :edit, :update, :destroy] 
-  admin.resources :offerings, :only => [:edit, :update, :destroy, :index, :show] do |offering|
-    offering.resources :events, :only => [:index, :new, :create]
-  end
   admin.resources :parents, :only => [:show, :edit, :update] do |parent|
     parent.resources :children, :only => [:index, :new, :create, :edit, :update]
   end
 end
 resources :parents, :only => [:new, :create]
-
-# From the events module
-resources :events, :as => events_path, :has_many => :images, :collection => { :past => :get } do |event|
+resources :orgs, :as => 'organizations' do |org|
+  org.resources :events, :has_many => :images, :collection => { :past => :get }
+end
+resources :events, :as => 'programs' do |event|
   event.resources :event_registration_groups,
     :belongs_to => :people,
     :has_many => :event_registrations,
     :member => { :pay => :get, :complete => :get }
 end
+# From the events module
 
 namespace :admin do |admin|
   admin.resources :org_owners

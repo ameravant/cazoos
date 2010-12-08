@@ -1,0 +1,4 @@
+%h1 Our Organizations
+%ul
+  -for org in @orgs
+    %li= link_to org.name, org

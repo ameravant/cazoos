@@ -6,8 +6,8 @@
     = icon "Plus", new_admin_event_event_price_option_path(@event)
     = link_to "Add a new price option for this event", new_admin_event_event_price_option_path(@event)
     
-    = icon "Back", admin_offering_path(@offering)
-    = link_to "Return to the Offering", admin_offering_path(@offering)
+    = icon "Back", admin_org_path(@org)
+    = link_to "Return to the Org", admin_org_path(@org)
 %table{ :cellspacing => "0" }
   %tr{ :class => "form-option #{cycle('even', 'odd')}" }
     %td.big
@@ -58,7 +58,7 @@
         %div
           = f.label :registration_limit, "Registration Limit"
           = f.text_field :registration_limit, :size => 4
-          %span guests
+          %span attendees
         %br
         %div
           = f.label :registration_deadline, "Deadline to register"
@@ -115,7 +115,7 @@
       /payments-allowed
 %h2
   = f.label :blurb, "Blurb"
-  %span#blurb_clarification.weak.gray Fill this out with details about the sessions (E.g. 'Meets M-F 9am - 5pm')
+  %span#blurb_clarification.weak.gray Fill this out with details about the program (E.g. 'Meets M-F 9am - 5pm')
 = f.text_area :blurb, :size => "80x5"
 %h2= f.label :description, "Description"
 - unless @event.images.empty?

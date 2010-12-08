@@ -1,7 +1,6 @@
 class Org < ActiveRecord::Base
   belongs_to :owner, :class_name => 'OrgOwner'
   belongs_to :org_type
-  has_many :offerings
   accepts_nested_attributes_for :owner
 
   validates_presence_of :owner_id
@@ -15,8 +14,13 @@ class Org < ActiveRecord::Base
   
   validates_numericality_of :min_age, :only_integer => true, :message => 'must be a whole number'
   validates_numericality_of :max_age, :only_integer => true, :message => 'must be a whole number'
-  
+  has_many :events
   before_save :validates_ages
+  has_permalink :name
+  
+  def to_param
+    "#{self.id}-#{self.permalink}"
+  end
   
   def map_address
     "#{self.address}, #{self.city}, #{self.state} #{self.zip}"
