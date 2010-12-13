@@ -6,7 +6,7 @@
   .float-right= render :partial => "/shared/search"
   %span.hmenu
     = icon "Plus", new_admin_event_path
-    = link_to "Add a new #{@cms_config['site_settings']['event_title']}", new_admin_event_path
+    = link_to "Add a new #{@cms_config['site_settings']['event_title']}", new_admin_org_event_path(@org)
 
 %table.full_width{ :cellspacing => "0" }
   %thead

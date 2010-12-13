@@ -1,13 +1,14 @@
 class Admin::EventsController < AdminController
 
   def index
+    @org = Org.find(params[:org_id])
     if params[:q].blank?
       add_breadcrumb @cms_config['site_settings']['events_title']
-      @all_events = Event.all
+      @all_events = @org.events.all
     else
       add_breadcrumb @cms_config['site_settings']['events_title'], "admin_events_path"
       add_breadcrumb "Search"
-      @all_events = Event.find :all, :conditions => ["name like ?", "#{params[:q]}%"], :order => "date_and_time desc"
+      @all_events = @org.events.find :all, :conditions => ["name like ?", "#{params[:q]}%"], :order => "date_and_time desc"
     end
     # This has to be by offering, not all events
     @events = @all_events.sort_by(&:date_and_time).reverse.paginate(:page => params[:page], :per_page => 50)
